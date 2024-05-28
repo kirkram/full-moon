@@ -7,7 +7,7 @@ CFLAGS = -Wall -Wextra -Werror -Wunreachable-code #-lm
 HEADERS	= -I ./include -I ./lib/MLX42/include/ -I "/Users/klukiano/.brew/opt/glfw/include"
 DEBUGFLAGS = -g -fsanitize=address,undefined,integer
 LIBS	= ./lib/MLX42/build/libmlx42.a -L/Users/klukiano/.brew/lib/ -lglfw -framework Cocoa -framework OpenGL -framework IOKit
-SRCS = ./src/main.c ./src/helper.c
+SRCS = ./src/main.c ./src/helper.c ./src/drawing.c ./src/init.c
 OBJCTS = $(SRCS:.c=.o)
 BONUS_OBJCTS = $(BONUS_SRCS:.c=.o)
 GNL_OBJCTS = $(GNL_SRCS:.c=.o)
