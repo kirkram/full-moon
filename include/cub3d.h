@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/05/28 15:58:26 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/05/29 16:27:40 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 # define WHITE 0xFFFFFFEE
 # define YELLOW 0xFFFF00EE
 # define YEL_WHITE 0xFFFFB6EE
+# define RED 0x0000FFEE
+# define BLUE 0x00FF00EE
+# define GREEN 0x00FF00EE
 
 typedef struct s_data
 {

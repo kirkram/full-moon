@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:13:41 by klukiano          #+#    #+#             */
-/*   Updated: 2024/05/28 16:03:41 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/05/29 16:26:33 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@ t_point	new_p(int x, int y, t_data *data)
 		point.color = MAGENTA;
 	else if (data->world_map[y][x] == 2)
 		point.color = YELLOW;
+	else if (data->world_map[y][x] == 3)
+		point.color = RED;
+	else if (data->world_map[y][x] == 4)
+		point.color = BLUE;
+	else if (data->world_map[y][x] == 5)
+		point.color = GREEN;
 	else
 		point.color = WHITE;
 	point.x *= data->zoom;
