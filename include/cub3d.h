@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/05/29 16:27:40 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/05/29 18:27:02 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,9 @@ int	copy_example_map(t_data *data);
 //drawing
 void	draw_minimap(t_data *data);
 int		init_and_draw(t_data *data);
+
+//keyhook
+void	ft_hook_hub(void *param);
 
 //helper
 int	ft_error(char *msg, int	error_code);

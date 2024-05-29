@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   drawing.c                                          :+:      :+:    :+:   */
+/*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:13:41 by klukiano          #+#    #+#             */
-/*   Updated: 2024/05/29 16:26:33 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/05/29 18:13:40 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ void	draw_minimap(t_data *data)
 	int 	width;
 	int		height;
 
-	width = MAPWIDTH / 10;
-	height = MAPHEIGHT / 10;
+	width = MAPWIDTH;
+	height = MAPHEIGHT;
 	data->zoom = 10;
 	y = 0;
 	while (y < MAPHEIGHT)
