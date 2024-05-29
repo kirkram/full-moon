@@ -4,9 +4,9 @@ LIBMLX_PATH	= ./lib/MLX42
 LIBFT = ./lib/libft/libft.a
 LIBMLX42 = ./lib/MLX42/build/libmlx42.a
 CFLAGS = -Wall -Wextra -Werror -Wunreachable-code #-lm
-HEADERS	= -I ./include -I ./lib/MLX42/include/ -I "/Users/klukiano/.brew/opt/glfw/include"
+HEADERS	= -I ./include -I ./lib/MLX42/include/ -I "/Users/$(USER)/.brew/opt/glfw/include"
 DEBUGFLAGS = -g -fsanitize=address,undefined,integer
-LIBS	= ./lib/MLX42/build/libmlx42.a -L/Users/klukiano/.brew/lib/ -lglfw -framework Cocoa -framework OpenGL -framework IOKit
+LIBS	= ./lib/MLX42/build/libmlx42.a -L/Users/$(USER)/.brew/lib/ -lglfw -framework Cocoa -framework OpenGL -framework IOKit
 SRCS = ./src/main.c ./src/helper.c ./src/drawing.c ./src/init.c
 OBJCTS = $(SRCS:.c=.o)
 BONUS_OBJCTS = $(BONUS_SRCS:.c=.o)
@@ -23,6 +23,11 @@ $(LIBMLX42): .libmlx42
 .libmlx42:
 	@cmake $(LIBMLX_PATH) -B $(LIBMLX_PATH)/build && make -C $(LIBMLX_PATH)/build -j4
 	touch .libmlx42
+
+clone_mlx42:
+	if [ ! -d "$(LIBMLX_PATH)" ]; then \
+		git clone https://github.com/codam-coding-college/MLX42.git "$(LIBMLX_PATH)"; \
+	fi
 
 $(LIBFT):
 	make -C $(LIBFT_PATH)
