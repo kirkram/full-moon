@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:13:41 by klukiano          #+#    #+#             */
-/*   Updated: 2024/05/29 18:13:40 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/05/30 12:32:29 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	put_pixel(t_data *data, t_point *point)
 {
 	if (point->x < data->width && point->y < data->height && \
 		point->x >= 0 && point->y >= 0)
-		mlx_put_pixel(data->instance, point->x, point->y, point->color);
+		mlx_put_pixel(data->minimap, point->x, point->y, point->color);
 }
 
 void	drw_line(t_point point, t_point dest, t_data *data)

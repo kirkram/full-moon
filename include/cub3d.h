@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/05/29 18:27:02 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/05/30 13:02:19 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,19 @@
 # define BLUE 0x00FF00EE
 # define GREEN 0x00FF00EE
 
+typedef struct s_player
+{
+	mlx_image_t		*img;
+	int32_t			x_pos;
+	int32_t			y_pos;
+}					t_player;
+
 typedef struct s_data
 {
 	mlx_t			*mlx;
-	mlx_image_t		*instance;
+	mlx_image_t		*minimap;
 	mlx_image_t		*backg;
+	//t_player		*player;
 	mlx_key_data_t	keydata;
 	int32_t			width;
 	int32_t			height;
@@ -65,6 +73,7 @@ void	ft_hook_hub(void *param);
 //helper
 int	ft_error(char *msg, int	error_code);
 int	ft_abs(int result);
+int	free_2d_int(int **int_arr);
 
 
 
