@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/05/30 13:02:19 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/05/30 13:05:02 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_data
 	mlx_t			*mlx;
 	mlx_image_t		*minimap;
 	mlx_image_t		*backg;
-	//t_player		*player;
+	t_player		*player;
 	mlx_key_data_t	keydata;
 	int32_t			width;
 	int32_t			height;

@@ -6,25 +6,25 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/05/30 13:03:53 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/05/30 13:14:06 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-// int	init_player(t_data *data)
-// {
-// 	data->player->x_pos = 24;
-// 	data->player->y_pos = 24;
+int	init_player(t_data *data)
+{
+	data->player->x_pos = 24;
+	data->player->y_pos = 24;
 
-// 	data->player->img = mlx_new_image(data->mlx, data->width, data->height);
-// 	if (!data->player->img)
-// 		ft_error("Error on mlx_new_image\n", 11);
-// 	if (mlx_image_to_window(data->mlx, data->player->img, 24, 24) < 0)
-// 		ft_error("Error on mlx_image_to_window\n", 11);
-// 	//mlx_put_pixel(data->player.img, data->player.x_pos, data->player.y_pos, 0xFFFF00FF);
-// 	return (0);
-// }
+	data->player->img = mlx_new_image(data->mlx, data->width, data->height);
+	if (!data->player->img)
+		ft_error("Error on mlx_new_image\n", 11);
+	if (mlx_image_to_window(data->mlx, data->player->img, 0, 0) < 0)
+		ft_error("Error on mlx_image_to_window\n", 11);
+	mlx_put_pixel(data->player->img, data->player->x_pos, data->player->y_pos, 0xFFFF00FF);
+	return (0);
+}
 
 int	put_background(t_data *data)
 {
@@ -85,12 +85,12 @@ int	init_images(t_data *data)
 			mlx_terminate(data->mlx);
 		return (11);
 	}
-	// if (init_player(data))
-	// {
-	// 	if (data->mlx)
-	// 		mlx_terminate(data->mlx);
-	// 	return (11);
-	// }
+	if (init_player(data))
+	{
+		if (data->mlx)
+			mlx_terminate(data->mlx);
+		return (11);
+	}
 	return (0);
 }
 
