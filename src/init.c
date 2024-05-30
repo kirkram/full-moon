@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/05/30 16:02:35 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:12:58 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,35 @@ int	draw_player(t_data *data)
 	t_point		point;
 
 	player = data->player;
-	point.y = -1;
-	point.color = YELLOW;
-	while (++point.y < player->imgheight)
+	point.y = 0;
+	point.color = RED;
+	while (++point.y < player->imgheight / 3)
 	{
-		point.x = -1;
-		while (++point.x < player->imgwidth)
+		point.x = player->imgwidth / 3  - player->imgwidth / 7;
+		while (point.x < player->imgwidth / 3)
 		{
 			if (point.x < player->imgwidth && point.y < player->imgheight)
 				mlx_put_pixel(player->img, point.x, point.y, point.color);
 			else
 			{
-				ft_error("error in put pixel", 23);
+				ft_error("Error on put pixel", 23);
+				exit(23);
+			}
+			point.x ++;
+		}
+	}
+	point.y = player->imgheight / 3;
+	point.color = YELLOW;
+	while (++point.y < player->imgheight / 2)
+	{
+		point.x = -1;
+		while (++point.x < player->imgwidth / 2)
+		{
+			if (point.x < player->imgwidth && point.y < player->imgheight)
+				mlx_put_pixel(player->img, point.x, point.y, point.color);
+			else
+			{
+				ft_error("Error on put pixel", 23);
 				exit(23);
 			}
 		}
@@ -41,8 +58,8 @@ int	init_player(t_data *data)
 {
 	data->player->x_pos = 0;
 	data->player->y_pos = 0;
-	data->player->imgwidth = 10;
-	data->player->imgheight = 10;
+	data->player->imgwidth = 20;
+	data->player->imgheight = 20;
 	data->player->img = mlx_new_image(data->mlx, data->player->imgwidth, data->player->imgheight);
 	if (!data->player->img)
 		ft_error("Error on mlx_new_image\n", 11);

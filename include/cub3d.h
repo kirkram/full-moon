@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/05/30 15:53:52 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:04:30 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 # define WHITE 0xFFFFFFEE
 # define YELLOW 0xFFFF00EE
 # define YEL_WHITE 0xFFFFB6EE
-# define RED 0x0000FFEE
-# define BLUE 0x00FF00EE
+# define RED 0xFF0000EE
+# define BLUE 0x0000FFEE
 # define GREEN 0x00FF00EE
 
 typedef struct s_player

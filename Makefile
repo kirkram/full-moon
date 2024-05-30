@@ -15,7 +15,7 @@ RM = rm -f
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(LIBMLX42) $(OBJCTS) 
+$(NAME): $(LIBFT) $(LIBMLX42) $(OBJCTS) ./include/*.h
 	cc $(CFLAGS) $(HEADERS) $(OBJCTS) $(LIBFT) $(LIBS) -o $(NAME)
 
 $(LIBMLX42): .libmlx42
@@ -29,7 +29,7 @@ $(LIBFT):
 
 debug: .debug
 
-.debug: $(LIBMLX42) $(OBJCTS)
+.debug: $(LIBFT) $(LIBMLX42) $(OBJCTS) ./include/*.h
 	cc $(DEBUGFLAGS) $(HEADERS) $(OBJCTS) $(LIBFT) $(LIBS)  -o debug.out
 	touch .debug
 
