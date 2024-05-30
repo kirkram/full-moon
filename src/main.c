@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/05/30 13:10:21 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/05/30 15:43:07 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,13 @@ int	main(int ac, char **av)
 	(void)ac;
 	(void)av;
 	t_data		data;
-	t_player	*player;
+	t_player	player;
 
-	player = malloc(1 * sizeof(t_player));
-	data.player = player;
+	data.player = &player;
 	copy_example_map(&data);
 	init_and_draw(&data);
 
 	free_2d_int(data.world_map);
-	free (player);
 	return (0);
 }
 

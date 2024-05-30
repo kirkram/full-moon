@@ -6,23 +6,51 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/05/30 13:14:06 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/05/30 16:02:35 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
+int	draw_player(t_data *data)
+{
+	t_player	*player;
+	t_point		point;
+
+	player = data->player;
+	point.y = -1;
+	point.color = YELLOW;
+	while (++point.y < player->imgheight)
+	{
+		point.x = -1;
+		while (++point.x < player->imgwidth)
+		{
+			if (point.x < player->imgwidth && point.y < player->imgheight)
+				mlx_put_pixel(player->img, point.x, point.y, point.color);
+			else
+			{
+				ft_error("error in put pixel", 23);
+				exit(23);
+			}
+		}
+	}
+	return (0);
+}
+
 int	init_player(t_data *data)
 {
-	data->player->x_pos = 24;
-	data->player->y_pos = 24;
-
-	data->player->img = mlx_new_image(data->mlx, data->width, data->height);
+	data->player->x_pos = 0;
+	data->player->y_pos = 0;
+	data->player->imgwidth = 10;
+	data->player->imgheight = 10;
+	data->player->img = mlx_new_image(data->mlx, data->player->imgwidth, data->player->imgheight);
 	if (!data->player->img)
 		ft_error("Error on mlx_new_image\n", 11);
 	if (mlx_image_to_window(data->mlx, data->player->img, 0, 0) < 0)
 		ft_error("Error on mlx_image_to_window\n", 11);
-	mlx_put_pixel(data->player->img, data->player->x_pos, data->player->y_pos, 0xFFFF00FF);
+	draw_player(data);
+	data->player->img->instances[0].x += 175;
+	data->player->img->instances[0].y += 175;
 	return (0);
 }
 
@@ -70,6 +98,8 @@ int	init_images(t_data *data)
 {
 	data->width = SCREENWIDTH;
 	data->height = SCREENHEIGHT;
+	data->backg = NULL;
+	data->minimap = NULL;
 	data->mlx = mlx_init(data->width, data->height, "CUB3D", 0);
 	if (!data->mlx)
 		ft_error("Error on mlx_init\n", 11);
@@ -99,7 +129,8 @@ int	init_and_draw(t_data *data)
 {
 	if(init_images(data))
 		return (11);
-	draw_minimap(data);
+	if (data->minimap)
+		draw_minimap(data);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	mlx_loop(data->mlx);
 	mlx_terminate(data->mlx);

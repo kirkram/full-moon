@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:13:41 by klukiano          #+#    #+#             */
-/*   Updated: 2024/05/30 13:14:24 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/05/30 15:44:27 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ t_point	new_p(int x, int y, t_data *data)
 	return (point);
 }
 
-void	put_pixel(t_data *data, t_point *point)
+void	put_pixel(t_data *data, t_point *point, mlx_image_t *img)
 {
 	if (point->x < data->width && point->y < data->height && \
 		point->x >= 0 && point->y >= 0)
-		mlx_put_pixel(data->minimap, point->x, point->y, point->color);
+		mlx_put_pixel(img, point->x, point->y, point->color);
 }
 
 void	drw_line(t_point point, t_point dest, t_data *data)
@@ -74,7 +74,7 @@ void	drw_line(t_point point, t_point dest, t_data *data)
 	error[0] = delta.x - delta.y;
 	while (point.x != dest.x || point.y != dest.y)
 	{
-		put_pixel(data, &point);
+		put_pixel(data, &point, data->minimap);
 		error[1] = error[0] * 2;
 		if (error[1] > -delta.y)
 			error[0] -= delta.y;

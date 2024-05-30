@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/05/30 13:05:02 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/05/30 15:53:52 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ typedef struct s_player
 	mlx_image_t		*img;
 	int32_t			x_pos;
 	int32_t			y_pos;
+	int32_t			imgwidth;
+	int32_t			imgheight;
 }					t_player;
 
 typedef struct s_data
@@ -66,9 +68,12 @@ int	copy_example_map(t_data *data);
 //drawing
 void	draw_minimap(t_data *data);
 int		init_and_draw(t_data *data);
+void	put_pixel(t_data *data, t_point *point, mlx_image_t *img);
+int		draw_player(t_data *data);
 
 //keyhook
 void	ft_hook_hub(void *param);
+t_data	*reinit_image(t_data *data, mlx_image_t *img);
 
 //helper
 int	ft_error(char *msg, int	error_code);
