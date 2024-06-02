@@ -6,12 +6,28 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/02 13:18:44 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/02 14:57:12 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
+double rad(double angle)
+{
+	return (angle * PI / 180);
+}
+
+void	apply_rotation(t_data *data, t_point *point, int x, int y)
+{
+	t_player	*player;
+	t_point		temp;
+
+	player = data->player;
+	temp.x = x * cos(rad(player->angle)) - y * sin(rad(player->angle));
+	temp.y = y * cos(rad(player->angle)) + x * sin(rad(player->angle));
+	point->x = temp.x;
+	point->y = temp.y;
+}
 int	draw_player(t_data *data)
 {
 	t_player	*player;
@@ -23,30 +39,37 @@ int	draw_player(t_data *data)
 	int		pl_w = 6;
 	int		pl_h = 12;
 
-	point.y = -1;
-	while (++point.y < direction_h)
+	int		x;
+	int		y;
+
+	//draw direction red
+	y = -1;
+	while (++y < direction_h)
 	{
-		point.x = 3;
-		while (point.x < direction_w)
+		x = 3;
+		while (x < direction_w)
 		{
-			if (point.x < player->imgwidth && point.y < player->imgheight)
+			point.x = x;
+			point.y = y;
+			apply_rotation(data, &point, x, y);
+			if (x >= 0 && y >= 0 && \
+			x < player->imgwidth && y < player->imgheight)
 				mlx_put_pixel(player->img, player->x_pos_mini + point.x, \
 				player->y_pos_mini + point.y, RED);
-			else
-			{
-				ft_error("Error on put pixel", 23);
-				exit(23);
-			}
-			point.x ++;
+			x ++;
 		}
 	}
-	point.y = direction_h - 1;
-	while (++point.y < pl_h)
+	//draw player yellow
+	y = direction_h - 1;
+	while (++y < pl_h)
 	{
-		point.x = -1;
-		while (++point.x < pl_w)
+		x = -1;
+		while (++x < pl_w)
 		{
-			if (point.x < player->imgwidth && point.y < player->imgheight)
+			point.x = x;
+			point.y = y;
+			apply_rotation(data, &point, x, y);
+			if (x < player->imgwidth && y < player->imgheight)
 				mlx_put_pixel(player->img, player->x_pos_mini + point.x, \
 				player->y_pos_mini + point.y, YELLOW);
 			else

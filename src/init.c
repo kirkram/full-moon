@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/02 13:13:11 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/02 14:53:36 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	init_player(t_data *data)
 {
 	data->player->x_pos_mini = 0;
 	data->player->y_pos_mini = 0;
+	data->player->angle = 0;
 	data->player->imgwidth = data->width;
 	data->player->imgheight = data->height;
 	data->player->img = mlx_new_image(data->mlx, data->player->imgwidth, data->player->imgheight);

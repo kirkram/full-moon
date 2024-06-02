@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/02 13:00:53 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/02 14:52:43 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,14 @@
 # define BLUE 0x0000FFEE
 # define GREEN 0x00FF00EE
 
+# define PI 3.14159265359
+
 typedef struct s_player
 {
 	mlx_image_t		*img;
 	double			x_pos_mini;
 	double			y_pos_mini;
+	double			angle;
 	int32_t			imgwidth;
 	int32_t			imgheight;
 }					t_player;
