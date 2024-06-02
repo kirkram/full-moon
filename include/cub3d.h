@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/05/30 17:04:30 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/02 13:00:53 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # define MAPHEIGHT 24
 # define SCREENWIDTH 1280
 # define SCREENHEIGHT 760
+# define BLACK 0x000000EE
 # define MAGENTA 0xFF00FFEE
 # define PURPLE 0xB800FFEE
 # define WHITE 0xFFFFFFEE
@@ -35,8 +36,8 @@
 typedef struct s_player
 {
 	mlx_image_t		*img;
-	int32_t			x_pos;
-	int32_t			y_pos;
+	double			x_pos_mini;
+	double			y_pos_mini;
 	int32_t			imgwidth;
 	int32_t			imgheight;
 }					t_player;
@@ -56,14 +57,14 @@ typedef struct s_data
 
 typedef struct s_point
 {
-	int				x;
-	int				y;
+	int32_t				x;
+	int32_t				y;
 	unsigned int	color;
 	void			*content;
 }					t_point;
 
 //init
-int	copy_example_map(t_data *data);
+int		copy_example_map(t_data *data);
 
 //drawing
 void	draw_minimap(t_data *data);
@@ -76,9 +77,9 @@ void	ft_hook_hub(void *param);
 t_data	*reinit_image(t_data *data, mlx_image_t *img);
 
 //helper
-int	ft_error(char *msg, int	error_code);
-int	ft_abs(int result);
-int	free_2d_int(int **int_arr);
+int		ft_error(char *msg, int	error_code);
+int		ft_abs(int result);
+int		free_2d_int(int **int_arr);
 
 
 

@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:13:41 by klukiano          #+#    #+#             */
-/*   Updated: 2024/05/30 15:44:27 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/02 13:01:10 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_point	new_p(int x, int y, t_data *data)
 	else if (data->world_map[y][x] == 5)
 		point.color = GREEN;
 	else
-		point.color = WHITE;
+		point.color = BLACK;
 	point.x *= data->zoom;
 	point.y *= data->zoom;
 	// point.x += data->shift_x;
@@ -55,13 +55,6 @@ t_point	new_p(int x, int y, t_data *data)
 	// point.x += data->width / 2;
 	// point.y += data->height / 5;
 	return (point);
-}
-
-void	put_pixel(t_data *data, t_point *point, mlx_image_t *img)
-{
-	if (point->x < data->width && point->y < data->height && \
-		point->x >= 0 && point->y >= 0)
-		mlx_put_pixel(img, point->x, point->y, point->color);
 }
 
 void	drw_line(t_point point, t_point dest, t_data *data)
