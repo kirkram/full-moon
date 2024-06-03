@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/02 14:55:54 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:19:21 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,36 @@
 static void	ft_hook_movement(t_data *data)
 {
 	t_player	*player;
+	// double		temp_x;
+	// double		temp_y;
 
 	player = data->player;
+
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(data->mlx);
-	if (mlx_is_key_down(data->mlx, MLX_KEY_A))
-		player->x_pos_mini -= 1;
-	else if (mlx_is_key_down(data->mlx, MLX_KEY_D))
-		player->x_pos_mini += 1;
-	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
-		player->y_pos_mini -= 1;
+		if (mlx_is_key_down(data->mlx, MLX_KEY_W))
+	{
+		player->x_pos_mini += 1 * cos(rad(player->angle));
+		player->y_pos_mini += 1 * sin(rad(player->angle));
+	}
 	else if (mlx_is_key_down(data->mlx, MLX_KEY_S))
-		player->y_pos_mini += 1;
-	if (mlx_is_key_down(data->mlx, MLX_KEY_4))
+	{
+		player->x_pos_mini += -1 * cos(rad(player->angle));
+		player->y_pos_mini += -1 * sin(rad(player->angle));
+	}
+	if (mlx_is_key_down(data->mlx, MLX_KEY_A))
+	{
+		player->x_pos_mini += -1 * cos(rad(player->angle + 90));
+		player->y_pos_mini += -1 * sin(rad(player->angle + 90));
+	}
+	else if (mlx_is_key_down(data->mlx, MLX_KEY_D))
+	{
+		player->x_pos_mini += 1 * cos(rad(player->angle + 90));
+		player->y_pos_mini += 1 * sin(rad(player->angle + 90));
+	}
+	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
 		player->angle -= 1;
-	else if (mlx_is_key_down(data->mlx, MLX_KEY_6))
+	else if (mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
 		player->angle += 1;
 
 }

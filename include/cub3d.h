@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/02 14:52:43 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/03 13:46:57 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ void	draw_minimap(t_data *data);
 int		init_and_draw(t_data *data);
 void	put_pixel(t_data *data, t_point *point, mlx_image_t *img);
 int		draw_player(t_data *data);
+void	apply_rotation(t_data *data, t_point *point, int x, int y);
+double	rad(double angle);
 
 //keyhook
 void	ft_hook_hub(void *param);
