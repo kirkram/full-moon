@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/03 13:46:57 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/03 16:49:01 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,19 @@
 # define MAPHEIGHT 24
 # define SCREENWIDTH 1280
 # define SCREENHEIGHT 760
+# define STARTPOS 17
+# define SPEED 0.5
+
+//maths
+# define PI 3.14159265359
+
+//direction angle
+# define EAST 0
+# define SOUTH 90
+# define WEST 180
+# define NORTH 270
+
+//colors
 # define BLACK 0x000000EE
 # define MAGENTA 0xFF00FFEE
 # define PURPLE 0xB800FFEE
@@ -33,11 +46,11 @@
 # define BLUE 0x0000FFEE
 # define GREEN 0x00FF00EE
 
-# define PI 3.14159265359
-
 typedef struct s_player
 {
 	mlx_image_t		*img;
+	// // double			x_pos;
+	// double			y_pos;
 	double			x_pos_mini;
 	double			y_pos_mini;
 	double			angle;

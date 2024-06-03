@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:13:41 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/02 13:01:10 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/03 16:40:55 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,6 @@ t_point	new_p(int x, int y, t_data *data)
 		point.color = BLACK;
 	point.x *= data->zoom;
 	point.y *= data->zoom;
-	// point.x += data->shift_x;
-	// point.y += data->shift_y;
-	// point.x += data->width / 2;
-	// point.y += data->height / 5;
 	return (point);
 }
 
@@ -89,7 +85,6 @@ void	draw_minimap(t_data *data)
 
 	width = MAPWIDTH;
 	height = MAPHEIGHT;
-	data->zoom = 10;
 	y = 0;
 	while (y < MAPHEIGHT)
 	{

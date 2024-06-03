@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/03 15:19:21 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/03 16:58:44 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ static void	ft_hook_movement(t_data *data)
 		player->y_pos_mini += 1 * sin(rad(player->angle + 90));
 	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
-		player->angle -= 1;
+		player->angle -= 2;
 	else if (mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
-		player->angle += 1;
+		player->angle += 2;
 
 }
 
@@ -64,7 +64,10 @@ void	ft_hook_hub(void *param)
 		mlx_delete_image(data->mlx, data->player->img);
 		data->player->img = mlx_new_image(data->mlx, data->player->imgwidth, data->player->imgheight);
 		if (!data->player->img)
+		{
 			ft_error("Error on mlx_new_image\n", 11);
+			exit (11);
+		}
 		if (mlx_image_to_window(data->mlx, data->player->img, 0, 0) < 0)
 			ft_error("Error on mlx_image_to_window\n", 11);
 		draw_player(data);

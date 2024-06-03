@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/03 15:18:06 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/03 17:17:42 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ int	draw_player(t_data *data)
 			point.x = x;
 			point.y = y;
 			apply_rotation(data, &point, x, y);
-			if (player->x_pos_mini >= 0 && player->y_pos_mini >= 0 && \
-			player->x_pos_mini < player->imgwidth && player->y_pos_mini < player->imgheight)
+			if (player->x_pos_mini + point.x >= 0 && player->y_pos_mini + point.y >= 0 && \
+			player->x_pos_mini + point.x < player->imgwidth && player->y_pos_mini + point.y < player->imgheight)
 				mlx_put_pixel(player->img, player->x_pos_mini + point.x, \
 				player->y_pos_mini + point.y, RED);
 		}

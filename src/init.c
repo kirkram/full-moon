@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/03 15:19:45 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/03 17:17:43 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,25 @@
 
 int	init_player(t_data *data)
 {
-	data->player->x_pos_mini = 0;
-	data->player->y_pos_mini = 0;
-	data->player->angle = 270; //NORTH
+	float	player_x_coord;
+	float	player_y_coord;
+
+	player_x_coord = STARTPOS;
+	player_y_coord = STARTPOS;
+	data->player->angle = NORTH;
 	printf("%f\n", data->player->angle);
-	data->player->imgwidth = data->width;
+	data->player->imgwidth = data->width; //MAPHEIGHT * data->zoom
 	data->player->imgheight = data->height;
+	printf("%d\n", 1);
+
 	data->player->img = mlx_new_image(data->mlx, data->player->imgwidth, data->player->imgheight);
 	if (!data->player->img)
 		ft_error("Error on mlx_new_image\n", 11);
+	printf("%d\n", 2);
 	if (mlx_image_to_window(data->mlx, data->player->img, 0, 0) < 0)
 		ft_error("Error on mlx_image_to_window\n", 11);
-	data->player->x_pos_mini += 175;
-	data->player->y_pos_mini += 175;
+	data->player->x_pos_mini = (player_x_coord + 0.5) * data->zoom;
+	data->player->y_pos_mini = (player_y_coord + 0.5) * data->zoom;
 	draw_player(data);
 	return (0);
 }
@@ -77,9 +83,10 @@ int	init_images(t_data *data)
 	data->height = SCREENHEIGHT;
 	data->backg = NULL;
 	data->minimap = NULL;
+	data->zoom = 10;
 	data->mlx = mlx_init(data->width, data->height, "CUB3D", 0);
 	if (!data->mlx)
-		ft_error("Error on mlx_init\n", 11);
+		return (ft_error("Error on mlx_init\n", 11));
 	if (put_background(data))
 	{
 		if (data->mlx)
