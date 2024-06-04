@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:13:41 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/03 16:40:55 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:48:21 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_point	new_p(int x, int y, t_data *data)
 	else if (data->world_map[y][x] == 5)
 		point.color = GREEN;
 	else
-		point.color = BLACK;
+		point.color = WHITE_ISH;
 	point.x *= data->zoom;
 	point.y *= data->zoom;
 	return (point);

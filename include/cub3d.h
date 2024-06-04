@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/03 16:49:01 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/04 18:14:36 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@
 # define MAPHEIGHT 24
 # define SCREENWIDTH 1280
 # define SCREENHEIGHT 760
-# define STARTPOS 17
-# define SPEED 0.5
+# define MINIZOOM 15
+# define STARTPOS 17.5
+# define SPEED 0.08
 
 //maths
 # define PI 3.14159265359
@@ -40,17 +41,20 @@
 # define MAGENTA 0xFF00FFEE
 # define PURPLE 0xB800FFEE
 # define WHITE 0xFFFFFFEE
+# define WHITE_ISH 0xFFFFFFAA
 # define YELLOW 0xFFFF00EE
 # define YEL_WHITE 0xFFFFB6EE
 # define RED 0xFF0000EE
 # define BLUE 0x0000FFEE
 # define GREEN 0x00FF00EE
+# define BACKG_COLOR 0x000011FF
+# define FULL_TRANSPARENT 0x0000000
 
 typedef struct s_player
 {
 	mlx_image_t		*img;
-	// // double			x_pos;
-	// double			y_pos;
+	double			x_pos;
+	double			y_pos;
 	double			x_pos_mini;
 	double			y_pos_mini;
 	double			angle;
@@ -61,6 +65,7 @@ typedef struct s_player
 typedef struct s_data
 {
 	mlx_t			*mlx;
+	mlx_image_t		*screen;
 	mlx_image_t		*minimap;
 	mlx_image_t		*backg;
 	t_player		*player;
@@ -81,6 +86,7 @@ typedef struct s_point
 
 //init
 int		copy_example_map(t_data *data);
+int		color_whole_image(mlx_image_t *img, int color, int width, int height);
 
 //drawing
 void	draw_minimap(t_data *data);
@@ -89,6 +95,7 @@ void	put_pixel(t_data *data, t_point *point, mlx_image_t *img);
 int		draw_player(t_data *data);
 void	apply_rotation(t_data *data, t_point *point, int x, int y);
 double	rad(double angle);
+int		draw_screen(t_data *data);
 
 //keyhook
 void	ft_hook_hub(void *param);

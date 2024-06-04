@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/03 17:17:43 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/04 18:03:37 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,51 +14,51 @@
 
 int	init_player(t_data *data)
 {
-	float	player_x_coord;
-	float	player_y_coord;
-
-	player_x_coord = STARTPOS;
-	player_y_coord = STARTPOS;
+	data->player->x_pos = STARTPOS;
+	data->player->y_pos = STARTPOS;
 	data->player->angle = NORTH;
 	printf("%f\n", data->player->angle);
-	data->player->imgwidth = data->width; //MAPHEIGHT * data->zoom
+	data->player->imgwidth = data->width; //or MAPHEIGHT * data->zoom
 	data->player->imgheight = data->height;
-	printf("%d\n", 1);
-
 	data->player->img = mlx_new_image(data->mlx, data->player->imgwidth, data->player->imgheight);
 	if (!data->player->img)
 		ft_error("Error on mlx_new_image\n", 11);
-	printf("%d\n", 2);
 	if (mlx_image_to_window(data->mlx, data->player->img, 0, 0) < 0)
 		ft_error("Error on mlx_image_to_window\n", 11);
-	data->player->x_pos_mini = (player_x_coord + 0.5) * data->zoom;
-	data->player->y_pos_mini = (player_y_coord + 0.5) * data->zoom;
+	data->player->y_pos_mini = data->player->y_pos * data->zoom;
+	data->player->x_pos_mini = data->player->x_pos * data->zoom;
 	draw_player(data);
+	return (0);
+}
+
+int	color_whole_image(mlx_image_t *img, int color, int width, int height)
+{
+	int		x;
+	int		y;
+
+	y = 0;
+	while (y < height)
+	{
+		x = 0;
+		while (x < width)
+		{
+			mlx_put_pixel(img, x, y, color);
+			x ++;
+		}
+		y ++;
+	}
 	return (0);
 }
 
 int	put_background(t_data *data)
 {
-	int		x;
-	int		y;
-
 	data->backg = mlx_new_image(data->mlx, data->width, data->height);
 	if (!data->backg)
 		ft_error("Error on mlx_new_image\n", 11);
 	//returns index of the instance. should it be used?
 	if (mlx_image_to_window(data->mlx, data->backg, 0, 0) < 0)
 		ft_error("Error on mlx_image_to_window\n", 11);
-	y = 0;
-	while (y < data->height)
-	{
-		x = 0;
-		while (x < data->width)
-		{
-			mlx_put_pixel(data->backg, x, y, 0x000011FF);
-			x ++;
-		}
-		y ++;
-	}
+	color_whole_image(data->backg, BACKG_COLOR, data->width, data->height);
 	mlx_put_string(data->mlx, "CUB3D_0.1", 1100, 1);
 	return (0);
 }
@@ -77,29 +77,28 @@ int	init_minimap(t_data *data)
 	return (0);
 }
 
+int	init_main_screen(t_data *data)
+{
+	data->screen = mlx_new_image(data->mlx, data->width, data->height);
+	if (!data->screen)
+		return (ft_error("Error on mlx_new_image", 11));
+	if (mlx_image_to_window(data->mlx, data->screen, 0, 0) < 0)
+		return (ft_error("Error on mlx_image_to_window", 11));
+	return (0);
+}
+
 int	init_images(t_data *data)
 {
 	data->width = SCREENWIDTH;
 	data->height = SCREENHEIGHT;
 	data->backg = NULL;
 	data->minimap = NULL;
-	data->zoom = 10;
+	data->zoom = MINIZOOM;
 	data->mlx = mlx_init(data->width, data->height, "CUB3D", 0);
 	if (!data->mlx)
 		return (ft_error("Error on mlx_init\n", 11));
-	if (put_background(data))
-	{
-		if (data->mlx)
-			mlx_terminate(data->mlx);
-		return (11);
-	}
-	if (init_minimap(data))
-	{
-		if (data->mlx)
-			mlx_terminate(data->mlx);
-		return (11);
-	}
-	if (init_player(data))
+	if (put_background(data) || init_main_screen(data) || \
+	init_minimap(data) || init_player(data))
 	{
 		if (data->mlx)
 			mlx_terminate(data->mlx);
@@ -115,6 +114,7 @@ int	init_and_draw(t_data *data)
 		return (11);
 	if (data->minimap)
 		draw_minimap(data);
+	draw_screen(data);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	mlx_loop(data->mlx);
 	mlx_terminate(data->mlx);
