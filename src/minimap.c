@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:13:41 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/04 16:48:21 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/05 16:47:28 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_point	new_p(int x, int y, t_data *data)
 	return (point);
 }
 
-void	drw_line(t_point point, t_point dest, t_data *data)
+void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img)
 {
 	t_point		delta;
 	t_point		sign;
@@ -63,7 +63,7 @@ void	drw_line(t_point point, t_point dest, t_data *data)
 	error[0] = delta.x - delta.y;
 	while (point.x != dest.x || point.y != dest.y)
 	{
-		put_pixel(data, &point, data->minimap);
+		put_pixel(data, &point, img);
 		error[1] = error[0] * 2;
 		if (error[1] > -delta.y)
 			error[0] -= delta.y;
@@ -92,9 +92,9 @@ void	draw_minimap(t_data *data)
 		while (x < MAPWIDTH)
 		{
 			if (x < MAPWIDTH - 1)
-				drw_line(new_p(x, y, data), new_p(x + 1, y, data), data);
+				drw_line(new_p(x, y, data), new_p(x + 1, y, data), data, data->minimap);
 			if (y < MAPHEIGHT - 1)
-				drw_line(new_p(x, y, data), new_p(x, y + 1,  data), data);
+				drw_line(new_p(x, y, data), new_p(x, y + 1,  data), data, data->minimap);
 			x ++;
 		}
 		y ++;

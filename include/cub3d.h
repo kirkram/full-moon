@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/04 18:14:36 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/05 17:17:00 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,19 @@
 # define BACKG_COLOR 0x000011FF
 # define FULL_TRANSPARENT 0x0000000
 
+typedef struct s_map
+{
+	int16_t	x;
+	int16_t	y;
+}	t_map;
+
+typedef struct s_ray
+{
+	double	x;
+	double	y;
+	double	ang;
+}				t_ray;
+
 typedef struct s_player
 {
 	mlx_image_t		*img;
@@ -69,6 +82,7 @@ typedef struct s_data
 	mlx_image_t		*minimap;
 	mlx_image_t		*backg;
 	t_player		*player;
+	t_ray			*ray;
 	mlx_key_data_t	keydata;
 	int32_t			width;
 	int32_t			height;
@@ -95,7 +109,8 @@ void	put_pixel(t_data *data, t_point *point, mlx_image_t *img);
 int		draw_player(t_data *data);
 void	apply_rotation(t_data *data, t_point *point, int x, int y);
 double	rad(double angle);
-int		draw_screen(t_data *data);
+void	draw_screen(t_data *data);
+void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img);
 
 //keyhook
 void	ft_hook_hub(void *param);
