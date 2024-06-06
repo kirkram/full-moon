@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/05 17:00:20 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/06 13:29:38 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,86 @@ void	apply_rotation(t_data *data, t_point *point, int x, int y)
 
 	player = data->player;
 	temp.x = x * cos(player->angle) - y * sin(player->angle);
-	temp.y = y * cos(player->angle) + x * sin(player->angle);
+	temp.y = x * sin(player->angle) + y * cos(player->angle);
 	point->x = temp.x;
 	point->y = temp.y;
 }
-void	calc_rays(t_data *data, t_ray *ray)
+
+void	vertical_rays(t_data *data, t_ray *ray)
 {
-	//draw 1 ray
-	double 		atan;
-	double		y_off;
-	double		x_off;
-	int16_t		dof;
-	t_map		map;
 	t_player	*player;
+	t_map		map;
+	t_point		point;
+	t_point		dest;
 
 	player = data->player;
-	ray->ang = player->angle;
-	dof = 0;
-	atan = -1/tan(ray->ang);
-	//HORIZONTAL
+	ray->ntan = -tan(ray->ang);
+	ray->dof = 0;
+	//looking left
+	if (ray->ang < PI_N && ray->ang > PI_S)
+	{
+		ray->x_v = (int)player->x_pos;
+		//длина противолежащего катета *
+		ray->y_v = (player->x_pos - ray->x_v) * ray->ntan + player->y_pos;
+		printf("ray y_v is %f\n", ray->y_v);
+		ray->x_off = -1;
+		ray->y_off = -ray->x_off * ray->ntan;
+		printf("ray  y_off is %f\n", ray->y_off);
+	}
+	//looking right
+	else if (ray->ang > PI_N || ray->ang < PI_S)
+	{
+		ray->x_v = (int)player->x_pos + 1;
+		ray->y_v = (player->x_pos - ray->x_v) * ray->ntan + player->y_pos;
+		ray->x_off = 1;
+		ray->y_off = -ray->x_off * ray->ntan;
+	}
+	else if (ray->ang == PI_N || ray->ang == PI_S)
+	{
+		ray->x_v = player->x_pos;
+		ray->y_v = player->y_pos;
+		ray->dof = MAPHEIGHT;
+	}
+	while (ray->dof < MAPHEIGHT / 3)
+	{
+		map.y = (int)ray->y_v;
+		map.x = (int)ray->x_v;
+		printf("map.y = %d, map.x = %d\n", map.y, map.x);
+		if (map.y < MAPHEIGHT && map.y >= 0 && map.x < MAPWIDTH && map.x >= 0 && data->world_map[map.y][map.x] == 1)
+			ray->dof = MAPHEIGHT;
+		else
+		{
+			ray->y_v += ray->y_off;
+			ray->x_v += ray->x_off;
+			ray->dof ++;
+		}
+		if (ray->dof != MAPHEIGHT && (ray->y_v < 0 || ray->x_v < 0 || ray->x_v >= MAPWIDTH || ray->y_v >= MAPHEIGHT))
+		{
+			// if (ray->y_v < 0 || ray->y_v >= MAPHEIGHT)
+			// 	ray->y_v -= ray->y_off;
+			// if (ray->x_v < 0 || ray->x_v >= MAPWIDTH)
+			// 	ray->x_v -= ray->x_off;
+			ray->dof = MAPHEIGHT;
+		}
+
+	}
+	point.x = player->x_pos_mini + 1;
+	point.y = player->y_pos_mini;
+	point.color = GREEN;
+	dest.x = ray->x_v * data->zoom;
+	dest.y = ray->y_v * data->zoom;
+	drw_line(point, dest, data, data->player->img);
+}
+
+void	horizontal_rays(t_data *data, t_ray *ray)
+{
+	t_player	*player;
+	t_map		map;
+	t_point		point;
+	t_point		dest;
+
+	player = data->player;
+	ray->atan = -1/tan(ray->ang);
 	if (ray->ang > PI) //we are facing to the beginning of Y, north, up
 	{
 		//in one of the tutorias its proposed to set the value of ray->y could be rounded to the neartest 64th value
@@ -50,45 +111,63 @@ void	calc_rays(t_data *data, t_ray *ray)
 		//for me it would be rounding to the nearest int value ?
 		//casting to int to get rid of the float remainder
 		ray->y = (int)(player->y_pos);
-		ray->x = (player->y_pos - ray->y) * atan + player->x_pos;
-		y_off = -1;
-		x_off = -y_off * atan;
+		ray->x = (player->y_pos - ray->y) * ray->atan + player->x_pos;
+		ray->y_off = -1;
+		ray->x_off = -ray->y_off * ray->atan;
 	}
 	else if (ray->ang < PI)
 	{
 		ray->y = (int)(player->y_pos) + 1;
-		ray->x = (player->y_pos - ray->y) * atan + player->x_pos;
-		y_off = 1;
-		x_off = -y_off * atan;
+		ray->x = (player->y_pos - ray->y) * ray->atan + player->x_pos;
+		ray->y_off = 1;
+		ray->x_off = -ray->y_off * ray->atan;
 	}
 	//no rounding problems?
 	else if (ray->ang == 0 || ray->ang == PI)
 	{
 		ray->y = player->y_pos;
 		ray->x = player->x_pos;
-		dof = MAPHEIGHT;
+		ray->dof = MAPHEIGHT;
 	}
 	if (ray->y < 0)
 		ray->y = 0;
 	if (ray->x < 0)
 		ray->x = 0;
-	while (dof < MAPHEIGHT / 2)
+
+	while (ray->dof < MAPHEIGHT / 2)
 	{
 		map.y = (int)ray->y;
 		map.x = (int)ray->x;
 		if (map.y < MAPHEIGHT && map.x < MAPWIDTH && data->world_map[map.y][map.x] == 1)
-			dof = MAPHEIGHT;
+			ray->dof = MAPHEIGHT;
 		else
 		{
-			ray->y += y_off;
-			ray->x += x_off;
-			if (ray->y < 0)
-				ray->y = 0;
-			if (ray->x < 0)
-				ray->x = 0;
-			dof ++;
+			ray->y += ray->y_off;
+			ray->x += ray->x_off;
+			ray->dof ++;
 		}
+		if (ray->y < 0 || ray->x < 0 || ray->x >= MAPWIDTH || ray->y >= MAPHEIGHT)
+			ray->dof = MAPHEIGHT;
 	}
+	point.x = player->x_pos_mini;
+	point.y = player->y_pos_mini;
+	point.color = RED;
+	dest.x = ray->x * data->zoom;
+	dest.y = ray->y * data->zoom;
+	drw_line(point, dest, data, data->player->img);
+}
+
+void	calc_rays(t_data *data, t_ray *ray)
+{
+	//draw 1 ray
+	t_player	*player;
+
+	player = data->player;
+	ray->ang = player->angle;
+	ray->dof = 0;
+	//HORIZONTAL CHECK
+	horizontal_rays(data, ray);
+	vertical_rays(data, ray);
 	printf("Ray y = %f, ray x = %f\n", ray->y, ray->x);
 }
 
@@ -117,9 +196,8 @@ void	draw_screen(t_data *data)
 int	draw_player(t_data *data)
 {
 	t_player	*player;
-	t_point		point;
-	t_point		dest;
 	t_ray		ray;
+	t_point		point;
 
 	player = data->player;
 	int		pl_w = 6;
@@ -149,6 +227,7 @@ int	draw_player(t_data *data)
 	}
 	//draw direction red
 	y = pl_h / 2 - 2;
+	printf("%f\n", player->angle);
 	while (++y < direction_h + 1)
 	{
 		x = pl_w - 1;
@@ -165,12 +244,6 @@ int	draw_player(t_data *data)
 	}
 	//draw rays
 	calc_rays(data, &ray);
-	point.x = player->x_pos_mini;
-	point.y = player->y_pos_mini;
-	point.color = RED;
-	dest.x = ray.x * data->zoom;
-	dest.y = ray.y * data->zoom;
-	drw_line(point, dest, data, data->player->img);
 	return (0);
 }
 

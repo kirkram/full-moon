@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/05 17:17:00 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/06 12:29:21 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,14 @@
 # define MAPHEIGHT 24
 # define SCREENWIDTH 1280
 # define SCREENHEIGHT 760
-# define MINIZOOM 15
+# define MINIZOOM 25
 # define STARTPOS 17.5
 # define SPEED 0.08
 
 //maths
 # define PI 3.14159265359
+# define PI_N 3*PI/2
+# define PI_S PI/2
 
 //direction angle
 # define EAST 0
@@ -58,9 +60,16 @@ typedef struct s_map
 
 typedef struct s_ray
 {
-	double	x;
-	double	y;
-	double	ang;
+	double		x;
+	double		y;
+	double		x_v;
+	double		y_v;
+	double		ang;
+	double		atan;
+	double		ntan;
+	double		y_off;
+	double		x_off;
+	int16_t		dof;
 }				t_ray;
 
 typedef struct s_player
