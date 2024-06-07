@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/06 12:29:21 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/07 14:13:07 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define MINIZOOM 25
 # define STARTPOS 17.5
 # define SPEED 0.08
+# define DEGR 0.0174533
 
 //maths
 # define PI 3.14159265359
@@ -64,6 +65,7 @@ typedef struct s_ray
 	double		y;
 	double		x_v;
 	double		y_v;
+	double		distance;
 	double		ang;
 	double		atan;
 	double		ntan;

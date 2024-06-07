@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/06 13:29:38 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/07 14:27:39 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,23 @@
 double	rad(double angle)
 {
 	return (angle * PI / 180);
+}
+
+void	calc_distance(t_data *data, t_ray *ray)
+{
+	double	hor_dist;
+	double	vert_dist;
+	t_player *player;
+
+	player = data->player;
+	hor_dist = (sqrt((ray->x - player->x_pos)) * (ray->x - player->x_pos) + \
+	(ray->y - player->y_pos) * (ray->y - player->y_pos));
+	vert_dist = (sqrt((ray->x_v - player->x_pos)) * (ray->x_v - player->x_pos) + \
+	(ray->y_v - player->y_pos) * (ray->y_v - player->y_pos));
+	if (vert_dist < hor_dist)
+		ray->distance = vert_dist;
+	else
+		ray->distance = hor_dist;
 }
 
 void	apply_rotation(t_data *data, t_point *point, int x, int y)
@@ -33,8 +50,6 @@ void	vertical_rays(t_data *data, t_ray *ray)
 {
 	t_player	*player;
 	t_map		map;
-	t_point		point;
-	t_point		dest;
 
 	player = data->player;
 	ray->ntan = -tan(ray->ang);
@@ -64,7 +79,8 @@ void	vertical_rays(t_data *data, t_ray *ray)
 		ray->y_v = player->y_pos;
 		ray->dof = MAPHEIGHT;
 	}
-	while (ray->dof < MAPHEIGHT / 3)
+	printf("vertical x_off = %f y_off = %f\n", ray->x_off, ray->y_off);
+	while (ray->dof < MAPHEIGHT)
 	{
 		map.y = (int)ray->y_v;
 		map.x = (int)ray->x_v;
@@ -85,22 +101,13 @@ void	vertical_rays(t_data *data, t_ray *ray)
 			// 	ray->x_v -= ray->x_off;
 			ray->dof = MAPHEIGHT;
 		}
-
 	}
-	point.x = player->x_pos_mini + 1;
-	point.y = player->y_pos_mini;
-	point.color = GREEN;
-	dest.x = ray->x_v * data->zoom;
-	dest.y = ray->y_v * data->zoom;
-	drw_line(point, dest, data, data->player->img);
 }
 
 void	horizontal_rays(t_data *data, t_ray *ray)
 {
 	t_player	*player;
 	t_map		map;
-	t_point		point;
-	t_point		dest;
 
 	player = data->player;
 	ray->atan = -1/tan(ray->ang);
@@ -129,16 +136,16 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 		ray->x = player->x_pos;
 		ray->dof = MAPHEIGHT;
 	}
-	if (ray->y < 0)
-		ray->y = 0;
-	if (ray->x < 0)
-		ray->x = 0;
-
-	while (ray->dof < MAPHEIGHT / 2)
+	// if (ray->y < 0)
+	// 	ray->y = 0;
+	// if (ray->x < 0)
+	// 	ray->x = 0;
+	printf("horizontal x_off = %f y_off = %f\n", ray->x_off, ray->y_off);
+	while (ray->dof < MAPHEIGHT)
 	{
 		map.y = (int)ray->y;
 		map.x = (int)ray->x;
-		if (map.y < MAPHEIGHT && map.x < MAPWIDTH && data->world_map[map.y][map.x] == 1)
+		if (map.y < MAPHEIGHT && map.y >= 0 && map.x < MAPWIDTH && map.x >= 0 && data->world_map[map.y][map.x] == 1)
 			ray->dof = MAPHEIGHT;
 		else
 		{
@@ -146,17 +153,32 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 			ray->x += ray->x_off;
 			ray->dof ++;
 		}
-		if (ray->y < 0 || ray->x < 0 || ray->x >= MAPWIDTH || ray->y >= MAPHEIGHT)
+		if (ray->dof != MAPHEIGHT && (ray->y < 0 || ray->x < 0 || ray->x >= MAPWIDTH || ray->y >= MAPHEIGHT))
 			ray->dof = MAPHEIGHT;
 	}
+}
+
+void	draw_minirays(t_data *data, t_ray *ray)
+{
+	t_point		point;
+	t_point		dest;
+	t_player	*player;
+
+	player = data->player;
 	point.x = player->x_pos_mini;
 	point.y = player->y_pos_mini;
 	point.color = RED;
 	dest.x = ray->x * data->zoom;
 	dest.y = ray->y * data->zoom;
 	drw_line(point, dest, data, data->player->img);
+	point.x = player->x_pos_mini + 2;
+	dest.x = ray->x_v * data->zoom;
+	dest.y = ray->y_v * data->zoom;
+	point.color = GREEN;
+	drw_line(point, dest, data, data->player->img);
+	printf("Ray y = %f, ray x = %f\n", ray->y, ray->x);
+	printf("Ray y_v = %f, ray x_v = %f\n", ray->y_v, ray->x_v);
 }
-
 void	calc_rays(t_data *data, t_ray *ray)
 {
 	//draw 1 ray
@@ -168,14 +190,15 @@ void	calc_rays(t_data *data, t_ray *ray)
 	//HORIZONTAL CHECK
 	horizontal_rays(data, ray);
 	vertical_rays(data, ray);
-	printf("Ray y = %f, ray x = %f\n", ray->y, ray->x);
+	calc_distance(data, ray);
+	draw_minirays(data, ray);
 }
 
 void	draw_screen(t_data *data)
 {
-	t_player *player;
+	t_player	*player;
 	t_point		line;
-	int32_t	linelen;
+	int32_t		linelen;
 
 	player = data->player;
 	linelen = (MAPHEIGHT - player->y_pos + 1) * (data->height / 2 / MAPHEIGHT);
