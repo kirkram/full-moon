@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/10 15:19:52 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/10 16:59:04 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ typedef struct s_ray
 	double		y;
 	double		x_v;
 	double		y_v;
-	double		distance;
+	double		hor_dist;
+	double		vert_dist;
 	double		ang;
 	double		atan;
 	double		ntan;
