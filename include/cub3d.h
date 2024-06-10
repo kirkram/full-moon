@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/10 16:59:04 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/10 18:19:07 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 # define MAPHEIGHT 24
 # define SCREENWIDTH 1280
 # define SCREENHEIGHT 760
-# define MINIZOOM 25
+# define MINIZOOM 15
+# define PLAYERSIZE MINIZOOM / 2
 # define STARTPOS 17.5
 # define SPEED 0.08
 # define DEGR 0.0174533
@@ -124,6 +125,7 @@ void	apply_rotation(t_data *data, t_point *point, int x, int y);
 double	rad(double angle);
 void	draw_screen(t_data *data);
 void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img);
+void	calc_rays(t_data *data, t_ray *ray);
 
 //keyhook
 void	ft_hook_hub(void *param);

@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/10 15:34:57 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/10 18:19:37 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,6 @@ void	ft_hook_hub(void *param)
 		draw_screen(data);
 		color_whole_image(data->player->img, FULL_TRANSPARENT, data->player->imgwidth, data->player->imgheight);
 		draw_player(data);
+		calc_rays(data, data->ray);
 	}
 }

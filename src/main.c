@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/05 17:21:26 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/10 18:17:39 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,10 @@ int	main(int ac, char **av)
 	(void)av;
 	t_data		data;
 	t_player	player;
+	t_ray		ray;
 
 	data.player = &player;
+	data.ray = &ray;
 	copy_example_map(&data);
 	init_and_draw(&data);
 

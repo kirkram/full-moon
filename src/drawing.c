@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/10 17:39:46 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/10 18:16:31 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,42 @@ void	apply_rotation(t_data *data, t_point *point, int x, int y)
 	temp.y = x * sin(player->angle) + y * cos(player->angle);
 	point->x = temp.x;
 	point->y = temp.y;
+}
+
+void	draw_minirays(t_data *data, t_ray *ray)
+{
+	t_point		point;
+	t_point		dest;
+	t_player	*player;
+
+	player = data->player;
+	point.y = player->y_pos_mini;
+	point.x = player->x_pos_mini;
+	//can add rotation so that the rays will start from the player's centre on the minimap
+	if (ray->hor_dist < ray->vert_dist)
+	{
+		dest.x = ray->x * data->zoom;
+		dest.y = ray->y * data->zoom;
+		point.color = RED;
+	}
+	else
+	{
+		dest.x = ray->x_v * data->zoom;
+		dest.y = ray->y_v * data->zoom;
+		point.color = GREEN;
+	}
+	drw_line(point, dest, data, data->player->img);
+}
+
+void	calc_distance(t_data *data, t_ray *ray)
+{
+	t_player *player;
+
+	player = data->player;
+	ray->hor_dist = sqrt((ray->x - player->x_pos) * (ray->x - player->x_pos) + \
+	(ray->y - player->y_pos) * (ray->y - player->y_pos));
+	ray->vert_dist = sqrt((ray->x_v - player->x_pos) * (ray->x_v - player->x_pos) + \
+	(ray->y_v - player->y_pos) * (ray->y_v - player->y_pos));
 }
 
 void	vertical_rays(t_data *data, t_ray *ray)
@@ -124,45 +160,24 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 	}
 }
 
-void	calc_distance(t_data *data, t_ray *ray)
+void	draw_screen(t_data *data)
 {
-	t_player *player;
-
-	player = data->player;
-	ray->hor_dist = sqrt((ray->x - player->x_pos) * (ray->x - player->x_pos) + \
-	(ray->y - player->y_pos) * (ray->y - player->y_pos));
-	ray->vert_dist = sqrt((ray->x_v - player->x_pos) * (ray->x_v - player->x_pos) + \
-	(ray->y_v - player->y_pos) * (ray->y_v - player->y_pos));
-}
-
-void	draw_minirays(t_data *data, t_ray *ray)
-{
-	t_point		point;
-	t_point		dest;
 	t_player	*player;
+	t_point		line;
+	int32_t		linelen;
 
 	player = data->player;
-	point.y = player->y_pos_mini;
-	point.x = player->x_pos_mini;
-
-	if (ray->hor_dist < ray->vert_dist)
+	linelen = (MAPHEIGHT - player->y_pos + 1) * (data->height / 2 / MAPHEIGHT);
+	line.y = data->height / 2 - linelen / 2;
+	line.color = RED;
+	while (++line.y < data->height / 2 + linelen / 2)
 	{
-		dest.x = ray->x * data->zoom;
-		dest.y = ray->y * data->zoom;
-		point.color = RED;
+		line.x = data->width / 2 - 3; //10 pixels left right
+		while (++line.x < data->width / 2 + 3)
+		{
+			put_pixel(data, &line, data->screen);
+		}
 	}
-	else
-	{
-		dest.x = ray->x_v * data->zoom;
-		dest.y = ray->y_v * data->zoom;
-		point.color = GREEN;
-	}
-	// if (dest.x > MAPWIDTH * data->zoom)
-	// 	dest.x = MAPWIDTH * data->zoom;
-	// if (dest.y > MAPHEIGHT * data->zoom)
-	// 	dest.y = MAPHEIGHT * data->zoom;
-	//printf("dest.x = %d, dest.y = %d\n", dest.x, dest.y);
-	drw_line(point, dest, data, data->player->img);
 }
 
 void	calc_rays(t_data *data, t_ray *ray)
@@ -178,13 +193,11 @@ void	calc_rays(t_data *data, t_ray *ray)
 	int	i = -1;
 	while (++i < FOV)
 	{
-		//printf("angle = %f, i = %d\n", ray->ang * 180 / PI, i);
-		//if (i == 30)
-		//	printf("here 30\n");
 		horizontal_rays(data, ray);
 		vertical_rays(data, ray);
-		calc_distance(data, ray); //for now doesnt choose ray just calcs
+		calc_distance(data, ray);
 		draw_minirays(data, ray);
+		draw_screen(data);
 		ray->ang += DEGR;
 		if (ray->ang < 0)
 			ray->ang += 2 * PI;
@@ -193,48 +206,19 @@ void	calc_rays(t_data *data, t_ray *ray)
 	}
 }
 
-void	draw_screen(t_data *data)
-{
-	t_player	*player;
-	t_point		line;
-	int32_t		linelen;
-
-	player = data->player;
-	linelen = (MAPHEIGHT - player->y_pos + 1) * (data->height / 2 / MAPHEIGHT);
-	line.y = data->height / 2 - linelen / 2;
-	line.color = RED;
-	// printf("%d %d\n", line.y, linelen);
-	while (++line.y < data->height / 2 + linelen / 2)
-	{
-		line.x = data->width / 2 - 3; //10 pixels left right
-		while (++line.x < data->width / 2 + 3)
-		{
-			put_pixel(data, &line, data->screen);
-		}
-	}
-	//if we have x-pos - 0 -> draw a line using the length
-}
-
 int	draw_player(t_data *data)
 {
 	t_player	*player;
-	t_ray		ray;
 	t_point		point;
 
 	player = data->player;
-	int		pl_w = 6;
-	int		pl_h = 6;
-	int		direction_w = pl_w + 10;
-	int		direction_h = 3;
 	int		x;
 	int		y;
-
-	//draw player yellow
 	y = -1;
-	while (++y < pl_h)
+	while (++y < PLAYERSIZE)
 	{
 		x = -1;
-		while (++x < pl_w)
+		while (++x < PLAYERSIZE)
 		{
 			point.x = x;
 			point.y = y;
@@ -247,25 +231,6 @@ int	draw_player(t_data *data)
 				player->y_pos_mini + point.y, YELLOW);
 		}
 	}
-	//draw direction red
-	y = pl_h / 2 - 2;
-	while (++y < direction_h + 1)
-	{
-		x = pl_w - 1;
-		while (++x < direction_w)
-		{
-			point.x = x;
-			point.y = y;
-			apply_rotation(data, &point, x, y);
-			if (player->x_pos_mini + point.x >= 0 && player->y_pos_mini + point.y >= 0 && \
-			player->x_pos_mini + point.x < player->imgwidth && player->y_pos_mini + point.y < player->imgheight)
-				mlx_put_pixel(player->img, player->x_pos_mini + point.x, \
-				player->y_pos_mini + point.y, RED);
-		}
-	}
-	//draw rays
-	data->ray = &ray;
-	calc_rays(data, &ray);
 	return (0);
 }
 
