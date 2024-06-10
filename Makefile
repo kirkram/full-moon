@@ -15,7 +15,7 @@ RM = rm -f
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(LIBMLX42) $(OBJCTS) 
+$(NAME): $(LIBFT) $(LIBMLX42) $(OBJCTS)
 	cc $(CFLAGS) $(HEADERS) $(OBJCTS) $(LIBFT) $(LIBS) -o $(NAME)
 
 $(LIBMLX42): .libmlx42
@@ -34,11 +34,11 @@ $(LIBFT):
 
 debug: .debug
 
-.debug: $(LIBMLX42) $(OBJCTS)
+.debug: $(LIBFT) $(LIBMLX42) $(OBJCTS)
 	cc $(DEBUGFLAGS) $(HEADERS) $(OBJCTS) $(LIBFT) $(LIBS)  -o debug.out
 	touch .debug
 
-%.o: %.c
+%.o: %.c ./include/cub3d.h
 	cc $(CFLAGS) -c $< -o $@ $(HEADERS)
 
 both: $(NAME) bonus
