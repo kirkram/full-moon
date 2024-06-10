@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/10 14:01:01 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/10 16:48:12 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,49 +54,31 @@ void	vertical_rays(t_data *data, t_ray *ray)
 	player = data->player;
 	ray->ntan = -tan(ray->ang);
 	ray->dof = 0;
-	//looking left
-	if ((float)ray->ang < (float)PI_N && ray->ang > PI_S)
+	if ((float)ray->ang == (float)PI_N || (float)ray->ang == (float)PI_S)
 	{
-		printf("vert in < than PI_N\n");
-		printf("ray->ang is %f and PI_N is %f\n", ray->ang, PI_N);
+		ray->x_v = player->x_pos;
+		ray->y_v = player->y_pos;
+		ray->dof = MAPHEIGHT;
+	}
+	else if ((float)ray->ang < (float)PI_N && (float)ray->ang > (float)PI_S)
+	{
 		ray->x_v = (int)player->x_pos;
-		//длина противолежащего катета *
 		ray->y_v = (player->x_pos - ray->x_v) * ray->ntan + player->y_pos;
-		//printf("ray y_v is %f\n", ray->y_v);
 		ray->x_off = -1;
 		ray->y_off = -ray->x_off * ray->ntan;
-		//printf("ray  y_off is %f\n", ray->y_off);
 	}
-	//looking right
 	else if (ray->ang > PI_N || ray->ang < PI_S)
 	{
-		printf("vert in > than PI_N\n");
 		ray->x_v = (int)player->x_pos + 1;
 		ray->y_v = (player->x_pos - ray->x_v) * ray->ntan + player->y_pos;
 		ray->x_off = 1;
 		ray->y_off = -ray->x_off * ray->ntan;
 	}
-	else if (ray->ang == PI_N || ray->ang == PI_S)
-	{
-		printf("vert in PI_N\n");
-		ray->x_v = player->x_pos;
-		ray->y_v = player->y_pos;
-		ray->dof = MAPHEIGHT;
-	}
-	else
-	{
-		ray->x_v = player->x_pos;
-		ray->y_v = player->y_pos;
-		ray->dof = MAPHEIGHT;
-		printf("vert other\n");
-	}
-	printf("after vert\n");
-	//printf("vertical x_off = %f y_off = %f\n", ray->x_off, ray->y_off);
+
 	while (ray->dof < MAPHEIGHT)
 	{
 		map.y = (int)ray->y_v;
 		map.x = (int)ray->x_v;
-		//printf("map.y = %d, map.x = %d\n", map.y, map.x);
 		if (map.y < MAPHEIGHT && map.y >= 0 && map.x < MAPWIDTH && map.x >= 0 && data->world_map[map.y][map.x] == 1)
 			ray->dof = MAPHEIGHT;
 		else
@@ -109,10 +91,6 @@ void	vertical_rays(t_data *data, t_ray *ray)
 		}
 		if (ray->dof != MAPHEIGHT && (ray->y_v < 0 || ray->x_v < 0 || ray->x_v >= MAPWIDTH || ray->y_v >= MAPHEIGHT))
 		{
-			// if (ray->y_v < 0 || ray->y_v >= MAPHEIGHT)
-			// 	ray->y_v -= ray->y_off;
-			// if (ray->x_v < 0 || ray->x_v >= MAPWIDTH)
-			// 	ray->x_v -= ray->x_off;
 			ray->dof = MAPHEIGHT;
 		}
 	}
@@ -126,12 +104,15 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 	player = data->player;
 	ray->atan = -1/tan(ray->ang);
 	ray->dof = 0;
-	if (ray->ang > PI) //we are facing to the beginning of Y, north, up
+	if ((float)ray->ang == (float)0 || (float)ray->ang == (float)PI)
 	{
-		//in one of the tutorias its proposed to set the value of ray->y could be rounded to the neartest 64th value
-		// there a 8x8 grid each has 64 units of size
-		//for me it would be rounding to the nearest int value ?
-		//casting to int to get rid of the float remainder
+		printf("0 or PI!!\n\n\n");
+		ray->y = player->y_pos;
+		ray->x = player->x_pos;
+		ray->dof = MAPHEIGHT;
+	}
+	else if (ray->ang > PI)
+	{
 		ray->y = (int)(player->y_pos);
 		ray->x = (player->y_pos - ray->y) * ray->atan + player->x_pos;
 		ray->y_off = -1;
@@ -144,18 +125,6 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 		ray->y_off = 1;
 		ray->x_off = -ray->y_off * ray->atan;
 	}
-	//no rounding problems?
-	else if (ray->ang == 0 || ray->ang == PI)
-	{
-		ray->y = player->y_pos;
-		ray->x = player->x_pos;
-		ray->dof = MAPHEIGHT;
-	}
-	// if (ray->y < 0)
-	// 	ray->y = 0;
-	// if (ray->x < 0)
-	// 	ray->x = 0;
-	//printf("horizontal x_off = %f y_off = %f\n", ray->x_off, ray->y_off);
 	while (ray->dof < MAPHEIGHT)
 	{
 		map.y = (int)ray->y;
@@ -175,7 +144,7 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 	}
 }
 
-void	draw_minirays(t_data *data, t_ray *ray, int i)
+void	draw_minirays(t_data *data, t_ray *ray)
 {
 	t_point		point;
 	t_point		dest;
@@ -185,24 +154,15 @@ void	draw_minirays(t_data *data, t_ray *ray, int i)
 	point.x = player->x_pos_mini;
 	point.y = player->y_pos_mini;
 	point.color = RED;
-	if (i == 29 || i == 30)
-	{
-		printf("here30\n");
-	}
 	dest.x = ray->x * data->zoom;
 	dest.y = ray->y * data->zoom;
 	drw_line(point, dest, data, data->player->img);
 	point.x = player->x_pos_mini + 2;
 	point.y = player->y_pos_mini;
-	if (i == 30)
-	{
-		printf("here30\n");
-	}
 	dest.x = ray->x_v * data->zoom;
 	dest.y = ray->y_v * data->zoom;
 	point.color = GREEN;
 	drw_line(point, dest, data, data->player->img);
-
 	//printf("Ray y = %f, ray x = %f\n", ray->y, ray->x);
 	//printf("Ray y_v = %f, ray x_v = %f\n", ray->y_v, ray->x_v);
 }
@@ -214,32 +174,23 @@ void	calc_rays(t_data *data, t_ray *ray)
 	ray->ang = player->angle - DEGR * 30;
 	if (ray->ang < 0)
 		ray->ang += 2 * PI;
-	else if (ray->ang > 2 * PI)
+	else if (ray->ang >= 2 * PI)
 		ray->ang -= 2 * PI;
 	int	i = -1;
 	while (++i < FOV)
 	{
-		printf("ray angle is %f\n", ray->ang * 180 / PI);
-		horizontal_rays(data, ray);
+		printf("angle = %f, i = %d\n", ray->ang * 180 / PI, i);
 		if (i == 30)
-		{
-			printf("here after horizontal rays 30 \n");
-		}
+			printf("here 30\n");
+		horizontal_rays(data, ray);
 		vertical_rays(data, ray);
 		calc_distance(data, ray); //for now doesnt choose ray just calcs
-		draw_minirays(data, ray, i);
+		draw_minirays(data, ray);
 		ray->ang += DEGR;
 		if (ray->ang < 0)
-		{
 			ray->ang += 2 * PI;
-			printf("ray->ang got less than 0\n");
-		}
-		else if (ray->ang > 2 * PI)
-		{
-			ray->ang -= 2 * PI;
-			printf("ray->ang got more than 2*PI\n");
-		}
-
+		else if ((float)ray->ang >= (float)2 * PI)
+			ray->ang = (float)ray->ang - (float)(2 * PI);
 	}
 }
 
@@ -299,7 +250,6 @@ int	draw_player(t_data *data)
 	}
 	//draw direction red
 	y = pl_h / 2 - 2;
-	printf("%f\n", player->angle);
 	while (++y < direction_h + 1)
 	{
 		x = pl_w - 1;
