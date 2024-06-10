@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/07 14:13:07 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/10 13:56:58 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,12 @@
 # define STARTPOS 17.5
 # define SPEED 0.08
 # define DEGR 0.0174533
+# define FOV 60
 
 //maths
 # define PI 3.14159265359
-# define PI_N 3*PI/2
-# define PI_S PI/2
+# define PI_N 3 * PI / 2
+# define PI_S PI / 2
 
 //direction angle
 # define EAST 0
