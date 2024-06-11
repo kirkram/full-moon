@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/10 18:16:31 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/11 16:08:38 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,19 +160,22 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 	}
 }
 
-void	draw_screen(t_data *data)
+void	draw_screen(t_data *data, t_ray *ray, int i)
 {
 	t_player	*player;
 	t_point		line;
-	int32_t		linelen;
+	double		dist;
+	double		line_h;
 
 	player = data->player;
-	linelen = (MAPHEIGHT - player->y_pos + 1) * (data->height / 2 / MAPHEIGHT);
-	line.y = data->height / 2 - linelen / 2;
+	dist = ray->hor_dist;
+	if (ray->hor_dist > ray->vert_dist)
+		dist = ray->vert_dist;
+	line.y = data->height / 3;
 	line.color = RED;
-	while (++line.y < data->height / 2 + linelen / 2)
+	while (++line.y < SCREENHEIGHT / dist)
 	{
-		line.x = data->width / 2 - 3; //10 pixels left right
+		line.x = SCREENWIDTH / ;
 		while (++line.x < data->width / 2 + 3)
 		{
 			put_pixel(data, &line, data->screen);
@@ -180,7 +183,7 @@ void	draw_screen(t_data *data)
 	}
 }
 
-void	calc_rays(t_data *data, t_ray *ray)
+void	draw_rays(t_data *data, t_ray *ray)
 {
 	t_player	*player;
 
@@ -197,7 +200,7 @@ void	calc_rays(t_data *data, t_ray *ray)
 		vertical_rays(data, ray);
 		calc_distance(data, ray);
 		draw_minirays(data, ray);
-		draw_screen(data);
+		draw_screen(data, ray, i);
 		ray->ang += DEGR;
 		if (ray->ang < 0)
 			ray->ang += 2 * PI;
