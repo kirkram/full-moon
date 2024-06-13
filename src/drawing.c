@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/11 16:08:38 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/13 12:27:11 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,23 +160,37 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 	}
 }
 
-void	draw_screen(t_data *data, t_ray *ray, int i)
+void	draw_column(t_data *data, t_ray *ray, int i)
 {
 	t_player	*player;
 	t_point		line;
 	double		dist;
-	double		line_h;
+	//double		line_h;
 
 	player = data->player;
 	dist = ray->hor_dist;
 	if (ray->hor_dist > ray->vert_dist)
 		dist = ray->vert_dist;
-	line.y = data->height / 3;
-	line.color = RED;
-	while (++line.y < SCREENHEIGHT / dist)
+	line.color = YEL_WHITE;
+
+	//draw bottom
+	line.y = data->height / 2 - 1;
+	//rounding
+	while (++line.y < (data->height / 2) + SCREENHEIGHT / dist / 2)
 	{
-		line.x = SCREENWIDTH / ;
-		while (++line.x < data->width / 2 + 3)
+		line.x = SCREENWIDTH / FOV * i;
+		//last one will be 20 pixels wider? cause 1280/60=21.33333
+		while (++line.x < SCREENWIDTH / FOV * (i + 1))
+		{
+			put_pixel(data, &line, data->screen);
+		}
+	}
+	//draw top
+	line.y = data->height / 2;
+	while (--line.y > (data->height / 2) - SCREENHEIGHT / dist / 2)
+	{
+		line.x = SCREENWIDTH / FOV * i;
+		while (++line.x < SCREENWIDTH / FOV * (i + 1))
 		{
 			put_pixel(data, &line, data->screen);
 		}
@@ -200,7 +214,7 @@ void	draw_rays(t_data *data, t_ray *ray)
 		vertical_rays(data, ray);
 		calc_distance(data, ray);
 		draw_minirays(data, ray);
-		draw_screen(data, ray, i);
+		draw_column(data, ray, i);
 		ray->ang += DEGR;
 		if (ray->ang < 0)
 			ray->ang += 2 * PI;
