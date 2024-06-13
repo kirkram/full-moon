@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/13 13:36:40 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/13 15:26:06 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,18 @@
 # define MAPWIDTH 24
 # define MAPHEIGHT 24
 # define SCREENWIDTH 1280
-# define SCREENHEIGHT 760
-# define MINIZOOM 20
+# define SCREENHEIGHT 720
+# define MINIZOOM 10
 # define PLAYERSIZE MINIZOOM / 2
-# define STARTPOS 17.5
+# define STARTPOS 1.2
+
 # define SPEED 0.08
 # define DEGR 0.0174533
 # define FOV 60
 
 //maths
 # define PI 3.14159265359
-# define PI_N 3 * PI / 2
+# define PI_N 4.71238898039
 # define PI_S PI / 2
 
 //direction angle
@@ -40,6 +41,9 @@
 # define SOUTH 90
 # define WEST 180
 # define NORTH 270
+
+//TEMP TEMP TEMP TEMP TEMP
+# define STARTORIENT EAST
 
 //colors
 # define BLACK 0x000000EE

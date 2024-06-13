@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/13 13:36:16 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/13 15:21:12 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	draw_minirays(t_data *data, t_ray *ray)
 	point.y = player->y_pos_mini;
 	point.x = player->x_pos_mini;
 	//can add rotation so that the rays will start from the player's centre on the minimap
-	if (ray->hor_dist < ray->vert_dist)
+	if (ray->hor_dist < ray->vert_dist && ray->hor_dist != 0)
 	{
 		dest.x = ray->x * data->zoom;
 		dest.y = ray->y * data->zoom;
@@ -75,6 +75,7 @@ void	vertical_rays(t_data *data, t_ray *ray)
 	ray->dof = 0;
 	if ((float)ray->ang == (float)PI_N || (float)ray->ang == (float)PI_S)
 	{
+		printf("North or South\n\n\n");
 		ray->x_v = player->x_pos;
 		ray->y_v = player->y_pos;
 		ray->dof = MAPHEIGHT;
@@ -122,7 +123,7 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 	ray->dof = 0;
 	if ((float)ray->ang == (float)0 || (float)ray->ang == (float)PI)
 	{
-		printf("0 or PI!!\n\n\n");
+		printf("0 or PI\n\n\n");
 		ray->y = player->y_pos;
 		ray->x = player->x_pos;
 		ray->dof = MAPHEIGHT;
@@ -169,7 +170,7 @@ void	draw_column(t_data *data, t_ray *ray, int i)
 
 	player = data->player;
 	dist = ray->hor_dist;
-	if (ray->hor_dist > ray->vert_dist)
+	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist && ray->vert_dist != 0))
 		dist = ray->vert_dist;
 	line.color = YEL_WHITE;
 	line_w = SCREENWIDTH / FOV;
@@ -177,18 +178,18 @@ void	draw_column(t_data *data, t_ray *ray, int i)
 	//draw bottom
 	line.y = data->height / 2 - 1;
 	//rounding
-	while (++line.y < (data->height / 2) + SCREENHEIGHT / dist / 2)
+	while (++line.y < (data->height / 2) + SCREENHEIGHT / dist / 2 && line.y < SCREENHEIGHT)
 	{
 		line.x = line_w * i;
-		//last one will be 20 pixels wider? cause 1280/60=21.33333
-		while (++line.x < line_w * (i + 1))
+		while (++line.x < line_w * (i + 1) && line.x < SCREENWIDTH)
 		{
+			//printf("here\n");
 			put_pixel(data, &line, data->screen);
 		}
 	}
 	//draw top
 	line.y = data->height / 2;
-	while (--line.y > (data->height / 2) - SCREENHEIGHT / dist / 2)
+	while (--line.y > (data->height / 2) - SCREENHEIGHT / dist / 2 && line.x < SCREENWIDTH && line.y >= 0)
 	{
 		line.x = SCREENWIDTH / FOV * i;
 		while (++line.x < SCREENWIDTH / FOV * (i + 1))
@@ -204,7 +205,8 @@ void	draw_rays(t_data *data, t_ray *ray)
 	int			i;
 
 	player = data->player;
-	ray->ang = player->angle - DEGR * FOV / 2;
+	ray->ang = player->angle - DEGR * FOV / 2; //dont touch when multiplaying rays
+	printf("Ray->ang float == %f\n\n\n", player->angle * 180 / PI);
 	if (ray->ang < 0)
 		ray->ang += 2 * PI;
 	else if (ray->ang >= 2 * PI)
@@ -212,20 +214,20 @@ void	draw_rays(t_data *data, t_ray *ray)
 	i = -1;
 	while (++i < FOV)
 	{
-		int j = -1;
-		while (++j < 2)
-		{
+		// int j = -1;
+		// while (++j < 2)
+		// {
 			horizontal_rays(data, ray);
 			vertical_rays(data, ray);
 			calc_distance(data, ray);
 			draw_minirays(data, ray);
 			draw_column(data, ray, i);
-			ray->ang += DEGR / 2;
+			ray->ang += DEGR;
 			if (ray->ang < 0)
 				ray->ang += 2 * PI;
 			else if ((float)ray->ang >= (float)2 * PI)
 				ray->ang = (float)ray->ang - (float)(2 * PI);
-		}
+		// }
 	}
 }
 
