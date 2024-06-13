@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/13 15:26:06 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/13 16:05:41 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,14 @@
 # define MAPHEIGHT 24
 # define SCREENWIDTH 1280
 # define SCREENHEIGHT 720
-# define MINIZOOM 10
+# define MINIZOOM SCREENWIDTH / 100
 # define PLAYERSIZE MINIZOOM / 2
 # define STARTPOS 1.2
+# define RESOLUTION 5
 
 # define SPEED 0.08
 # define DEGR 0.0174533
+# define DEGR_RESO 0.0174533 / RESOLUTION
 # define FOV 60
 
 //maths
@@ -46,16 +48,17 @@
 # define STARTORIENT EAST
 
 //colors
-# define BLACK 0x000000EE
-# define MAGENTA 0xFF00FFEE
-# define PURPLE 0xB800FFEE
+# define BLACK 0x000000FF
+# define MAGENTA 0xFF00FFFF
+# define PURPLE 0xB800FFFF
 # define WHITE 0xFFFFFFEE
-# define WHITE_ISH 0xFFFFFFAA
-# define YELLOW 0xFFFF00EE
-# define YEL_WHITE 0xFFFFB6EE
-# define RED 0xFF0000EE
-# define BLUE 0x0000FFEE
-# define GREEN 0x00FF00EE
+# define PINK 0xFFCCCCFF
+# define YELLOW 0xFFFF00FF
+# define YEL_WHITE 0xFFFFB6FF
+# define YEL_WHITE_SHADE 0xFFFFCCFF
+# define RED 0xFF0000FF
+# define BLUE 0x0000FFFF
+# define GREEN 0x00FF00FF
 # define BACKG_COLOR 0x000011FF
 # define FULL_TRANSPARENT 0x0000000
 

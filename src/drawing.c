@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/13 15:21:12 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/13 16:16:55 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,19 @@ void	draw_minirays(t_data *data, t_ray *ray)
 		point.color = GREEN;
 	}
 	drw_line(point, dest, data, data->player->img);
+}
+
+void fix_fisheye(t_data *data, t_ray *ray)
+{
+	float	curr_angle;
+
+	curr_angle = data->player->angle - ray->ang;
+	if (curr_angle < 0)
+			curr_angle += 2 * PI;
+	else if (curr_angle >= 2 * PI)
+		curr_angle = curr_angle - (2 * PI);
+	ray->hor_dist *= cos(curr_angle);
+	ray->vert_dist *= cos(curr_angle);
 }
 
 void	calc_distance(t_data *data, t_ray *ray)
@@ -170,11 +183,13 @@ void	draw_column(t_data *data, t_ray *ray, int i)
 
 	player = data->player;
 	dist = ray->hor_dist;
-	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist && ray->vert_dist != 0))
-		dist = ray->vert_dist;
 	line.color = YEL_WHITE;
-	line_w = SCREENWIDTH / FOV;
-
+	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist && ray->vert_dist != 0))
+	{
+		dist = ray->vert_dist;
+		line.color = YEL_WHITE_SHADE;
+	}
+	line_w = SCREENWIDTH / FOV / RESOLUTION;
 	//draw bottom
 	line.y = data->height / 2 - 1;
 	//rounding
@@ -191,8 +206,8 @@ void	draw_column(t_data *data, t_ray *ray, int i)
 	line.y = data->height / 2;
 	while (--line.y > (data->height / 2) - SCREENHEIGHT / dist / 2 && line.x < SCREENWIDTH && line.y >= 0)
 	{
-		line.x = SCREENWIDTH / FOV * i;
-		while (++line.x < SCREENWIDTH / FOV * (i + 1))
+		line.x = line_w * i;
+		while (++line.x < line_w * (i + 1))
 		{
 			put_pixel(data, &line, data->screen);
 		}
@@ -212,22 +227,19 @@ void	draw_rays(t_data *data, t_ray *ray)
 	else if (ray->ang >= 2 * PI)
 		ray->ang -= 2 * PI;
 	i = -1;
-	while (++i < FOV)
+	while (++i < FOV * RESOLUTION)
 	{
-		// int j = -1;
-		// while (++j < 2)
-		// {
-			horizontal_rays(data, ray);
-			vertical_rays(data, ray);
-			calc_distance(data, ray);
-			draw_minirays(data, ray);
-			draw_column(data, ray, i);
-			ray->ang += DEGR;
-			if (ray->ang < 0)
-				ray->ang += 2 * PI;
-			else if ((float)ray->ang >= (float)2 * PI)
-				ray->ang = (float)ray->ang - (float)(2 * PI);
-		// }
+		horizontal_rays(data, ray);
+		vertical_rays(data, ray);
+		calc_distance(data, ray);
+		fix_fisheye(data, ray);
+		draw_minirays(data, ray);
+		draw_column(data, ray, i);
+		ray->ang += DEGR_RESO;
+		if (ray->ang < 0)
+			ray->ang += 2 * PI;
+		else if ((float)ray->ang >= (float)2 * PI)
+			ray->ang = (float)ray->ang - (float)(2 * PI);
 	}
 }
 
