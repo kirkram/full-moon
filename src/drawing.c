@@ -88,7 +88,7 @@ void	vertical_rays(t_data *data, t_ray *ray)
 	ray->dof = 0;
 	if ((float)ray->ang == (float)PI_N || (float)ray->ang == (float)PI_S)
 	{
-		printf("North or South\n\n\n");
+		//printf("North or South\n\n\n");
 		ray->x_v = player->x_pos;
 		ray->y_v = player->y_pos;
 		ray->dof = MAPHEIGHT;
@@ -136,7 +136,7 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 	ray->dof = 0;
 	if ((float)ray->ang == (float)0 || (float)ray->ang == (float)PI)
 	{
-		printf("0 or PI\n\n\n");
+		//printf("0 or PI\n\n\n");
 		ray->y = player->y_pos;
 		ray->x = player->x_pos;
 		ray->dof = MAPHEIGHT;
@@ -176,12 +176,10 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 
 void	draw_column(t_data *data, t_ray *ray, int i)
 {
-	t_player	*player;
 	t_point		line;
 	double		dist;
 	double		line_w;
 
-	player = data->player;
 	dist = ray->hor_dist;
 	line.color = YEL_WHITE;
 	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist && ray->vert_dist != 0))
@@ -221,7 +219,7 @@ void	draw_rays(t_data *data, t_ray *ray)
 
 	player = data->player;
 	ray->ang = player->angle - DEGR * FOV / 2; //dont touch when multiplaying rays
-	printf("Ray->ang float == %f\n\n\n", player->angle * 180 / PI);
+	//printf("Ray->ang float == %f\n\n\n", player->angle * 180 / PI);
 	if (ray->ang < 0)
 		ray->ang += 2 * PI;
 	else if (ray->ang >= 2 * PI)
