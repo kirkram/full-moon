@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:13:41 by klukiano          #+#    #+#             */
 /*   Updated: 2024/06/13 15:59:59 by klukiano         ###   ########.fr       */
@@ -80,11 +80,7 @@ void	draw_minimap(t_data *data)
 {
 	int		x;
 	int		y;
-	int 	width;
-	int		height;
 
-	width = MAPWIDTH;
-	height = MAPHEIGHT;
 	y = 0;
 	while (y < MAPHEIGHT)
 	{
