@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/13 12:27:11 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/13 13:36:16 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,22 +165,23 @@ void	draw_column(t_data *data, t_ray *ray, int i)
 	t_player	*player;
 	t_point		line;
 	double		dist;
-	//double		line_h;
+	double		line_w;
 
 	player = data->player;
 	dist = ray->hor_dist;
 	if (ray->hor_dist > ray->vert_dist)
 		dist = ray->vert_dist;
 	line.color = YEL_WHITE;
+	line_w = SCREENWIDTH / FOV;
 
 	//draw bottom
 	line.y = data->height / 2 - 1;
 	//rounding
 	while (++line.y < (data->height / 2) + SCREENHEIGHT / dist / 2)
 	{
-		line.x = SCREENWIDTH / FOV * i;
+		line.x = line_w * i;
 		//last one will be 20 pixels wider? cause 1280/60=21.33333
-		while (++line.x < SCREENWIDTH / FOV * (i + 1))
+		while (++line.x < line_w * (i + 1))
 		{
 			put_pixel(data, &line, data->screen);
 		}
@@ -200,26 +201,31 @@ void	draw_column(t_data *data, t_ray *ray, int i)
 void	draw_rays(t_data *data, t_ray *ray)
 {
 	t_player	*player;
+	int			i;
 
 	player = data->player;
-	ray->ang = player->angle - DEGR * 30;
+	ray->ang = player->angle - DEGR * FOV / 2;
 	if (ray->ang < 0)
 		ray->ang += 2 * PI;
 	else if (ray->ang >= 2 * PI)
 		ray->ang -= 2 * PI;
-	int	i = -1;
+	i = -1;
 	while (++i < FOV)
 	{
-		horizontal_rays(data, ray);
-		vertical_rays(data, ray);
-		calc_distance(data, ray);
-		draw_minirays(data, ray);
-		draw_column(data, ray, i);
-		ray->ang += DEGR;
-		if (ray->ang < 0)
-			ray->ang += 2 * PI;
-		else if ((float)ray->ang >= (float)2 * PI)
-			ray->ang = (float)ray->ang - (float)(2 * PI);
+		int j = -1;
+		while (++j < 2)
+		{
+			horizontal_rays(data, ray);
+			vertical_rays(data, ray);
+			calc_distance(data, ray);
+			draw_minirays(data, ray);
+			draw_column(data, ray, i);
+			ray->ang += DEGR / 2;
+			if (ray->ang < 0)
+				ray->ang += 2 * PI;
+			else if ((float)ray->ang >= (float)2 * PI)
+				ray->ang = (float)ray->ang - (float)(2 * PI);
+		}
 	}
 }
 

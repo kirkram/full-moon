@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/13 12:23:12 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/13 13:36:40 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define MAPHEIGHT 24
 # define SCREENWIDTH 1280
 # define SCREENHEIGHT 760
-# define MINIZOOM 15
+# define MINIZOOM 20
 # define PLAYERSIZE MINIZOOM / 2
 # define STARTPOS 17.5
 # define SPEED 0.08
