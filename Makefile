@@ -7,16 +7,23 @@ CFLAGS = -Wall -Wextra -Werror -Wunreachable-code
 HEADERS = -I ./include -I $(LIBMLX_PATH)/include/ -I /usr/local/Cellar/glfw/include
 DEBUGFLAGS = -g -fsanitize=address,undefined,integer
 LIBS = $(LIBMLX42) -L /Users/marekburakowski/.brew/opt/glfw -lglfw -framework Cocoa -framework OpenGL -framework IOKit
-SRCS = ./src/main.c ./src/helper.c ./src/drawing.c ./src/init.c ./src/keyhook.c ./src/minimap.c
-OBJCTS = $(SRCS:.c=.o)
-BONUS_OBJCTS = $(BONUS_SRCS:.c=.o)
-GNL_OBJCTS = $(GNL_SRCS:.c=.o)
+SRC_DIR = ./srcs
+SRCS = main.c helper.c drawing.c init.c keyhook.c minimap.c
+INC_DIRS = ./include $(LIBMLX_PATH)/include/ $(LIBFT_PATH)/libft $(LIBFT_PATH)/ft_printf/incs /usr/local/Cellar/glfw/include
+INCS = $(foreach dir, $(INC_DIRS), -I $(dir))
+OBJ_DIR = ./objs
+OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
+#BONUS_OBJS = $(BONUS_SRCS:.c=$(OBJ_DIR)/%.o)
+#GNL_OBJS = $(GNL_SRCS:.c=.o)
 RM = rm -f
+
+$(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c
+				cc $(CFLAGS) $(INCS) -c $< -o $@
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(LIBMLX42) $(OBJCTS)
-	cc $(CFLAGS) $(HEADERS) $(OBJCTS) $(LIBFT) $(LIBS) -o $(NAME)
+$(NAME): $(LIBFT) $(LIBMLX42) $(OBJ_DIR) $(OBJS)
+	cc $(CFLAGS) $(HEADERS) $(OBJS) $(LIBFT) $(LIBS) -o $(NAME)
 
 $(LIBMLX42): .libmlx42
 
@@ -32,10 +39,13 @@ clone_mlx42:
 $(LIBFT):
 	make -C $(LIBFT_PATH)
 
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+
 debug: .debug
 
-.debug: $(LIBFT) $(LIBMLX42) $(OBJCTS)
-	cc $(DEBUGFLAGS) $(HEADERS) $(OBJCTS) $(LIBFT) $(LIBS) -o debug.out
+.debug: $(LIBFT) $(LIBMLX42) $(OBJS)
+	cc $(DEBUGFLAGS) $(HEADERS) $(OBJS) $(LIBFT) $(LIBS) -o debug.out
 	touch .debug
 
 %.o: %.c ./include/cub3d.h
@@ -45,7 +55,7 @@ both: $(NAME) bonus
 
 clean:
 	make clean -C $(LIBFT_PATH)
-	$(RM) $(OBJCTS) $(BONUS_OBJCTS)
+	$(RM) $(OBJS) $(BONUS_OBJS)
 
 fclean: clean
 	make -C $(LIBFT_PATH) fclean
