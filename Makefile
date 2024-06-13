@@ -6,8 +6,8 @@ LIBMLX42 = $(LIBMLX_PATH)/build/libmlx42.a
 CFLAGS = -Wall -Wextra -Werror -Wunreachable-code
 HEADERS = -I ./include -I $(LIBMLX_PATH)/include/ -I /usr/local/Cellar/glfw/include
 DEBUGFLAGS = -g -fsanitize=address,undefined,integer
-LIBS = $(LIBMLX42) -L /Users/marekburakowski/.brew/opt/glfw -lglfw -framework Cocoa -framework OpenGL -framework IOKit
-SRCS = ./src/main.c ./src/helper.c ./src/drawing.c ./src/init.c ./src/keyhook.c ./src/minimap.c
+LIBS	= ./lib/MLX42/build/libmlx42.a -L/Users/klukiano/.brew/lib/ -lglfw -framework Cocoa -framework OpenGL -framework IOKit
+SRCS = ./src/drawing.c ./src/init.c ./src/keyhook.c ./src/main.c ./src/minimap.c ./src/utils.c 
 OBJCTS = $(SRCS:.c=.o)
 BONUS_OBJCTS = $(BONUS_SRCS:.c=.o)
 GNL_OBJCTS = $(GNL_SRCS:.c=.o)

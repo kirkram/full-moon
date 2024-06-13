@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/05 13:51:43 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/13 15:25:24 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,36 +16,16 @@ int	init_player(t_data *data)
 {
 	data->player->x_pos = STARTPOS;
 	data->player->y_pos = STARTPOS;
-	data->player->angle = rad(NORTH);
+	data->player->angle = rad(STARTORIENT);
 	data->player->imgwidth = data->width; //or MAPHEIGHT * data->zoom
 	data->player->imgheight = data->height;
 	data->player->img = mlx_new_image(data->mlx, data->player->imgwidth, data->player->imgheight);
 	if (!data->player->img)
-		ft_error("Error on mlx_new_image\n", 11);
+		return(ft_error("Error on mlx_new_image\n", 11));
 	if (mlx_image_to_window(data->mlx, data->player->img, 0, 0) < 0)
-		ft_error("Error on mlx_image_to_window\n", 11);
+		return(ft_error("Error on mlx_image_to_window\n", 11));
 	data->player->y_pos_mini = data->player->y_pos * data->zoom;
 	data->player->x_pos_mini = data->player->x_pos * data->zoom;
-	draw_player(data);
-	return (0);
-}
-
-int	color_whole_image(mlx_image_t *img, int color, int width, int height)
-{
-	int		x;
-	int		y;
-
-	y = 0;
-	while (y < height)
-	{
-		x = 0;
-		while (x < width)
-		{
-			mlx_put_pixel(img, x, y, color);
-			x ++;
-		}
-		y ++;
-	}
 	return (0);
 }
 
@@ -113,7 +93,8 @@ int	init_and_draw(t_data *data)
 		return (11);
 	if (data->minimap)
 		draw_minimap(data);
-	draw_screen(data);
+	draw_player(data);
+	draw_rays(data, data->ray);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	mlx_loop(data->mlx);
 	mlx_terminate(data->mlx);
