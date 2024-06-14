@@ -1,2 +1,6 @@
 .vscode/
 lib/MLX42/
+*.o
+.libmlx42
+cub3d
+lib/libft/libft.a

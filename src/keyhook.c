@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/13 12:22:29 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/14 15:37:08 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,48 +15,50 @@
 static void	ft_hook_movement(t_data *data)
 {
 	t_player	*player;
+	float		speed;
 
 	player = data->player;
-
+	speed = 0.003 / (1 / data->mlx->delta_time / 1000);
+	//test with giant framerate
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(data->mlx);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
 	{
-		player->x_pos += SPEED * cos(player->angle);
-		player->y_pos += SPEED * sin(player->angle);
+		player->x_pos += speed * cos(player->angle);
+		player->y_pos += speed * sin(player->angle);
 		data->player->x_pos_mini = data->player->x_pos * data->zoom;
 		data->player->y_pos_mini = data->player->y_pos * data->zoom;
 	}
 	else if (mlx_is_key_down(data->mlx, MLX_KEY_S))
 	{
-		player->x_pos += -SPEED * cos(player->angle);
-		player->y_pos += -SPEED * sin(player->angle);
+		player->x_pos += -speed * cos(player->angle);
+		player->y_pos += -speed * sin(player->angle);
 		data->player->x_pos_mini = data->player->x_pos * data->zoom;
 		data->player->y_pos_mini = data->player->y_pos * data->zoom;
 	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_A))
 	{
-		player->x_pos += -SPEED * cos(player->angle + rad(90));
-		player->y_pos += -SPEED * sin(player->angle + rad(90));
+		player->x_pos += -speed * cos(player->angle + rad(90));
+		player->y_pos += -speed * sin(player->angle + rad(90));
 		data->player->x_pos_mini = data->player->x_pos * data->zoom;
 		data->player->y_pos_mini = data->player->y_pos * data->zoom;
 	}
 	else if (mlx_is_key_down(data->mlx, MLX_KEY_D))
 	{
-		player->x_pos += SPEED * cos(player->angle + rad(90));
-		player->y_pos += SPEED * sin(player->angle + rad(90));
+		player->x_pos += speed * cos(player->angle + rad(90));
+		player->y_pos += speed * sin(player->angle + rad(90));
 		data->player->x_pos_mini = data->player->x_pos * data->zoom;
 		data->player->y_pos_mini = data->player->y_pos * data->zoom;
 	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
 	{
-		player->angle -= (SPEED / 1.5);
+		player->angle -= (speed / 1.5);
 		if (player->angle < 0)
 			player->angle = PI * 2 - (-player->angle);
 	}
 	else if (mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
 	{
-		player->angle += (SPEED / 1.5);
+		player->angle += (speed / 1.5);
 		if (player->angle > PI * 2)
 			player->angle = player->angle - PI * 2;
 	}

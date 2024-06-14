@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/13 16:16:55 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/14 16:10:42 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,28 +187,22 @@ void	draw_column(t_data *data, t_ray *ray, int i)
 		dist = ray->vert_dist;
 		line.color = YEL_WHITE_SHADE;
 	}
-	line_w = SCREENWIDTH / FOV / RESOLUTION;
-	//draw bottom
+	//will this cast work in every compiler?
+	line_w = (double)SCREENWIDTH / (FOV * RESOLUTION);
 	line.y = data->height / 2 - 1;
-	//rounding
 	while (++line.y < (data->height / 2) + SCREENHEIGHT / dist / 2 && line.y < SCREENHEIGHT)
 	{
+		//error accumulates with the truncating of the line_w
 		line.x = line_w * i;
-		while (++line.x < line_w * (i + 1) && line.x < SCREENWIDTH)
-		{
-			//printf("here\n");
+		while (++line.x <= line_w * (i + 1) && line.x < SCREENWIDTH)
 			put_pixel(data, &line, data->screen);
-		}
 	}
-	//draw top
 	line.y = data->height / 2;
-	while (--line.y > (data->height / 2) - SCREENHEIGHT / dist / 2 && line.x < SCREENWIDTH && line.y >= 0)
+	while (--line.y > (data->height / 2) - SCREENHEIGHT / dist / 2 && line.y >= 0)
 	{
 		line.x = line_w * i;
-		while (++line.x < line_w * (i + 1))
-		{
+		while (++line.x <= line_w * (i + 1))
 			put_pixel(data, &line, data->screen);
-		}
 	}
 }
 
@@ -231,7 +225,7 @@ void	draw_rays(t_data *data, t_ray *ray)
 		vertical_rays(data, ray);
 		calc_distance(data, ray);
 		fix_fisheye(data, ray);
-		draw_minirays(data, ray);
+		//draw_minirays(data, ray);
 		draw_column(data, ray, i);
 		ray->ang += DEGR_RESO;
 		if (ray->ang < 0)
