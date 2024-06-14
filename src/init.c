@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/13 15:25:24 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/14 16:23:00 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,23 @@ int	init_player(t_data *data)
 
 int	put_background(t_data *data)
 {
-	data->backg = mlx_new_image(data->mlx, data->width, data->height);
-	if (!data->backg)
+	data->floor = mlx_new_image(data->mlx, data->width, data->height);
+	if (!data->floor)
 		ft_error("Error on mlx_new_image\n", 11);
 	//returns index of the instance. should it be used?
-	if (mlx_image_to_window(data->mlx, data->backg, 0, 0) < 0)
+	if (mlx_image_to_window(data->mlx, data->floor, 0, 0) < 0)
 		ft_error("Error on mlx_image_to_window\n", 11);
-	color_whole_image(data->backg, BACKG_COLOR, data->width, data->height);
-	mlx_put_string(data->mlx, "CUB3D_0.1", 1100, 1);
+	color_whole_image(data->floor, FLOOR, data->width, data->height);
+
+	data->ceiling = mlx_new_image(data->mlx, data->width, data->height);
+	if (!data->ceiling)
+		ft_error("Error on mlx_new_image\n", 11);
+	//returns index of the instance. should it be used?
+	if (mlx_image_to_window(data->mlx, data->ceiling, 0, 0) < 0)
+		ft_error("Error on mlx_image_to_window\n", 11);
+	color_whole_image(data->ceiling, CEILING, data->width, data->height / 2);
+
+	mlx_put_string(data->mlx, "CUB3D_0.1", data->width - 100, 1);
 	return (0);
 }
 
@@ -70,10 +79,10 @@ int	init_images(t_data *data)
 {
 	data->width = SCREENWIDTH;
 	data->height = SCREENHEIGHT;
-	data->backg = NULL;
+	data->ceiling = NULL;
 	data->minimap = NULL;
 	data->zoom = MINIZOOM;
-	data->mlx = mlx_init(data->width, data->height, "CUB3D", 0);
+	data->mlx = mlx_init(data->width, data->height, "CUB3D", false);
 	if (!data->mlx)
 		return (ft_error("Error on mlx_init\n", 11));
 	if (put_background(data) || init_main_screen(data) || \

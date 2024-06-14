@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/13 16:01:24 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/14 16:13:19 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int	main(int ac, char **av)
 	t_player	player;
 	t_ray		ray;
 
+	if (FOV <= 0 || RESOLUTION <= 0)
+		return (ft_error("FOV / RESOLUTION can't be 0 or negative", 44));
 	data.player = &player;
 	data.ray = &ray;
 	copy_example_map(&data);

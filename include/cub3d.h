@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/13 16:05:41 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/14 16:26:11 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,11 @@
 # define MAPHEIGHT 24
 # define SCREENWIDTH 1280
 # define SCREENHEIGHT 720
-# define MINIZOOM SCREENWIDTH / 100
+# define MINIZOOM SCREENWIDTH / 120
 # define PLAYERSIZE MINIZOOM / 2
 # define STARTPOS 1.2
 # define RESOLUTION 5
 
-# define SPEED 0.08
 # define DEGR 0.0174533
 # define DEGR_RESO 0.0174533 / RESOLUTION
 # define FOV 60
@@ -49,6 +48,7 @@
 
 //colors
 # define BLACK 0x000000FF
+# define GRAY 0x71797EFF
 # define MAGENTA 0xFF00FFFF
 # define PURPLE 0xB800FFFF
 # define WHITE 0xFFFFFFEE
@@ -58,9 +58,12 @@
 # define YEL_WHITE_SHADE 0xFFFFCCFF
 # define RED 0xFF0000FF
 # define BLUE 0x0000FFFF
+# define SKYBLUE 0x87CEFAEE
 # define GREEN 0x00FF00FF
 # define BACKG_COLOR 0x000011FF
 # define FULL_TRANSPARENT 0x0000000
+# define CEILING SKYBLUE
+# define FLOOR GRAY
 
 typedef struct s_map
 {
@@ -101,7 +104,8 @@ typedef struct s_data
 	mlx_t			*mlx;
 	mlx_image_t		*screen;
 	mlx_image_t		*minimap;
-	mlx_image_t		*backg;
+	mlx_image_t		*ceiling;
+	mlx_image_t		*floor;
 	t_player		*player;
 	t_ray			*ray;
 	mlx_key_data_t	keydata;
@@ -109,6 +113,7 @@ typedef struct s_data
 	int32_t			height;
 	int32_t			zoom;
 	int				**world_map;
+	double			line_error;
 }					t_data;
 
 typedef struct s_point
