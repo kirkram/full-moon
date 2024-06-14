@@ -8,7 +8,7 @@ HEADERS = -I ./include -I $(LIBMLX_PATH)/include/ -I /usr/local/Cellar/glfw/incl
 DEBUGFLAGS = -g -fsanitize=address,undefined,integer
 LIBS = $(LIBMLX42) -L /Users/$(USER)/.brew/opt/glfw -L/Users/$(USER)/.brew/lib -L/opt/homebrew/lib -lglfw -framework Cocoa -framework OpenGL -framework IOKit
 SRC_DIR = ./srcs
-SRCS = main.c helper.c drawing.c init.c keyhook.c minimap.c maploader.c get_next_line_bonus.c
+SRCS = main.c helper.c drawing.c init.c keyhook.c minimap.c maploader.c get_next_line_bonus.c get_next_line_utils_bonus.c
 INC_DIRS = ./include $(LIBMLX_PATH)/include/ $(LIBFT_PATH)/libft $(LIBFT_PATH)/ft_printf/incs /usr/local/Cellar/glfw/include
 INCS = $(foreach dir, $(INC_DIRS), -I $(dir))
 OBJ_DIR = ./objs

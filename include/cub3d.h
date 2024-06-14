@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/14 20:07:49 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/14 21:29:38 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,11 @@ int		ft_error(char *msg, int	error_code);
 int		ft_abs(int result);
 int		free_2d_int(int **int_arr);
 char	*get_next_line(int fd);
+size_t	gnl_strlen(const char *str);
+char	*gnl_strjoin(char *s1, char *s2);
+int		gnl_strcpos(const char *s, int c);
+char	*gnl_substr(char *buffer, unsigned int start, size_t len);
+
 
 
 

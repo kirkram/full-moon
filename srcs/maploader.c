@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/14 20:39:07 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/14 21:33:42 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ static int	count_mapheight(char *mapname)
 		perror("Error opening file for count\n");
 		return (-1);
 	}
-	else 
-		dprintf(2, "Opened file.\n");
+	// else 
+		// dprintf(2, "Opened file.\n");
 	count = 0;
 	while ((line = get_next_line(fd)) != NULL)
 	{
-		dprintf(2, "line %s\n", line);
+		dprintf(2, "%s", line);
 		free(line);
 		count++;
 	}
@@ -51,6 +51,7 @@ static int	write_mapline(char *line, int lno, int **world_map)
 	while (line[i] != '\0')
 	{
 		world_map[lno][i] = ft_atoi(&line[i]);
+		dprintf(2, "%d", world_map[lno][i]);
 		i++;
 	}
 	return (0);
@@ -81,12 +82,9 @@ int	**maploader(char *mapname)
 	lno = 0;
 	while (1)
 	{
-		if (lno >= 14)
-		{
-			line = get_next_line(fd);
-			if (!line || write_mapline(line, lno, world_map))
-				break ;
-		}
+		line = get_next_line(fd);
+		if (!line || write_mapline(line, lno, world_map))
+			break ;
 		lno++;
 	}
 	close(fd);
