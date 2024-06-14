@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/14 21:33:42 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/14 21:50:04 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ static int	count_mapheight(char *mapname)
 
 static int	write_mapline(char *line, int lno, int **world_map)
 {
-	int	i;
+	int		i;
+	char	value[1];
 
 	world_map[lno] = (int *)malloc(MAPWIDTH * sizeof(int));
 	if (world_map[lno] == NULL)
@@ -48,12 +49,14 @@ static int	write_mapline(char *line, int lno, int **world_map)
 		return (1);
 	}
 	i = 0;
-	while (line[i] != '\0')
+	while (line[i] != '\0' && line[i] != '\n')
 	{
+		value = &line[i];
 		world_map[lno][i] = ft_atoi(&line[i]);
-		dprintf(2, "%d", world_map[lno][i]);
+		dprintf(2, "|%s=%d|", &line[i], world_map[lno][i]);
 		i++;
 	}
+	dprintf(2, "\n");
 	return (0);
 }
 
@@ -80,7 +83,7 @@ int	**maploader(char *mapname)
 		return (NULL);
 	}
 	lno = 0;
-	while (1)
+	while (lno <= MAX_MAPHEIGHT)
 	{
 		line = get_next_line(fd);
 		if (!line || write_mapline(line, lno, world_map))
