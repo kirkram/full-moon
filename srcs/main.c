@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/14 17:21:05 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/14 20:57:48 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 
 int	copy_example_map(t_data *data)
 {
-	int x;
-	int y;
+	int	x;
+	int	y;
+	int	**world_map;
 
-	int				world_map[MAPWIDTH][MAPHEIGHT] =
+	world_map = maploader("./maps/default.cub");
+	/*
+	world_map[MAPWIDTH][MAPHEIGHT] =
 	{
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -44,7 +47,7 @@ int	copy_example_map(t_data *data)
 	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
-
+	*/
 	data->world_map = malloc(MAPHEIGHT * sizeof(int *));
 	if (!data->world_map)
 		return (ft_error("Malloc error on int*", 22));
@@ -69,20 +72,18 @@ int	copy_example_map(t_data *data)
 
 int	main(int ac, char **av)
 {
-	(void)ac;
-	(void)av;
 	t_data		data;
 	t_player	player;
 	t_ray		ray;
 
+	(void)ac;
+	(void)av;
 	if (FOV <= 0 || RESOLUTION <= 0)
 		return (ft_error("FOV / RESOLUTION can't be 0 or negative", 44));
 	data.player = &player;
 	data.ray = &ray;
 	copy_example_map(&data);
 	init_and_draw(&data);
-
 	free_2d_int(data.world_map);
 	return (0);
 }
-

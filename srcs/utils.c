@@ -6,17 +6,13 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 14:39:44 by klukiano          #+#    #+#             */
-<<<<<<<< HEAD:srcs/helper.c
-/*   Updated: 2024/06/13 15:07:03 by mburakow         ###   ########.fr       */
-========
-/*   Updated: 2024/06/10 18:18:28 by klukiano         ###   ########.fr       */
->>>>>>>> origin/main:srcs/utils.c
+/*   Updated: 2024/06/14 17:44:54 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	ft_error(char *msg, int	error_code)
+int	ft_error(char *msg, int error_code)
 {
 	printf("%s\n", msg);
 	return (error_code);
@@ -38,17 +34,17 @@ int	free_2d_int(int **int_arr)
 	{
 		while (i < MAPHEIGHT)
 		{
-			free (int_arr[i]);
-			i ++;
+			free(int_arr[i]);
+			i++;
 		}
-		free (int_arr);
+		free(int_arr);
 	}
 	return (0);
 }
 int	color_whole_image(mlx_image_t *img, int color, int width, int height)
 {
-	int		x;
-	int		y;
+	int	x;
+	int	y;
 
 	y = 0;
 	while (y < height)
@@ -57,9 +53,9 @@ int	color_whole_image(mlx_image_t *img, int color, int width, int height)
 		while (x < width)
 		{
 			mlx_put_pixel(img, x, y, color);
-			x ++;
+			x++;
 		}
-		y ++;
+		y++;
 	}
 	return (0);
 }

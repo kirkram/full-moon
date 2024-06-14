@@ -19,7 +19,7 @@ static void	ft_hook_movement(t_data *data)
 
 	player = data->player;
 	speed = 0.003 / (1 / data->mlx->delta_time / 1000);
-	//test with giant framerate
+	// test with giant framerate
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(data->mlx);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
@@ -72,12 +72,14 @@ void	ft_hook_hub(void *param)
 	data = param;
 	prev = *(data->player);
 	ft_hook_movement(data);
-	if (prev.x_pos_mini != data->player->x_pos_mini || \
-	prev.y_pos_mini != data->player->y_pos_mini || \
-	prev.angle != data->player->angle)
+	if (prev.x_pos_mini != data->player->x_pos_mini
+		|| prev.y_pos_mini != data->player->y_pos_mini
+		|| prev.angle != data->player->angle)
 	{
-		color_whole_image(data->screen, FULL_TRANSPARENT, data->player->imgwidth, data->player->imgheight);
-		color_whole_image(data->player->img, FULL_TRANSPARENT, data->player->imgwidth, data->player->imgheight);
+		color_whole_image(data->screen, FULL_TRANSPARENT,
+			data->player->imgwidth, data->player->imgheight);
+		color_whole_image(data->player->img, FULL_TRANSPARENT,
+			data->player->imgwidth, data->player->imgheight);
 		draw_player(data);
 		draw_rays(data, data->ray);
 	}

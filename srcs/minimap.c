@@ -55,9 +55,9 @@ t_point	new_p(int x, int y, t_data *data)
 
 void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img)
 {
-	t_point		delta;
-	t_point		sign;
-	int			error[2];
+	t_point	delta;
+	t_point	sign;
+	int		error[2];
 
 	delta_sign(&delta, point, dest, &sign);
 	error[0] = delta.x - delta.y;
@@ -78,8 +78,8 @@ void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img)
 
 void	draw_minimap(t_data *data)
 {
-	int		x;
-	int		y;
+	int	x;
+	int	y;
 
 	y = 0;
 	while (y < MAPHEIGHT)
@@ -88,13 +88,13 @@ void	draw_minimap(t_data *data)
 		while (x < MAPWIDTH)
 		{
 			if (x < MAPWIDTH - 1)
-				drw_line(new_p(x, y, data), new_p(x + 1, y, data), data, data->minimap);
+				drw_line(new_p(x, y, data), new_p(x + 1, y, data), data,
+					data->minimap);
 			if (y < MAPHEIGHT - 1)
-				drw_line(new_p(x, y, data), new_p(x, y + 1,  data), data, data->minimap);
-			x ++;
+				drw_line(new_p(x, y, data), new_p(x, y + 1, data), data,
+					data->minimap);
+			x++;
 		}
-		y ++;
+		y++;
 	}
 }
-
-

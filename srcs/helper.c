@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-int	ft_error(char *msg, int	error_code)
+int	ft_error(char *msg, int error_code)
 {
 	printf("%s\n", msg);
 	return (error_code);
@@ -34,17 +34,17 @@ int	free_2d_int(int **int_arr)
 	{
 		while (i < MAPHEIGHT)
 		{
-			free (int_arr[i]);
-			i ++;
+			free(int_arr[i]);
+			i++;
 		}
-		free (int_arr);
+		free(int_arr);
 	}
 	return (0);
 }
 int	color_whole_image(mlx_image_t *img, int color, int width, int height)
 {
-	int		x;
-	int		y;
+	int	x;
+	int	y;
 
 	y = 0;
 	while (y < height)
@@ -53,9 +53,9 @@ int	color_whole_image(mlx_image_t *img, int color, int width, int height)
 		while (x < width)
 		{
 			mlx_put_pixel(img, x, y, color);
-			x ++;
+			x++;
 		}
-		y ++;
+		y++;
 	}
 	return (0);
 }
