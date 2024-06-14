@@ -6,15 +6,16 @@ LIBMLX42 = $(LIBMLX_PATH)/build/libmlx42.a
 CFLAGS = -Wall -Wextra -Werror -Wunreachable-code
 HEADERS = -I ./include -I $(LIBMLX_PATH)/include/ -I /usr/local/Cellar/glfw/include
 DEBUGFLAGS = -g -fsanitize=address,undefined,integer
-LIBS = $(LIBMLX42) -L /Users/marekburakowski/.brew/opt/glfw -lglfw -framework Cocoa -framework OpenGL -framework IOKit
+LIBS = $(LIBMLX42) -L /Users/$(USER)/.brew/opt/glfw -L/Users/$(USER)/.brew/lib -L/opt/homebrew/lib -lglfw -framework Cocoa -framework OpenGL -framework IOKit
 SRC_DIR = ./srcs
 SRCS = main.c helper.c drawing.c init.c keyhook.c minimap.c
 INC_DIRS = ./include $(LIBMLX_PATH)/include/ $(LIBFT_PATH)/libft $(LIBFT_PATH)/ft_printf/incs /usr/local/Cellar/glfw/include
 INCS = $(foreach dir, $(INC_DIRS), -I $(dir))
 OBJ_DIR = ./objs
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
-#BONUS_OBJS = $(BONUS_SRCS:.c=$(OBJ_DIR)/%.o)
-#GNL_OBJS = $(GNL_SRCS:.c=.o)
+#OBJCTS = $(SRCS:.c=.o)
+#BONUS_OBJCTS = $(BONUS_SRCS:.c=.o)
+#GNL_OBJCTS = $(GNL_SRCS:.c=.o)
 RM = rm -f
 
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c
@@ -65,6 +66,7 @@ fclean: clean
 	$(RM) .bonus
 	$(RM) .libmlx42
 	$(RM) -r $(LIBMLX_PATH)/build
+	$(RM) -r $(OBJ_DIR)
 
 re: fclean all
 
