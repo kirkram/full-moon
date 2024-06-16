@@ -19,6 +19,7 @@ static void	ft_hook_movement(t_data *data)
 
 	player = data->player;
 	speed = 0.003 / (1 / data->mlx->delta_time / 1000);
+	//printf("FPS: %f, Speed: %f\n", 1 / data->mlx->delta_time, speed);
 	//test with giant framerate
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(data->mlx);

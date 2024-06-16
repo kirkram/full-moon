@@ -19,6 +19,8 @@
 # include "../lib/libft/libft.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 
+#include <unistd.h> //temp for access
+
 # define MAPWIDTH 24
 # define MAPHEIGHT 24
 # define SCREENWIDTH 1280
@@ -106,6 +108,7 @@ typedef struct s_data
 	mlx_image_t		*minimap;
 	mlx_image_t		*ceiling;
 	mlx_image_t		*floor;
+	mlx_texture_t	*texture_1;
 	t_player		*player;
 	t_ray			*ray;
 	mlx_key_data_t	keydata;

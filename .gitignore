@@ -4,3 +4,5 @@ lib/MLX42/
 .libmlx42
 cub3d
 lib/libft/libft.a
+.DS_Store
+
