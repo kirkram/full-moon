@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/14 21:50:04 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/17 08:40:55 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ static int	count_mapheight(char *mapname)
 		perror("Error opening file for count\n");
 		return (-1);
 	}
-	// else 
-		// dprintf(2, "Opened file.\n");
 	count = 0;
 	while ((line = get_next_line(fd)) != NULL)
 	{
@@ -37,10 +35,19 @@ static int	count_mapheight(char *mapname)
 	return (count);
 }
 
+// currently accepts 0-5
+static int	validate_mapsquare(int value)
+{
+	if (value >= 48 && value <= 53)
+		return (0);
+	else
+		return (1);
+}
+
 static int	write_mapline(char *line, int lno, int **world_map)
 {
-	int		i;
-	char	value[1];
+	int	i;
+	int	value;
 
 	world_map[lno] = (int *)malloc(MAPWIDTH * sizeof(int));
 	if (world_map[lno] == NULL)
@@ -51,9 +58,15 @@ static int	write_mapline(char *line, int lno, int **world_map)
 	i = 0;
 	while (line[i] != '\0' && line[i] != '\n')
 	{
-		value = &line[i];
-		world_map[lno][i] = ft_atoi(&line[i]);
-		dprintf(2, "|%s=%d|", &line[i], world_map[lno][i]);
+		value = line[i];
+		dprintf(2, "%d", value - 48);
+		if (validate_mapsquare(value))
+		{
+			perror("Map not valid.");
+			exit (1);
+		}
+		world_map[lno][i] = value - 48;
+		// dprintf(2, "|%s=%d|", &line[i], world_map[lno][i]);
 		i++;
 	}
 	dprintf(2, "\n");
