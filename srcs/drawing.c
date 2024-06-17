@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/14 17:21:14 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/17 17:51:44 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,23 +194,39 @@ void	draw_column(t_data *data, t_ray *ray, int i)
 		line.color = YEL_WHITE_SHADE;
 	}
 	// will this cast work in every compiler?
-	line_w = (double)SCREENWIDTH / (FOV * RESOLUTION);
+	line_w = (double)data->width / (FOV * RESOLUTION);
 	line.y = data->height / 2 - 1;
-	while (++line.y < (data->height / 2) + SCREENHEIGHT / dist / 2
-		&& line.y < SCREENHEIGHT)
+
+	float texture_y = 0;
+	float texture_step = data->texture_1->height / (data->height / dist / 2);
+	while (++line.y < (data->height / 2) + data->height / dist / 2
+		&& line.y < data->height)
 	{
 		// error accumulates with the truncating of the line_w
 		line.x = line_w * i;
-		while (++line.x <= line_w * (i + 1) && line.x < SCREENWIDTH)
+		//half of the len of line_h
+		line.color = data->texture_1->pixels[(int)texture_y * data->texture_1->height];
+		while (++line.x <= line_w * (i + 1) && line.x < data->width)
 			put_pixel(data, &line, data->screen);
+		texture_y += texture_step;
 	}
+
+	texture_y = 0;
+	texture_step = data->texture_1->height / (data->height / dist / 2);
 	line.y = data->height / 2;
-	while (--line.y > (data->height / 2) - SCREENHEIGHT / dist / 2
+	while (--line.y > (data->height / 2) - data->height / dist / 2
 		&& line.y >= 0)
 	{
 		line.x = line_w * i;
+		line.color = data->texture_1->pixels[(int)texture_y * data->texture_1->height];
 		while (++line.x <= line_w * (i + 1))
 			put_pixel(data, &line, data->screen);
+		texture_y += texture_step;
+// 		17.06
+// Textures
+//  - 1 step is one texture. The width would be 1/width of the texture, and 1/height
+//  - find the position of the x and y
+//  - the use it for indexing the pixel from the texture index=(y×width+x)×bytes_per_pixel
 	}
 }
 

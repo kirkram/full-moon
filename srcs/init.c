@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/17 16:16:01 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/17 16:22:35 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int	load_textures(t_data *data)
 	if (!data->texture_1)
 		return(ft_error("Error on mlx_load_png", 123));
 	mlx_image_t* img = mlx_texture_to_image(data->mlx, data->texture_1);
+	// data->texture_1->
 	if (!img)
         return(ft_error("failed to transofrm texture to image", 123));
 	if (mlx_image_to_window(data->mlx, img, 120, 120) < 0)
