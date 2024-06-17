@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/17 08:54:23 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/17 11:25:50 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	count_mapheight(char *mapname)
 }
 
 // currently accepts 0-5 and space but spaces seqfault
-static int	validate_mapsquare(int value)
+int	validate_mapsquare(int value)
 {
 	if ((value >= 48 && value <= 53) || value == 32)
 		return (0);
@@ -44,36 +44,32 @@ static int	validate_mapsquare(int value)
 		return (1);
 }
 
-static int	write_mapline(char *line, int lno, int **world_map)
+static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 {
 	int	i;
 	int	value;
 
 	world_map[lno] = (int *)malloc(MAPWIDTH * sizeof(int));
 	if (world_map[lno] == NULL)
-	{
-		perror("Map line malloc fail.");
-		return (1);
-	}
+		exit (ft_error("Map line malloc fail.\n", 1));
 	i = 0;
 	while (line[i] != '\0' && line[i] != '\n')
 	{
 		value = line[i];
-		dprintf(2, "%d", value - 48);
+		dprintf(2, "%d", (value - 48));
 		if (validate_mapsquare(value))
-		{
-			perror("Map not valid.\n");
-			dprintf(2, "Invalid value: %d\n", value);
-			exit (1);
-		}
+			exit (ft_error("Map not valid.\n", 1)); // need clean exit
 		world_map[lno][i] = value - 48;
+		if (value == 5) // the player start pos char
+			data->startpos[0] = lno;
+			data->startpos[1] = i;
 		i++;
 	}
 	dprintf(2, "\n");
 	return (0);
 }
 
-int	**maploader(char *mapname)
+int	**load_map(char *mapname, t_data *data)
 {
 	int		fd;
 	int		map_height;
@@ -88,18 +84,19 @@ int	**maploader(char *mapname)
 		perror("Error opening map file (height)");
 		return (NULL);		
 	}
-	world_map = (int **)malloc(map_height * sizeof(int *));
+	world_map = (int **)malloc((map_height + 1) * sizeof(int *));
 	fd = open(mapname, O_RDONLY);
 	if (fd == -1)
 	{
 		perror("Error opening map file");
 		return (NULL);
 	}
+	world_map[map_height] = NULL;
 	lno = 0;
 	while (lno <= MAX_MAPHEIGHT)
 	{
 		line = get_next_line(fd);
-		if (!line || write_mapline(line, lno, world_map))
+		if (!line || write_mapline(line, lno, world_map, data))
 			break ;
 		lno++;
 	}
