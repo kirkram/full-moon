@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/17 11:25:50 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/17 14:39:02 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 		if (validate_mapsquare(value))
 			exit (ft_error("Map not valid.\n", 1)); // need clean exit
 		world_map[lno][i] = value - 48;
-		if (value == 5) // the player start pos char
+		if (value == 5) // the player start pos char, should check that exists
 			data->startpos[0] = lno;
 			data->startpos[1] = i;
 		i++;
@@ -69,29 +69,30 @@ static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 	return (0);
 }
 
+// we need to have map_height and map_width in data not as defines
 int	**load_map(char *mapname, t_data *data)
 {
 	int		fd;
-	int		map_height;
 	int		**world_map;
 	char	*line;
 	int		lno;
 
-	map_height = count_mapheight(mapname);
-	dprintf(2, "mh: %d\n", map_height);
-	if (map_height <= 0 || map_height > MAX_MAPHEIGHT)
+	data->map_height = count_mapheight(mapname);
+	data->map_width = MAPWIDTH;
+	dprintf(2, "mh: %d\n", data->map_height);
+	if (data->map_height <= 0 || data->map_height > MAX_MAPHEIGHT)
 	{
 		perror("Error opening map file (height)");
 		return (NULL);		
 	}
-	world_map = (int **)malloc((map_height + 1) * sizeof(int *));
+	world_map = (int **)malloc((data->map_height + 1) * sizeof(int *));
 	fd = open(mapname, O_RDONLY);
 	if (fd == -1)
 	{
 		perror("Error opening map file");
 		return (NULL);
 	}
-	world_map[map_height] = NULL;
+	world_map[data->map_height] = NULL;
 	lno = 0;
 	while (lno <= MAX_MAPHEIGHT)
 	{

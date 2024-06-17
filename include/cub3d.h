@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/17 11:23:50 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/17 14:36:53 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,8 @@ typedef struct s_data
 	int32_t			height;
 	int32_t			zoom;
 	int				**world_map;
+	int				map_height;
+	int				map_width;
 	int				startpos[2];
 	double			line_error;
 }					t_data;
