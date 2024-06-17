@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/14 16:26:11 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/17 14:36:53 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <unistd.h>
+# include <fcntl.h>
 # include <math.h>
 # include "../lib/libft/libft.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
@@ -23,6 +25,9 @@
 
 # define MAPWIDTH 24
 # define MAPHEIGHT 24
+// for future editions and now (dynamic mapsizes)
+# define MAX_MAPWIDTH 24
+# define MAX_MAPHEIGHT 24
 # define SCREENWIDTH 1280
 # define SCREENHEIGHT 720
 # define MINIZOOM SCREENWIDTH / 120
@@ -66,6 +71,10 @@
 # define FULL_TRANSPARENT 0x0000000
 # define CEILING SKYBLUE
 # define FLOOR GRAY
+
+// get next line
+# define BUFFER_SIZE 10
+# define FD_SIZE 1028
 
 typedef struct s_map
 {
@@ -116,6 +125,9 @@ typedef struct s_data
 	int32_t			height;
 	int32_t			zoom;
 	int				**world_map;
+	int				map_height;
+	int				map_width;
+	int				startpos[2];
 	double			line_error;
 }					t_data;
 
@@ -129,6 +141,9 @@ typedef struct s_point
 
 //init
 int		copy_example_map(t_data *data);
+int		**load_map(char *mapname, t_data *data);
+int		validate_map(int **world_map);
+int		validate_mapsquare(int value);
 int		color_whole_image(mlx_image_t *img, int color, int width, int height);
 
 //drawing
@@ -151,6 +166,12 @@ t_data	*reinit_image(t_data *data, mlx_image_t *img);
 int		ft_error(char *msg, int	error_code);
 int		ft_abs(int result);
 int		free_2d_int(int **int_arr);
+char	*get_next_line(int fd);
+size_t	gnl_strlen(const char *str);
+char	*gnl_strjoin(char *s1, char *s2);
+int		gnl_strcpos(const char *s, int c);
+char	*gnl_substr(char *buffer, unsigned int start, size_t len);
+
 
 
 

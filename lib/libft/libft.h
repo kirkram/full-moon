@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:31:10 by klukiano@st       #+#    #+#             */
-/*   Updated: 2023/12/19 18:02:18 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/14 19:37:00 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int		ft_toupper(int c);
 int		ft_tolower(int c);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_strchr(char *str, int c);
+int		ft_strcpos(const char *s, int c);
 char	*ft_strrchr(char *str, int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	*ft_memchr(const void *s, int c, size_t n);
