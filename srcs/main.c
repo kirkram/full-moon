@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/17 11:39:23 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/17 18:19:16 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,27 @@ int	copy_example_map(t_data *data)
 	int	x;
 	int	y;
 	int	**world_map;
+	int	ret;
 
 	world_map = load_map("./maps/default.cub", data);
-	//if (validate_map(world_map))
-	//	return (ft_error("Map error*", 12));	
-	data->world_map = malloc(MAPHEIGHT * sizeof(int *));
+	ret = validate_map(world_map, data);
+	if (ret)
+	{
+		dprintf(2, "ret was: %d", ret);
+		return (ft_error("Map error*", 12));
+	}	
+	data->world_map = malloc(data->map_height * sizeof(int *));
 	if (!data->world_map)
 		return (ft_error("Malloc error on int*", 22));
 	y = -1;
-	while (++y < MAPHEIGHT)
+	while (++y < data->map_height)
 	{
 		data->world_map[y] = malloc(MAPWIDTH * sizeof(int));
 		if (!data->world_map[y])
 			return (ft_error("Malloc error on int", 22));
 	}
 	y = -1;
-	while (++y < MAPHEIGHT)
+	while (++y < data->map_height)
 	{
 		x = -1;
 		while (++x < MAPWIDTH)

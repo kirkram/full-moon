@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/17 14:39:02 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/17 17:49:41 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,11 @@ static int	count_mapheight(char *mapname)
 }
 
 // currently accepts 0-5 and space but spaces seqfault
-int	validate_mapsquare(int value)
+static int	validate_mapsquare(int value)
 {
-	if ((value >= 48 && value <= 53) || value == 32)
+	if (value == 48 || value == 49 || value == 32)
+		return (0);
+	else if (value == 78 || value == 69 || value == 83 || value == 87)
 		return (0);
 	else
 		return (1);
@@ -60,7 +62,7 @@ static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 		if (validate_mapsquare(value))
 			exit (ft_error("Map not valid.\n", 1)); // need clean exit
 		world_map[lno][i] = value - 48;
-		if (value == 5) // the player start pos char, should check that exists
+		if (value == 78 || value == 69 || value == 83 || value == 87) // the player start pos char, should check that exists
 			data->startpos[0] = lno;
 			data->startpos[1] = i;
 		i++;

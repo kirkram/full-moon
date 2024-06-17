@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 14:39:44 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/14 17:44:54 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/17 19:12:05 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ int	ft_abs(int result)
 	if (result < 0)
 		result = -result;
 	return (result);
+}
+
+int	**copy_2d_int(int **int_arr)
+{
+	
 }
 
 int	free_2d_int(int **int_arr)

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/17 17:17:00 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/17 17:49:38 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,7 @@ typedef struct s_point
 //init
 int		copy_example_map(t_data *data);
 int		**load_map(char *mapname, t_data *data);
-int		validate_map(int **world_map);
-int		validate_mapsquare(int value);
+int		validate_map(int **world_map, t_data *data);
 int		color_whole_image(mlx_image_t *img, int color, int width, int height);
 
 //drawing
