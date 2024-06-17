@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/14 20:57:48 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/17 08:47:23 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	copy_example_map(t_data *data)
 	int	y;
 	int	**world_map;
 
-	world_map = maploader("./maps/default.cub");
+	world_map = maploader("./maps/lasjan.cub");
 	/*
 	world_map[MAPWIDTH][MAPHEIGHT] =
 	{
