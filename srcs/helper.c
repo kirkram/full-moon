@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 14:39:44 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/14 17:20:53 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:58:55 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,25 @@ int	ft_abs(int result)
 	if (result < 0)
 		result = -result;
 	return (result);
+}
+
+int	**copy_2d_int(int **int_arr, int rows, int cols)
+{
+	int	**new_arr;
+	int	y;
+
+	new_arr = malloc(rows * sizeof(int *));
+	if (!new_arr)
+		exit(ft_error("Malloc error on int**", 22));
+	y = -1;
+	while (++y < rows)
+	{
+		new_arr[y] = malloc(cols * sizeof(int));
+		if (!new_arr[y])
+			exit(ft_error("Malloc error on int**", 22));
+		ft_memcpy(new_arr[y], int_arr[y], rows * sizeof(int));
+	}
+	return (new_arr);
 }
 
 int	free_2d_int(int **int_arr)

@@ -6,33 +6,35 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/17 17:49:41 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/18 14:14:02 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static int	count_mapheight(char *mapname)
+// width of the map is always the length of the longest row, need to handle shorter
+// rows (fill/ treat as spaces)
+static void	count_mapdimensions(char *mapname, t_data *data)
 {
 	int		fd;
-	int		count;
+	int		rows;
+	int		colsmax;
 	char	*line;
 
 	fd = open(mapname, O_RDONLY);
 	if (fd == -1)
-	{
-		perror("Error opening file for count\n");
-		return (-1);
-	}
-	count = 0;
+		exit(ft_error("Error opening file for count\n", 22));
+	rows = 0;
 	while ((line = get_next_line(fd)) != NULL)
 	{
-		dprintf(2, "%s", line);
+		if (colsmax < (int)ft_strlen(line))
+			colsmax = (int)ft_strlen(line);
 		free(line);
-		count++;
+		rows++;
 	}
+	data->map_height = rows;
+	data->map_width = colsmax;
 	close (fd);
-	return (count);
 }
 
 // currently accepts 0-5 and space but spaces seqfault
@@ -51,7 +53,7 @@ static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 	int	i;
 	int	value;
 
-	world_map[lno] = (int *)malloc(MAPWIDTH * sizeof(int));
+	world_map[lno] = (int *)malloc(data->map_width * sizeof(int));
 	if (world_map[lno] == NULL)
 		exit (ft_error("Map line malloc fail.\n", 1));
 	i = 0;
@@ -72,6 +74,7 @@ static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 }
 
 // we need to have map_height and map_width in data not as defines
+// right now assumes a square map, but we need to handle spaces correctly
 int	**load_map(char *mapname, t_data *data)
 {
 	int		fd;
@@ -79,9 +82,7 @@ int	**load_map(char *mapname, t_data *data)
 	char	*line;
 	int		lno;
 
-	data->map_height = count_mapheight(mapname);
-	data->map_width = MAPWIDTH;
-	dprintf(2, "mh: %d\n", data->map_height);
+	count_mapdimensions(mapname, data);
 	if (data->map_height <= 0 || data->map_height > MAX_MAPHEIGHT)
 	{
 		perror("Error opening map file (height)");

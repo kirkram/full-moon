@@ -6,12 +6,12 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 11:02:18 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/17 19:12:04 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/18 14:15:46 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
+/*
 static int	check_mapsquare(int pos_x, int pos_y, int **wmap)
 {
 	int	value;
@@ -23,7 +23,7 @@ static int	check_mapsquare(int pos_x, int pos_y, int **wmap)
 	else // wrong
 		return (1);
 }
-
+*/
 int flood_fill(int pos_x, int pos_y, int **wmap, t_data *data)
 { 
 	int ret;
@@ -52,7 +52,10 @@ int flood_fill(int pos_x, int pos_y, int **wmap, t_data *data)
 int	validate_map(int **world_map, t_data *data)
 {
 	if (flood_fill(data->startpos[0], data->startpos[1], world_map, data))
-		return (1);
+	{
+		dprintf(2, "Map error detected.");
+		return (0);
+	}
 	else
 		return (0);	
 }
