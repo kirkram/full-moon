@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/17 14:36:53 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/18 18:05:56 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,8 @@ typedef struct s_data
 	mlx_image_t		*minimap;
 	mlx_image_t		*ceiling;
 	mlx_image_t		*floor;
-	mlx_texture_t	*texture_1;
+	mlx_texture_t	*texture_1_text;
+	mlx_image_t		*texture_1;
 	t_player		*player;
 	t_ray			*ray;
 	mlx_key_data_t	keydata;
@@ -135,7 +136,7 @@ typedef struct s_point
 {
 	int32_t				x;
 	int32_t				y;
-	unsigned int	color;
+	uint32_t		color;
 	void			*content;
 }					t_point;
 

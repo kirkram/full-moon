@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/17 14:39:02 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/18 18:05:08 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	count_mapheight(char *mapname)
 	count = 0;
 	while ((line = get_next_line(fd)) != NULL)
 	{
-		dprintf(2, "%s", line);
+		//dprintf(2, "%s", line);
 		free(line);
 		count++;
 	}
@@ -56,7 +56,7 @@ static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 	while (line[i] != '\0' && line[i] != '\n')
 	{
 		value = line[i];
-		dprintf(2, "%d", (value - 48));
+		//dprintf(2, "%d", (value - 48));
 		if (validate_mapsquare(value))
 			exit (ft_error("Map not valid.\n", 1)); // need clean exit
 		world_map[lno][i] = value - 48;
@@ -65,7 +65,7 @@ static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 			data->startpos[1] = i;
 		i++;
 	}
-	dprintf(2, "\n");
+	//dprintf(2, "\n");
 	return (0);
 }
 
@@ -79,11 +79,11 @@ int	**load_map(char *mapname, t_data *data)
 
 	data->map_height = count_mapheight(mapname);
 	data->map_width = MAPWIDTH;
-	dprintf(2, "mh: %d\n", data->map_height);
+	//dprintf(2, "mh: %d\n", data->map_height);
 	if (data->map_height <= 0 || data->map_height > MAX_MAPHEIGHT)
 	{
 		perror("Error opening map file (height)");
-		return (NULL);		
+		return (NULL);
 	}
 	world_map = (int **)malloc((data->map_height + 1) * sizeof(int *));
 	fd = open(mapname, O_RDONLY);

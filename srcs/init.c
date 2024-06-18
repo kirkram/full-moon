@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/17 16:22:35 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/18 18:06:00 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,17 +98,16 @@ int	load_textures(t_data *data)
 {
 	char *path;
 
-	path = "./watercolor-paper-texture.png";
-	data->texture_1 = mlx_load_png(path);
+	path = "./texture1.png";
+	data->texture_1_text = mlx_load_png(path);
 	if (access(path, F_OK))
 		return(ft_error("Cant find file", 123));
-	if (!data->texture_1)
+	if (!data->texture_1_text)
 		return(ft_error("Error on mlx_load_png", 123));
-	mlx_image_t* img = mlx_texture_to_image(data->mlx, data->texture_1);
-	// data->texture_1->
-	if (!img)
-        return(ft_error("failed to transofrm texture to image", 123));
-	if (mlx_image_to_window(data->mlx, img, 120, 120) < 0)
+	data->texture_1 = mlx_texture_to_image(data->mlx, data->texture_1_text);
+	if (!data->texture_1)
+		return(ft_error("failed to transofrm texture to image", 123));
+	if (mlx_image_to_window(data->mlx, data->texture_1, 120, 120) < 0)
 		return(ft_error("Error on mlx_image_to_window", 11));
 	return (0);
 }
