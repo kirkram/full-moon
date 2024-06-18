@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 11:02:18 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/18 20:54:36 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/18 21:09:11 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,6 @@ int	validate_map(int **world_map, t_data *data)
 	int	**test_map;
 
 	test_map = copy_2d_int(world_map, data->map_height, data->map_width);
-	printf("start y: %d\n", data->startpos_y);
-	printf("start x: %d\n", data->startpos_x);
-	printf("val at player pos: %d\n", world_map[data->startpos_y][data->startpos_x]);
 	if (flood_fill(data->startpos_y, data->startpos_x, world_map, data))
 	{
 		free_2d_int(test_map, data->map_height);
