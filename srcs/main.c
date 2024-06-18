@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/18 14:01:18 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/18 19:34:43 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,15 @@ int	copy_example_map(t_data *data)
 {
 	int	**world_map;
 
-	world_map = load_map("./maps/default.cub", data);
+	world_map = load_map("./maps/simple.cub", data);
+	dprintf(2, "map loaded, man!\n");
 	if (validate_map(world_map, data))
 		return (ft_error("Map error*", 12));
+	dprintf(2, "validation done\n");
 	data->world_map = copy_2d_int(world_map, data->map_height, data->map_width);
-	free_2d_int(world_map);
+	dprintf(2, "map copied\n");
+	// free_2d_int(world_map);
+	exit(0);
 	return (0);
 }
 

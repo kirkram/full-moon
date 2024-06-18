@@ -6,59 +6,74 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 11:02:18 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/18 14:24:21 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/18 19:30:36 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-/*
-static int	check_mapsquare(int pos_x, int pos_y, int **wmap)
-{
-	int	value;
 
-	value = wmap[pos_y][pos_x];
-	if (value == 48 || value == 49 || value == 50 || value == 78 || value == 69 
-			|| value == 83 || value == 87) // go back
-		return (0);
-	else // wrong
-		return (1);
-}
-*/
-int flood_fill(int pos_x, int pos_y, int **wmap, t_data *data)
+int flood_fill(int pos_y, int pos_x, int **wmap, t_data *data)
 { 
 	int ret;
 	int	val;
 
 	ret = 0;
 	val = wmap[pos_y][pos_x];
-	// wall, visited, one of player starts: return
-	if (val == 49 || val == 50 || val == 78 || val == 69 
-			|| val == 83 || val == 87)
+	printf("%d:%d\n", pos_y, pos_x);
+	if (val == 1)
+	{
+		printf("Hit a wall at %d:%d.\n", pos_y, pos_x);
 		return (0);
-	// at the edge of the map, no empty squares
-	else if (pos_y == 0 || pos_y == (data->map_height - 1) ||
+	}
+	if (val == 2)
+	{
+		printf("Checked already %d:%d.\n", pos_y, pos_x);
+		return (0);
+	}
+	if (pos_y == 0 || pos_y == (data->map_height - 1) ||
 		pos_x == 0 || pos_x == data->map_width - 1)
-		return (1);
-	// visited
-	wmap[pos_y][pos_x] = 50;
-	// check others
-	ret += flood_fill(pos_x + 1, pos_y, wmap, data);
-	ret += flood_fill(pos_x - 1, pos_y, wmap, data);
-	ret += flood_fill(pos_x, pos_y + 1, wmap, data);
-	ret += flood_fill(pos_x, pos_y - 1, wmap, data);
+	{
+		printf("Reached edge at %d:%d.\n", pos_y, pos_x);
+		return (1); // out of bounds
+	}
+	wmap[pos_y][pos_x] = 2;
+	// main
+	if (pos_x < data->map_width - 2)
+		ret += flood_fill(pos_y, pos_x + 1, wmap, data);
+	if (pos_x > 0)
+		ret += flood_fill(pos_y, pos_x - 1, wmap, data);
+	if (pos_y < data->map_height - 2)
+		ret += flood_fill(pos_y + 1, pos_x, wmap, data);
+	if (pos_y > 0)
+		ret += flood_fill(pos_y - 1, pos_x, wmap, data);
+	// diagonal
+	if (pos_x < data->map_width - 2 && pos_y < data->map_height - 2)
+		ret += flood_fill(pos_y + 1, pos_x + 1, wmap, data);
+	if (pos_x > 0 && pos_y > 0)
+		ret += flood_fill(pos_y - 1, pos_x - 1, wmap, data);
+	if (pos_y < data->map_height - 2 && pos_x > 0)
+		ret += flood_fill(pos_y + 1, pos_x - 1, wmap, data);
+	if (pos_x < data->map_width - 1 && pos_y > 0)
+		ret += flood_fill(pos_y - 1, pos_x + 1, wmap, data);
+	print_2d_int(wmap, data->map_height, data->map_width);
 	return (ret);
 }
 
 int	validate_map(int **world_map, t_data *data)
 {
-	int	**test_map;
+	//int	**test_map;
 
-	test_map = copy_2d_int(world_map, data->map_height, data->map_width);
-	if (flood_fill(data->startpos[0], data->startpos[1], test_map, data))
+	//test_map = copy_2d_int(world_map, data->map_height, data->map_width);
+	print_2d_int(world_map, data->map_height, data->map_width);
+	printf("start y: %d\n", data->startpos[0]);
+	printf("start x: %d\n", data->startpos[1]);
+	printf("val at player pos: %d\n", world_map[data->startpos[0]][data->startpos[1]]);
+	if (flood_fill(data->startpos[0], data->startpos[1], world_map, data))
 	{
-		free_2d_int(world_map);
-		free_2d_int(test_map);
-		return (1);
+		//free_2d_int(world_map);
+		//free_2d_int(test_map);
+		printf("Map validation failed\n");
+		return (0);
 	}
 	else
 		return (0);	

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/18 13:51:39 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/18 17:10:23 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ int		ft_error(char *msg, int	error_code);
 int		ft_abs(int result);
 int		**copy_2d_int(int **int_arr, int rows, int cols);
 int		free_2d_int(int **int_arr);
+void	print_2d_int(int **int_arr, int rows, int cols);
 char	*get_next_line(int fd);
 size_t	gnl_strlen(const char *str);
 char	*gnl_strjoin(char *s1, char *s2);
