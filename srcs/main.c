@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/18 20:03:58 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/18 20:53:00 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 int	load_valid_map(t_data *data)
 {
-	data->world_map = load_map("./maps/simple.cub", data);
+	data->startpos_x = 0;
+	
+	data->world_map = load_map("./maps/default.cub", data);
 	if (validate_map(data->world_map, data))
 		return (ft_error("Map error*", 12));
 	free_2d_int(data->world_map, data->map_height);

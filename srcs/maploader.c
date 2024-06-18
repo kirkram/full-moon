@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/18 20:05:27 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/18 21:03:35 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,14 @@ static int	validate_mapsquare(int value)
 		return (1);
 }
 
+static void	get_player_startpos(int x, int y, t_data *data)
+{
+	if (data->startpos_x || data->startpos_y)
+		exit(ft_error("Duplicate starting point", 23));
+	data->startpos_y = y;
+	data->startpos_x = x;
+}
+
 static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 {
 	int	i;
@@ -60,16 +68,15 @@ static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 	while (line[i] != '\0' && line[i] != '\n')
 	{
 		value = line[i];
-		dprintf(2, "%c", line[i]);
+		// dprintf(2, "%c", line[i]);
 		if (validate_mapsquare(value))
 			exit (ft_error("Map not valid.\n", 1)); // need clean exit
-		world_map[lno][i] = value - 48;
 		if (value == 78 || value == 69 || value == 83 || value == 87) // the player start pos char, should check that exists
-			data->startpos[0] = lno;
-			data->startpos[1] = i - 1;
+			get_player_startpos(i, lno, data);
+		world_map[lno][i] = value - 48;
 		i++;
 	}
-	dprintf(2, "\n");
+	// dprintf(2, "\n");
 	return (0);
 }
 
@@ -83,8 +90,6 @@ int	**load_map(char *mapname, t_data *data)
 	int		lno;
 
 	count_mapdimensions(mapname, data);
-	dprintf(2, "map height: %d\n", data->map_height);
-	dprintf(2, "map width: %d\n", data->map_width);
 	if (data->map_height <= 0 || data->map_height > MAX_MAPHEIGHT
 		|| data->map_width <= 0 || data->map_width > MAX_MAPWIDTH)
 		exit(ft_error("Map dimensions error", 22));

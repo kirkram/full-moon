@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/18 20:02:17 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/18 20:51:26 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define SCREENHEIGHT 720
 # define MINIZOOM SCREENWIDTH / 120
 # define PLAYERSIZE MINIZOOM / 2
-# define STARTPOS 1.2
+// # define STARTPOS 1.2
 # define RESOLUTION 5
 
 # define DEGR 0.0174533
@@ -124,7 +124,8 @@ typedef struct s_data
 	int				**world_map;
 	int				map_height;
 	int				map_width;
-	int				startpos[2];
+	int				startpos_x;
+	int				startpos_y;
 	double			line_error;
 }					t_data;
 
