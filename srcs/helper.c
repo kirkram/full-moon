@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 14:39:44 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/18 19:07:54 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/18 19:45:16 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,14 @@ int	**copy_2d_int(int **int_arr, int rows, int cols)
 	return (new_arr);
 }
 
-int	free_2d_int(int **int_arr)
+int	free_2d_int(int **int_arr, int rows)
 {
 	int	i;
 
 	i = 0;
 	if (int_arr)
 	{
-		while (i < MAPHEIGHT)
+		while (i < rows)
 		{
 			free(int_arr[i]);
 			i++;
@@ -80,6 +80,7 @@ int	free_2d_int(int **int_arr)
 	}
 	return (0);
 }
+
 int	color_whole_image(mlx_image_t *img, int color, int width, int height)
 {
 	int	x;

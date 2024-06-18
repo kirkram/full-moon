@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/18 18:16:56 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/18 20:05:27 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int	**load_map(char *mapname, t_data *data)
 		line = get_next_line(fd);
 		if (!line || write_mapline(line, lno, world_map, data))
 			break ;
+		free(line);
 		lno++;
 	}
 	close(fd);

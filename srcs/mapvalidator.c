@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 11:02:18 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/18 19:30:36 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/18 19:48:34 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,20 +61,21 @@ int flood_fill(int pos_y, int pos_x, int **wmap, t_data *data)
 
 int	validate_map(int **world_map, t_data *data)
 {
-	//int	**test_map;
+	int	**test_map;
 
-	//test_map = copy_2d_int(world_map, data->map_height, data->map_width);
-	print_2d_int(world_map, data->map_height, data->map_width);
+	test_map = copy_2d_int(world_map, data->map_height, data->map_width);
 	printf("start y: %d\n", data->startpos[0]);
 	printf("start x: %d\n", data->startpos[1]);
 	printf("val at player pos: %d\n", world_map[data->startpos[0]][data->startpos[1]]);
 	if (flood_fill(data->startpos[0], data->startpos[1], world_map, data))
 	{
-		//free_2d_int(world_map);
-		//free_2d_int(test_map);
+		free_2d_int(test_map, data->map_height);
 		printf("Map validation failed\n");
 		return (0);
 	}
 	else
-		return (0);	
+	{
+		free_2d_int(test_map, data->map_height);
+		return (0);
+	}
 }

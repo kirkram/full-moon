@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/18 17:10:23 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/18 20:02:17 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ typedef struct s_point
 }					t_point;
 
 //init
-int		copy_example_map(t_data *data);
+int		load_valid_map(t_data *data);
 int		**load_map(char *mapname, t_data *data);
 int		validate_map(int **world_map, t_data *data);
 int		color_whole_image(mlx_image_t *img, int color, int width, int height);
@@ -162,7 +162,7 @@ t_data	*reinit_image(t_data *data, mlx_image_t *img);
 int		ft_error(char *msg, int	error_code);
 int		ft_abs(int result);
 int		**copy_2d_int(int **int_arr, int rows, int cols);
-int		free_2d_int(int **int_arr);
+int		free_2d_int(int **int_arr, int rows);
 void	print_2d_int(int **int_arr, int rows, int cols);
 char	*get_next_line(int fd);
 size_t	gnl_strlen(const char *str);
