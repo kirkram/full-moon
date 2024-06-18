@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/14 17:21:10 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/18 20:53:22 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	init_player(t_data *data)
 {
-	data->player->x_pos = STARTPOS;
-	data->player->y_pos = STARTPOS;
+	data->player->x_pos = data->startpos_x;
+	data->player->y_pos = data->startpos_y;
 	data->player->angle = rad(STARTORIENT);
 	data->player->imgwidth = data->width; // or MAPHEIGHT * data->zoom
 	data->player->imgheight = data->height;

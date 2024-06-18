@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:38:48 by klukiano          #+#    #+#             */
-/*   Updated: 2024/01/16 16:14:42 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/18 19:03:11 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	if (dst || src)
+	if (!dst || !src)
+		return (NULL);
 	{
 		while (n > 0)
 		{
