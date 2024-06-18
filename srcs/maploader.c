@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/18 14:14:02 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/18 14:19:55 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 	while (line[i] != '\0' && line[i] != '\n')
 	{
 		value = line[i];
-		dprintf(2, "%d", (value - 48));
+		// dprintf(2, "%d", (value - 48));
 		if (validate_mapsquare(value))
 			exit (ft_error("Map not valid.\n", 1)); // need clean exit
 		world_map[lno][i] = value - 48;
