@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/06/18 18:05:08 by klukiano         ###   ########.fr       */
-=======
-/*   Updated: 2024/06/18 21:03:35 by mburakow         ###   ########.fr       */
->>>>>>> main
+/*   Updated: 2024/06/19 17:08:47 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +27,8 @@ static void	count_mapdimensions(char *mapname, t_data *data)
 	rows = 0;
 	while ((line = get_next_line(fd)) != NULL)
 	{
-<<<<<<< HEAD
-		//dprintf(2, "%s", line);
-=======
 		if (colsmax < (int)(ft_strlen(line) - 1))
 			colsmax = (int)(ft_strlen(line) - 1);
->>>>>>> main
 		free(line);
 		rows++;
 	}
@@ -76,11 +68,7 @@ static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 	while (line[i] != '\0' && line[i] != '\n')
 	{
 		value = line[i];
-<<<<<<< HEAD
-		//dprintf(2, "%d", (value - 48));
-=======
 		// dprintf(2, "%c", line[i]);
->>>>>>> main
 		if (validate_mapsquare(value))
 			exit (ft_error("Map not valid.\n", 1)); // need clean exit
 		if (value == 78 || value == 69 || value == 83 || value == 87) // the player start pos char, should check that exists
@@ -88,11 +76,7 @@ static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 		world_map[lno][i] = value - 48;
 		i++;
 	}
-<<<<<<< HEAD
-	//dprintf(2, "\n");
-=======
 	// dprintf(2, "\n");
->>>>>>> main
 	return (0);
 }
 
@@ -105,21 +89,10 @@ int	**load_map(char *mapname, t_data *data)
 	char	*line;
 	int		lno;
 
-<<<<<<< HEAD
-	data->map_height = count_mapheight(mapname);
-	data->map_width = MAPWIDTH;
-	//dprintf(2, "mh: %d\n", data->map_height);
-	if (data->map_height <= 0 || data->map_height > MAX_MAPHEIGHT)
-	{
-		perror("Error opening map file (height)");
-		return (NULL);
-	}
-=======
 	count_mapdimensions(mapname, data);
 	if (data->map_height <= 0 || data->map_height > MAX_MAPHEIGHT
 		|| data->map_width <= 0 || data->map_width > MAX_MAPWIDTH)
 		exit(ft_error("Map dimensions error", 22));
->>>>>>> main
 	world_map = (int **)malloc((data->map_height + 1) * sizeof(int *));
 	fd = open(mapname, O_RDONLY);
 	if (fd == -1)

@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/06/18 18:05:56 by klukiano         ###   ########.fr       */
-=======
-/*   Updated: 2024/06/18 20:51:26 by mburakow         ###   ########.fr       */
->>>>>>> main
+/*   Updated: 2024/06/19 17:07:27 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +20,6 @@
 # include <math.h>
 # include "../lib/libft/libft.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
-
-#include <unistd.h> //temp for access
 
 # define MAPWIDTH 24
 # define MAPHEIGHT 24
