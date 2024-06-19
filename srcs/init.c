@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/19 17:08:11 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/19 18:50:41 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	load_textures(t_data *data)
 {
 	char *path;
 
-	path = "./texture1.png";
+	path = TEXTURE_PATH;
 	data->texture_1_text = mlx_load_png(path);
 	if (access(path, F_OK))
 		return(ft_error("Cant find file", 123));

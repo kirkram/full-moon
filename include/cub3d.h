@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/19 17:07:27 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/19 18:52:37 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 # define DEGR_RESO 0.0174533 / RESOLUTION
 # define FOV 60
 
+# define TEXTURE_PATH "./green_texture.png"
+
 //maths
 # define PI 3.14159265359
 # define PI_N 4.71238898039
@@ -49,7 +51,7 @@
 # define NORTH 270
 
 //TEMP TEMP TEMP TEMP TEMP
-# define STARTORIENT EAST
+# define STARTORIENT NORTH
 
 //colors
 # define BLACK 0x000000FF
