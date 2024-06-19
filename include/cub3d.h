@@ -6,7 +6,11 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/06/18 18:05:56 by klukiano         ###   ########.fr       */
+=======
+/*   Updated: 2024/06/18 20:51:26 by mburakow         ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +36,7 @@
 # define SCREENHEIGHT 720
 # define MINIZOOM SCREENWIDTH / 120
 # define PLAYERSIZE MINIZOOM / 2
-# define STARTPOS 1.2
+// # define STARTPOS 1.2
 # define RESOLUTION 5
 
 # define DEGR 0.0174533
@@ -128,7 +132,8 @@ typedef struct s_data
 	int				**world_map;
 	int				map_height;
 	int				map_width;
-	int				startpos[2];
+	int				startpos_x;
+	int				startpos_y;
 	double			line_error;
 }					t_data;
 
@@ -141,10 +146,9 @@ typedef struct s_point
 }					t_point;
 
 //init
-int		copy_example_map(t_data *data);
+int		load_valid_map(t_data *data);
 int		**load_map(char *mapname, t_data *data);
-int		validate_map(int **world_map);
-int		validate_mapsquare(int value);
+int		validate_map(int **world_map, t_data *data);
 int		color_whole_image(mlx_image_t *img, int color, int width, int height);
 
 //drawing
@@ -166,7 +170,9 @@ t_data	*reinit_image(t_data *data, mlx_image_t *img);
 //helper
 int		ft_error(char *msg, int	error_code);
 int		ft_abs(int result);
-int		free_2d_int(int **int_arr);
+int		**copy_2d_int(int **int_arr, int rows, int cols);
+int		free_2d_int(int **int_arr, int rows);
+void	print_2d_int(int **int_arr, int rows, int cols);
 char	*get_next_line(int fd);
 size_t	gnl_strlen(const char *str);
 char	*gnl_strjoin(char *s1, char *s2);
