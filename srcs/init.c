@@ -6,16 +6,11 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/20 15:15:54 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/20 16:18:56 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-double	init_player_start_angle(t_data *data)
-{
- 	return data->player->angle = rad(STARTORIENT);	
-}
 
 int	init_player(t_data *data)
 {

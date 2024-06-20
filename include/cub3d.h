@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/20 14:48:31 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/20 16:06:12 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@
 # define NORTH 270
 
 //TEMP TEMP TEMP TEMP TEMP
-# define STARTORIENT EAST
+// # define STARTORIENT EAST
 
 //colors
 # define BLACK 0x000000FF
