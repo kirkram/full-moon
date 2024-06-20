@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/18 21:03:35 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/20 14:32:42 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,24 @@ static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 	if (world_map[lno] == NULL)
 		exit (ft_error("Map line malloc fail.\n", 1));
 	i = 0;
-	while (line[i] != '\0' && line[i] != '\n')
+	while (i < data->map_width)
 	{
-		value = line[i];
-		// dprintf(2, "%c", line[i]);
-		if (validate_mapsquare(value))
-			exit (ft_error("Map not valid.\n", 1)); // need clean exit
-		if (value == 78 || value == 69 || value == 83 || value == 87) // the player start pos char, should check that exists
-			get_player_startpos(i, lno, data);
-		world_map[lno][i] = value - 48;
+		if (line[i] != '\0' && line[i] != '\n')
+		{
+			value = line[i];
+			// dprintf(2, "%c", line[i]);
+			if (validate_mapsquare(value))
+				exit (ft_error("Map not valid.\n", 1)); // need clean exit
+			if (value == 78 || value == 69 || value == 83 || value == 87) // the player start pos char, should check that exists
+				get_player_startpos(i, lno, data);
+			// TEMP: 3 following lines
+			if (value == 32)
+				world_map[lno][i] = 1;
+			else	
+				world_map[lno][i] = value - 48;
+		}
+		else
+			world_map[lno][i] = 1;
 		i++;
 	}
 	// dprintf(2, "\n");
