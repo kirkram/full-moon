@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/20 14:32:42 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/20 14:46:01 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	count_mapdimensions(char *mapname, t_data *data)
 	if (fd == -1)
 		exit(ft_error("Error opening file for count\n", 22));
 	rows = 0;
+	colsmax = 0;
 	while ((line = get_next_line(fd)) != NULL)
 	{
 		if (colsmax < (int)(ft_strlen(line) - 1))
@@ -85,7 +86,6 @@ static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 			world_map[lno][i] = 1;
 		i++;
 	}
-	// dprintf(2, "\n");
 	return (0);
 }
 
@@ -117,5 +117,6 @@ int	**load_map(char *mapname, t_data *data)
 		lno++;
 	}
 	close(fd);
+	print_2d_int(world_map, data->map_height, data->map_width);
 	return (world_map);
 }
