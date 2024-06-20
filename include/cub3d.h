@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/20 16:06:12 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/20 17:45:38 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 # include "../lib/libft/libft.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 
-# define MAPWIDTH 24
-# define MAPHEIGHT 24
+// # define MAPWIDTH 24
+// # define MAPHEIGHT 24
 // for future editions and now (dynamic mapsizes)
 # define MAX_MAPWIDTH 48
 # define MAX_MAPHEIGHT 48
