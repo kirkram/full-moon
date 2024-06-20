@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/20 14:46:01 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/20 15:18:32 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,21 @@ static int	validate_mapsquare(int value)
 		return (1);
 }
 
-static void	get_player_startpos(int x, int y, t_data *data)
+static void	get_player_startpos(int x, int y, t_data *data, int value)
 {
 	if (data->startpos_x || data->startpos_y)
 		exit(ft_error("Duplicate starting point", 23));
 	data->startpos_y = y;
 	data->startpos_x = x;
+	if (value == 78 || value == 69 || value == 83 || value == 87)
+	if (value == 78)
+		data->player->angle = rad(NORTH);
+	if (value == 69)
+		data->player->angle = rad(EAST);
+	if (value == 83)
+		data->player->angle = rad(SOUTH);
+	if (value == 87)
+		data->player->angle = rad(WEST);
 }
 
 static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
@@ -75,9 +84,12 @@ static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 			if (validate_mapsquare(value))
 				exit (ft_error("Map not valid.\n", 1)); // need clean exit
 			if (value == 78 || value == 69 || value == 83 || value == 87) // the player start pos char, should check that exists
-				get_player_startpos(i, lno, data);
+			{
+				get_player_startpos(i, lno, data, value);
+				world_map[lno][i] = 0;
+			}
 			// TEMP: 3 following lines
-			if (value == 32)
+			else if (value == 32)
 				world_map[lno][i] = 1;
 			else	
 				world_map[lno][i] = value - 48;

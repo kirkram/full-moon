@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/20 14:34:46 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/20 14:48:31 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,8 +170,5 @@ size_t	gnl_strlen(const char *str);
 char	*gnl_strjoin(char *s1, char *s2);
 int		gnl_strcpos(const char *s, int c);
 char	*gnl_substr(char *buffer, unsigned int start, size_t len);
-
-
-
 
 #endif
