@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/19 18:52:37 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/21 18:25:44 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@
 # define SCREENHEIGHT 720
 # define MINIZOOM SCREENWIDTH / 120
 # define PLAYERSIZE MINIZOOM / 2
-// # define STARTPOS 1.2
 # define RESOLUTION 5
+# define STARTPOS 1.2
 
 # define DEGR 0.0174533
 # define DEGR_RESO 0.0174533 / RESOLUTION
 # define FOV 60
 
-# define TEXTURE_PATH "./green_texture.png"
+# define TEXTURE_PATH "./texture_tiger.png"
 
 //maths
 # define PI 3.14159265359

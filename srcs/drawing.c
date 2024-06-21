@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/19 18:50:26 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/21 18:51:58 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,9 @@ int get_rgba(int r, int g, int b, int a)
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
+
+//ORIGIANL WITH TEXTURE NOT IMAGE
+
 void	draw_column(t_data *data, t_ray *ray, int i)
 {
 	t_point		line;
@@ -206,97 +209,74 @@ void	draw_column(t_data *data, t_ray *ray, int i)
 	uint8_t		green;
 	uint8_t		blue;
 	uint8_t		alpha;
-	uint32_t	index;
+	int			index;
 	uint8_t		*pixels;
+
+	double		texture_y;
+	double		texture_y_step;
+	double		texture_x;
+	double		texture_x_step;
+
 
 	pixels = data->texture_1_text->pixels;
 	dist = ray->hor_dist;
-	line.color = YEL_WHITE;
+	texture_y = 0;
+	
 	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist
 			&& ray->vert_dist != 0))
 	{
 		dist = ray->vert_dist;
-		line.color = YEL_WHITE_SHADE;
+		ray->x = ray->x_v;
+		ray->y = ray->y_v;
 	}
+	texture_x = (double)data->texture_1_text->width * (ray->x - (int)ray->x);
+	//else 
+	//	printf("ray x is %f ray-x int is %d, and width is %d and texture is now %f\n", ray->x, (int)ray->x, data->texture_1_text->width, texture_x);
 	line_h = data->height / dist;
-	line_w = (double)data->width / (FOV * RESOLUTION);
+	line_w = (double)data->width / ((double)(FOV * RESOLUTION));
 	line.y = (data->height -line_h) / 2;
-
-	float texture_y = 0;
-	float texture_step = data->texture_1->height / line_h;
-
+	texture_y_step = (double)data->texture_1_text->height / line_h;
+	texture_x_step = (double)data->texture_1_text->width / ((double)(FOV * RESOLUTION)) / line_w;
+	// printf("textwidth %d / (fov%d * resolution%d) / line_w %f\n", data->texture_1_text->width, FOV, RESOLUTION, line_w);
+	// printf("texture x is %f, ystep is %f Texture xstep is %f\n" , texture_x, texture_y_step, texture_x_step);
+	double save = texture_x;
+	int maxindex = data->texture_1_text->width * data->texture_1_text->height * data->texture_1_text->bytes_per_pixel;
 	while (++line.y < (data->height - line_h) / 2 + line_h && line.y < data->height)
 	{
 		line.x = line_w * i;
-		int x = 0; //temp without x
-		index = pixels[(int)(texture_y * data->texture_1_text->width + x) * data->texture_1_text->bytes_per_pixel];
-		red = pixels[index];
-		green = pixels[index + 1];
-		blue = pixels[index + 2];
-		alpha = pixels[index + 3];
-		line.color = get_rgba(red, green, blue, alpha);
-		printf("The color is now 0x%.8x\n", line.color);
+		texture_x = save;
+		index = texture_y * data->texture_1_text->width + texture_x;
+		index *= data->texture_1_text->bytes_per_pixel;
 		while (++line.x <= line_w * (i + 1) && line.x < data->width)
+		{
+			
+			// printf("The texture_y * data->texture_1_text->width row is %f and + texture x is %f and times bytes is %f and cast to int is %d and index is now %d\n",
+			// texture_y * data->texture_1_text->width, texture_y * data->texture_1_text->width + texture_x, (texture_y * data->texture_1_text->width + texture_x) * 
+			//data->texture_1_text->bytes_per_pixel, (uint32_t)(texture_y * data->texture_1_text->width + texture_x) * 
+			// data->texture_1_text->bytes_per_pixel, index);	
+			if (index + 2 < maxindex)
+			{
+				red = pixels[index];
+				green = pixels[index + 1];
+				blue = pixels[index + 2];
+				alpha = 0x000000FF;
+				line.color = get_rgba(red, green, blue, alpha);
+			}
+			else if (line.x + 1 <= line_w * (i + 1))
+			{
+				printf("out of bounds: the index is %d, and maxindex is %d\n", index, maxindex);
+			}
 			put_pixel(data, &line, data->screen);
-		texture_y += texture_step;
+			//texture_x += data->texture_1_text->width / (FOV * RESOLUTION) / line_w;
+			texture_x = texture_x + texture_x_step;
+			// if (texture_x > data->texture_1_text->width)
+			// 	texture_x = texture_x - data->texture_1_text->width;
+			//index += 4;
+			
+		}
+		texture_y += texture_y_step;
 	}
 }
-
-// void	draw_column(t_data *data, t_ray *ray, int i)
-// {
-// 	t_point	line;
-// 	double	dist;
-// 	double	line_w;
-// 	double	line_h;
-
-// 	dist = ray->hor_dist;
-// 	line.color = YEL_WHITE;
-// 	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist
-// 			&& ray->vert_dist != 0))
-// 	{
-// 		dist = ray->vert_dist;
-// 		line.color = YEL_WHITE_SHADE;
-// 	}
-// 	line_h = data->height / dist;
-// 	line_w = (double)data->width / (FOV * RESOLUTION);
-// 	line.y = data->height / 2 - 1;
-
-// 	float texture_y = data->texture_1->height / 2;
-// 	float texture_step = data->texture_1->height / (line_h / 2);
-
-// 	float texture_x = i % data->texture_1->width;
-// 	while (++line.y < (data->height / 2) + line_h / 2
-// 		&& line.y < data->height)
-// 	{
-// 		// error accumulates with the truncating of the line_w
-// 		line.x = line_w * i;
-// 		//half of the len of line_h
-// 		line.color = data->texture_1->pixels[(int)(texture_y + texture_x)];
-// 		//make_color_opaque(&line.color);
-// 		//printf("The color is now 0x%.8x\n", line.color);
-// 		while (++line.x <= line_w * (i + 1) && line.x < data->width)
-// 			put_pixel(data, &line, data->screen);
-// 		texture_y += texture_step;
-// 	}
-
-// 	texture_y = data->texture_1->height / 2;
-// 	line.y = data->height / 2;
-// 	while (--line.y > (data->height / 2) - line_h / 2
-// 		&& line.y >= 0)
-// 	{
-// 		line.x = line_w * i;
-// 		line.color = data->texture_1->pixels[(int)(texture_y + texture_x)];
-// 		//make_color_opaque(&line.color);
-// 		while (++line.x <= line_w * (i + 1))
-// 			put_pixel(data, &line, data->screen);
-// 		texture_y -= texture_step;
-// 	}
-// 	// 		17.06
-// 	// Textures
-// 	//  - 1 step is one texture. The width would be 1/width of the texture, and 1/height
-// 	//  - find the position of the x and y
-// 	//  - the use it for indexing the pixel from the texture index=(y×width+x)×bytes_per_pixel
-// }
 
 void	draw_rays(t_data *data, t_ray *ray)
 {
