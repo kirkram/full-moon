@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mapvalidator.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 11:02:18 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/18 21:09:11 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/24 18:57:28 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ int	validate_map(int **world_map, t_data *data)
 	if (flood_fill(data->startpos_y, data->startpos_x, world_map, data))
 	{
 		free_2d_int(test_map, data->map_height);
-		printf("Map validation failed\n");
-		return (0);
+		return (1);
 	}
 	else
 	{

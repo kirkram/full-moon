@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/21 18:25:44 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/24 18:49:29 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ typedef struct s_data
 	int32_t			width;
 	int32_t			height;
 	int32_t			zoom;
+	char			*map_path;
 	int				**world_map;
 	int				map_height;
 	int				map_width;
@@ -137,9 +138,11 @@ typedef struct s_point
 }					t_point;
 
 //init
+void	init_map_data(t_data *data);
 int		load_valid_map(t_data *data, int ac, char **av);
-int		**load_map(char *mapname, t_data *data);
+void	load_map(t_data *data);
 int		validate_map(int **world_map, t_data *data);
+void	map_validation_error(char *msg, int rows, char *line, t_data *data);
 int		color_whole_image(mlx_image_t *img, int color, int width, int height);
 
 //drawing
