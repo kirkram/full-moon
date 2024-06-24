@@ -20,7 +20,7 @@ OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 RM = rm -f
 
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c
-				cc $(CFLAGS) $(INCS) -c $< -o $@
+	cc $(CFLAGS) $(INCS) -c $< -o $@
 
 all: $(NAME)
 
