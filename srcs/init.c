@@ -3,20 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/21 18:25:49 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/24 18:55:42 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+void	init_map_data(t_data *data)
+{
+	data->map_path = NULL;
+	data->world_map = NULL;
+	data->startpos_x = 0;
+	data->startpos_y = 0;
+}
+
 int	init_player(t_data *data)
 {
 	data->player->x_pos = data->startpos_x;
 	data->player->y_pos = data->startpos_y;
-	// data->player->angle = rad(STARTORIENT);
 	data->player->imgwidth = data->width; // or MAPHEIGHT * data->zoom
 	data->player->imgheight = data->height;
 	data->player->img = mlx_new_image(data->mlx, data->player->imgwidth,
