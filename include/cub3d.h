@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/18 20:51:26 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/20 17:45:38 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@
 # include "../lib/libft/libft.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 
-# define MAPWIDTH 24
-# define MAPHEIGHT 24
+// # define MAPWIDTH 24
+// # define MAPHEIGHT 24
 // for future editions and now (dynamic mapsizes)
-# define MAX_MAPWIDTH 24
-# define MAX_MAPHEIGHT 24
+# define MAX_MAPWIDTH 48
+# define MAX_MAPHEIGHT 48
 # define SCREENWIDTH 1280
 # define SCREENHEIGHT 720
 # define MINIZOOM SCREENWIDTH / 120
@@ -49,7 +49,7 @@
 # define NORTH 270
 
 //TEMP TEMP TEMP TEMP TEMP
-# define STARTORIENT EAST
+// # define STARTORIENT EAST
 
 //colors
 # define BLACK 0x000000FF
@@ -138,7 +138,7 @@ typedef struct s_point
 }					t_point;
 
 //init
-int		load_valid_map(t_data *data);
+int		load_valid_map(t_data *data, int ac, char **av);
 int		**load_map(char *mapname, t_data *data);
 int		validate_map(int **world_map, t_data *data);
 int		color_whole_image(mlx_image_t *img, int color, int width, int height);
@@ -170,8 +170,5 @@ size_t	gnl_strlen(const char *str);
 char	*gnl_strjoin(char *s1, char *s2);
 int		gnl_strcpos(const char *s, int c);
 char	*gnl_substr(char *buffer, unsigned int start, size_t len);
-
-
-
 
 #endif

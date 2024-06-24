@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/18 21:03:35 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/20 15:18:32 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	count_mapdimensions(char *mapname, t_data *data)
 	if (fd == -1)
 		exit(ft_error("Error opening file for count\n", 22));
 	rows = 0;
+	colsmax = 0;
 	while ((line = get_next_line(fd)) != NULL)
 	{
 		if (colsmax < (int)(ft_strlen(line) - 1))
@@ -48,12 +49,21 @@ static int	validate_mapsquare(int value)
 		return (1);
 }
 
-static void	get_player_startpos(int x, int y, t_data *data)
+static void	get_player_startpos(int x, int y, t_data *data, int value)
 {
 	if (data->startpos_x || data->startpos_y)
 		exit(ft_error("Duplicate starting point", 23));
 	data->startpos_y = y;
 	data->startpos_x = x;
+	if (value == 78 || value == 69 || value == 83 || value == 87)
+	if (value == 78)
+		data->player->angle = rad(NORTH);
+	if (value == 69)
+		data->player->angle = rad(EAST);
+	if (value == 83)
+		data->player->angle = rad(SOUTH);
+	if (value == 87)
+		data->player->angle = rad(WEST);
 }
 
 static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
@@ -65,18 +75,29 @@ static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 	if (world_map[lno] == NULL)
 		exit (ft_error("Map line malloc fail.\n", 1));
 	i = 0;
-	while (line[i] != '\0' && line[i] != '\n')
+	while (i < data->map_width)
 	{
-		value = line[i];
-		// dprintf(2, "%c", line[i]);
-		if (validate_mapsquare(value))
-			exit (ft_error("Map not valid.\n", 1)); // need clean exit
-		if (value == 78 || value == 69 || value == 83 || value == 87) // the player start pos char, should check that exists
-			get_player_startpos(i, lno, data);
-		world_map[lno][i] = value - 48;
+		if (line[i] != '\0' && line[i] != '\n')
+		{
+			value = line[i];
+			// dprintf(2, "%c", line[i]);
+			if (validate_mapsquare(value))
+				exit (ft_error("Map not valid.\n", 1)); // need clean exit
+			if (value == 78 || value == 69 || value == 83 || value == 87) // the player start pos char, should check that exists
+			{
+				get_player_startpos(i, lno, data, value);
+				world_map[lno][i] = 0;
+			}
+			// TEMP: 3 following lines
+			else if (value == 32)
+				world_map[lno][i] = 1;
+			else	
+				world_map[lno][i] = value - 48;
+		}
+		else
+			world_map[lno][i] = 1;
 		i++;
 	}
-	// dprintf(2, "\n");
 	return (0);
 }
 
@@ -108,5 +129,6 @@ int	**load_map(char *mapname, t_data *data)
 		lno++;
 	}
 	close(fd);
+	print_2d_int(world_map, data->map_height, data->map_width);
 	return (world_map);
 }

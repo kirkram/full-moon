@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/17 17:55:01 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/20 17:40:20 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	vertical_rays(t_data *data, t_ray *ray)
 		// printf("North or South\n\n\n");
 		ray->x_v = player->x_pos;
 		ray->y_v = player->y_pos;
-		ray->dof = MAPHEIGHT;
+		ray->dof = data->map_height;
 	}
 	else if ((float)ray->ang < (float)PI_N && (float)ray->ang > (float)PI_S)
 	{
@@ -108,23 +108,23 @@ void	vertical_rays(t_data *data, t_ray *ray)
 		ray->x_off = 1;
 		ray->y_off = -ray->x_off * ray->ntan;
 	}
-	while (ray->dof < MAPHEIGHT)
+	while (ray->dof < data->map_height)
 	{
 		map.y = (int)ray->y_v;
 		map.x = (int)ray->x_v;
-		if (map.y < MAPHEIGHT && map.y >= 0 && map.x < MAPWIDTH && map.x >= 0
+		if (map.y < data->map_height && map.y >= 0 && map.x < data->map_width && map.x >= 0
 			&& data->world_map[map.y][map.x] == 1)
-			ray->dof = MAPHEIGHT;
+			ray->dof = data->map_height;
 		else
 		{
-			if (ray->y_v > 0 && ray->y_v < MAPHEIGHT)
+			if (ray->y_v > 0 && ray->y_v < data->map_height)
 				ray->y_v += ray->y_off;
-			if (ray->x_v > 0 && ray->x_v < MAPWIDTH)
+			if (ray->x_v > 0 && ray->x_v < data->map_width)
 				ray->x_v += ray->x_off;
 			ray->dof++;
 		}
-		if (ray->dof != MAPHEIGHT && (ray->y_v < 0 || ray->x_v < 0
-				|| ray->x_v >= MAPWIDTH || ray->y_v >= MAPHEIGHT))
+		if (ray->dof != data->map_height && (ray->y_v < 0 || ray->x_v < 0
+				|| ray->x_v >= data->map_width || ray->y_v >= data->map_height))
 			break ;
 	}
 }
@@ -142,7 +142,7 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 		// printf("0 or PI\n\n\n");
 		ray->y = player->y_pos;
 		ray->x = player->x_pos;
-		ray->dof = MAPHEIGHT;
+		ray->dof = data->map_height;
 	}
 	else if (ray->ang > PI)
 	{
@@ -158,24 +158,24 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 		ray->y_off = 1;
 		ray->x_off = -ray->y_off * ray->atan;
 	}
-	while (ray->dof < MAPHEIGHT)
+	while (ray->dof < data->map_height)
 	{
 		map.y = (int)ray->y;
 		map.x = (int)ray->x;
-		if (map.y < MAPHEIGHT && map.y >= 0 && map.x < MAPWIDTH && map.x >= 0
+		if (map.y < data->map_height && map.y >= 0 && map.x < data->map_width && map.x >= 0
 			&& data->world_map[map.y][map.x] == 1)
-			ray->dof = MAPHEIGHT;
+			ray->dof = data->map_height;
 		else
 		{
-			if (ray->y > 0 && ray->y < MAPHEIGHT)
+			if (ray->y > 0 && ray->y < data->map_height)
 				ray->y += ray->y_off;
-			if (ray->x > 0 && ray->x < MAPWIDTH)
+			if (ray->x > 0 && ray->x < data->map_width)
 				ray->x += ray->x_off;
 			ray->dof++;
 		}
-		if (ray->dof != MAPHEIGHT && (ray->y < 0 || ray->x < 0
-				|| ray->x >= MAPWIDTH || ray->y >= MAPHEIGHT))
-			ray->dof = MAPHEIGHT;
+		if (ray->dof != data->map_height && (ray->y < 0 || ray->x < 0
+				|| ray->x >= data->map_width || ray->y >= data->map_height))
+			ray->dof = data->map_height;
 	}
 }
 
