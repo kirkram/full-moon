@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:13:41 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/20 18:01:00 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/24 13:56:41 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,10 @@ void	draw_minimap(t_data *data)
 		x = 0;
 		while (x < data->map_width)
 		{
-			if (x < data->map_width)// - 1)
+			if (x < data->map_width - 1)
 				drw_line(new_p(x, y, data), new_p(x + 1, y, data), data,
 					data->minimap);
-			if (y < data->map_height)// - 1)
+			if (y < data->map_height - 1)
 				drw_line(new_p(x, y, data), new_p(x, y + 1, data), data,
 					data->minimap);
 			x++;
