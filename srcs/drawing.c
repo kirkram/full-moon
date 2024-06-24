@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/24 15:38:21 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/24 19:39:32 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,12 +195,22 @@ void	make_color_opaque(unsigned int	*color)
 	*color = *color & mask;
 	mask = 0x000000FF;
 	*color = *color | mask;
-
 }
 
-int get_rgba(int r, int g, int b, int a)
+uint32_t	index_color(t_txt *txt, t_ray *ray)
 {
-	return (r << 24 | g << 16 | b << 8 | a);
+	txt->red = txt->ptr->pixels[txt->index];
+	txt->green = txt->ptr->pixels[txt->index + 1];
+	txt->blue = txt->ptr->pixels[txt->index + 2];
+	txt->alpha = 0x000000FF;
+	//shade if a vertical ray
+	if (ray->x == ray->x_v)
+	{
+		txt->red /= 1.3;
+		txt->green /= 1.3;
+		txt->blue /= 1.3;
+	}
+	return (txt->red << 24 | txt->green  << 16 | txt->blue << 8 | txt->alpha);
 }
 
 
@@ -212,61 +222,51 @@ void	draw_column(t_data *data, t_ray *ray, int i)
 	double		dist;
 	double		line_w;
 	double		line_h;
-
-	uint8_t		red;
-	uint8_t		green;
-	uint8_t		blue;
-	uint8_t		alpha;
-	uint32_t	index;
-	uint8_t		*pixels;
-
-	double		texture_y;
-	double		texture_y_step;
-	double		texture_x;
-	double		texture_x_step;
-	double		save;
-
-
-	pixels = data->texture_1_text->pixels;
-	dist = ray->hor_dist;
-	texture_y = 0;
+	t_txt		txt;
 	
-	texture_x = (double)data->texture_1_text->width * (ray->x - (int)ray->x);
-	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist
-			&& ray->vert_dist != 0))
+	dist = ray->hor_dist;
+	txt.y = 0;
+	//north is 0, s 1, e 2, w 3
+	txt.ptr = data->txt_n;
+	txt.x = (double)txt.ptr->width * (ray->x - (int)ray->x);
+	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist && ray->vert_dist != 0))
 	{
+		//if wall faces west
+		txt.x = (double)txt.ptr->width * (ray->y_v - (int)ray->y_v);
 		dist = ray->vert_dist;
-		texture_x = (double)data->texture_1_text->width * (ray->y_v - (int)ray->y_v);
+		ray->x = ray->x_v;
+		ray->y = ray->y_v;
+		ray->hor_dist = ray->vert_dist;
+		if (ray->ang > PI_S && ray->ang < PI_N)
+			txt.x = txt.ptr->width - txt.x;
+	}
+	else
+	{
+		//face north
+		if (ray->ang < PI)
+			txt.x = txt.ptr->width - txt.x;
 	}
 	line_h = data->height / dist;
 	line_w = (double)data->width / ((double)(FOV * RESOLUTION));
 	line.y = (data->height -line_h) / 2;
-	texture_y_step = (double)data->texture_1_text->height / line_h;
-
-	texture_x_step = (double)data->texture_1_text->width / ((double)(FOV * RESOLUTION)) / line_w;
-	save = texture_x;
+	txt.y_step = (double)txt.ptr->height / line_h;
+	txt.x_step = (double)txt.ptr->width / ((double)(FOV * RESOLUTION)) / line_w;
+	txt.save = txt.x;
 	while (++line.y < (data->height - line_h) / 2 + line_h && line.y < data->height)
 	{
 		line.x = line_w * i;
-		texture_x = save;
-		index = (int)texture_y * data->texture_1_text->width + texture_x;
-		index *= data->texture_1_text->bytes_per_pixel;
+		txt.x = txt.save;
+		txt.index = ((uint32_t)txt.y * txt.ptr->width + (uint32_t)txt.x) * txt.ptr->bytes_per_pixel;
 		while (++line.x <= line_w * (i + 1) && line.x < data->width)
 		{	
-			//less than maxindex, unneecessary?
-			// if (index + 2 < (int)data->texture_1_text->width * data->texture_1_text->height 
-			// data->texture_1_text->bytes_per_pixel)
-			// {
-				red = pixels[index];
-				green = pixels[index + 1];
-				blue = pixels[index + 2];
-				alpha = 0x000000FF;
-				line.color = get_rgba(red, green, blue, alpha);
-			// }
+			// less than maxindex, unneecessary?
+			if (txt.index + 2 < (txt.ptr->width * txt.ptr->height * \
+			txt.ptr->bytes_per_pixel))
+				line.color = index_color(&txt, ray);
 			put_pixel(data, &line, data->screen);
-			texture_x += texture_x_step;
+			txt.x += txt.x_step;
 		}
-		texture_y += texture_y_step;
+		txt.y += txt.y_step;
 	}
 }
 
@@ -290,7 +290,7 @@ void	draw_rays(t_data *data, t_ray *ray)
 		vertical_rays(data, ray);
 		calc_distance(data, ray);
 		fix_fisheye(data, ray);
-		//draw_minirays(data, ray);
+		draw_minirays(data, ray);
 		draw_column(data, ray, i);
 		ray->ang += DEGR_RESO;
 		if (ray->ang < 0)

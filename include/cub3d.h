@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/21 18:25:44 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/24 19:38:18 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define DEGR_RESO 0.0174533 / RESOLUTION
 # define FOV 60
 
-# define TEXTURE_PATH "./texture_tiger.png"
+# define TEXTURE_PATH "./texture_cat.png"
 
 //maths
 # define PI 3.14159265359
@@ -112,8 +112,9 @@ typedef struct s_data
 	mlx_image_t		*minimap;
 	mlx_image_t		*ceiling;
 	mlx_image_t		*floor;
-	mlx_texture_t	*texture_1_text;
-	mlx_image_t		*texture_1;
+	char			**nsew_path; // n s e w
+	mlx_texture_t	**txtrs; // n s e w
+	mlx_texture_t	*txt_n;
 	t_player		*player;
 	t_ray			*ray;
 	mlx_key_data_t	keydata;
@@ -135,6 +136,21 @@ typedef struct s_point
 	uint32_t		color;
 	void			*content;
 }					t_point;
+
+typedef struct s_textures
+{
+	uint8_t			red;
+	uint8_t			green;
+	uint8_t			blue;
+	uint8_t			alpha;
+	uint32_t		index;
+	double			y;
+	double			y_step;
+	double			x;
+	double			x_step;
+	double			save;
+	mlx_texture_t	*ptr;
+}					t_txt;
 
 //init
 int		load_valid_map(t_data *data, int ac, char **av);
