@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/20 16:20:19 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/24 17:53:59 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,15 @@
 
 int	load_valid_map(t_data *data, int ac, char **av)
 {
-	char	*mappath;
 	data->startpos_x = 0;
 	data->startpos_y = 0;
 	if (ac == 1)
-		mappath = "./maps/default.cub";
+		data->map_path = ft_strjoin("./maps/", "default.cub");
 	else if (ac == 2)
-		mappath = ft_strjoin("./maps/", av[1]);
+		data->map_path = ft_strjoin("./maps/", av[1]);
 	else
 		exit(ft_error("Wrong argument count.", 25));
-	data->world_map = load_map(mappath, data);
+	data->world_map = load_map(data);
 	if (validate_map(data->world_map, data))
 		exit(ft_error("Map error*", 12));
 	return (0);

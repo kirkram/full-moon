@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   maploader.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/21 16:26:17 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/24 17:57:34 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+/*
+static void	map_validation_error(char *msg, t_data *data)
+{
+	free(data->map_path);
+	free_2d_int(data->world_map);
+	exit(ft_error(msg, 25));
+}
+*/
 
 // width of the map is always the length of the longest row, need to handle shorter
 // rows 
@@ -51,8 +60,8 @@ static int	validate_mapsquare(int value)
 
 static void	get_player_startpos(int x, int y, t_data *data, int value)
 {
-	// if (data->startpos_x || data->startpos_y)
-	// 	exit(ft_error("Duplicate starting point", 23));
+	if (data->startpos_x || data->startpos_y)
+	 	exit(ft_error("Duplicate starting point", 23));
 	data->startpos_y = y;
 	data->startpos_x = x;
 	if (value == 78 || value == 69 || value == 83 || value == 87)
@@ -82,7 +91,12 @@ static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 			value = line[i];
 			// dprintf(2, "%c", line[i]);
 			if (validate_mapsquare(value))
-				exit (ft_error("Map not valid.\n", 1)); // need clean exit
+			{
+				free(line);
+				free(data->map_path);
+				free_2d_int(world_map, lno + 1);
+				exit (ft_error("Map not valid.\n", 1));
+			} // need clean exit
 			if (value == 78 || value == 69 || value == 83 || value == 87) // the player start pos char, should check that exists
 			{
 				get_player_startpos(i, lno, data, value);
@@ -103,19 +117,19 @@ static int	write_mapline(char *line, int lno, int **world_map, t_data *data)
 
 // we need to have map_height and map_width in data not as defines
 // right now assumes a square map, but we need to handle spaces correctly
-int	**load_map(char *mapname, t_data *data)
+int	**load_map(t_data *data)
 {
 	int		fd;
 	int		**world_map;
 	char	*line;
 	int		lno;
 
-	count_mapdimensions(mapname, data);
+	count_mapdimensions(data->map_path, data);
 	if (data->map_height <= 0 || data->map_height > MAX_MAPHEIGHT
 		|| data->map_width <= 0 || data->map_width > MAX_MAPWIDTH)
 		exit(ft_error("Map dimensions error", 22));
 	world_map = (int **)malloc((data->map_height + 1) * sizeof(int *));
-	fd = open(mapname, O_RDONLY);
+	fd = open(data->map_path, O_RDONLY);
 	if (fd == -1)
 		exit(ft_error("Error opening map file", 12));
 	world_map[data->map_height] = NULL;
@@ -129,6 +143,8 @@ int	**load_map(char *mapname, t_data *data)
 		lno++;
 	}
 	close(fd);
+	if (data->startpos_x == 0 || data->startpos_y == 0)
+	 	exit(ft_error("No player starting point", 23));
 	print_2d_int(world_map, data->map_height, data->map_width);
 	return (world_map);
 }
