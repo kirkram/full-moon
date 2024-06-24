@@ -3,11 +3,10 @@ LIBFT_PATH = ./lib/libft
 LIBMLX_PATH = ./lib/MLX42
 LIBFT = $(LIBFT_PATH)/libft.a
 LIBMLX42 = $(LIBMLX_PATH)/build/libmlx42.a
-CFLAGS = -g -Wall -Wextra -Werror -Wunreachable-code
+CFLAGS = -Wall -Wextra -Werror -Wunreachable-code
 HEADERS = -I ./include -I $(LIBMLX_PATH)/include/ -I /usr/local/Cellar/glfw/include
-DEBUGFLAGS = -g -fsanitize=address,undefined
-LIBS = $(LIBMLX42) -L /Users/$(USER)/.brew/opt/glfw -L/Users/$(USER)/.brew/lib -L/opt/homebrew/lib -lglfw -lm
-#-framework Cocoa -framework OpenGL -framework IOKit
+DEBUGFLAGS = -g # -fsanitize=address,undefined,integer
+LIBS = $(LIBMLX42) -lm -lglfw -L /Users/$(USER)/.brew/opt/glfw -L/Users/$(USER)/.brew/lib -L/opt/homebrew/lib #-framework Cocoa -framework OpenGL -framework IOKit
 SRC_DIR = 	./srcs
 SRCS = main.c helper.c drawing.c init.c keyhook.c minimap.c maploader.c	\
 get_next_line_bonus.c get_next_line_utils_bonus.c mapvalidator.c
@@ -48,7 +47,7 @@ $(OBJ_DIR):
 debug: .debug
 
 .debug: $(LIBFT) $(LIBMLX42) $(OBJ_DIR) $(OBJS)
-	cc $(DEBUGFLAGS) $(HEADERS) $(OBJS) $(LIBFT) $(LIBS) -o debug.out
+	cc $(CFLAGS) $(DEBUGFLAGS) $(HEADERS) $(OBJS) $(LIBFT) $(LIBS) -o debug.out
 	touch .debug
 
 %.o: %.c ./include/cub3d.h

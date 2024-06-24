@@ -16,7 +16,7 @@ int	init_player(t_data *data)
 {
 	data->player->x_pos = data->startpos_x;
 	data->player->y_pos = data->startpos_y;
-	data->player->angle = rad(STARTORIENT);
+	// data->player->angle = rad(STARTORIENT);
 	data->player->imgwidth = data->width; // or MAPHEIGHT * data->zoom
 	data->player->imgheight = data->height;
 	data->player->img = mlx_new_image(data->mlx, data->player->imgwidth,
