@@ -4,4 +4,9 @@ lib/MLX42/
 .libmlx42
 cub3d
 lib/libft/libft.a
+<<<<<<< HEAD
+.DS_Store
+
+=======
 **/.DS_Store
+>>>>>>> main

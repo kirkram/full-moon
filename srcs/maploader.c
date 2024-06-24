@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/20 15:18:32 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/21 16:26:17 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ static int	validate_mapsquare(int value)
 
 static void	get_player_startpos(int x, int y, t_data *data, int value)
 {
-	if (data->startpos_x || data->startpos_y)
-		exit(ft_error("Duplicate starting point", 23));
+	// if (data->startpos_x || data->startpos_y)
+	// 	exit(ft_error("Duplicate starting point", 23));
 	data->startpos_y = y;
 	data->startpos_x = x;
 	if (value == 78 || value == 69 || value == 83 || value == 87)
