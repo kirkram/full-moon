@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/20 16:18:56 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/21 18:25:49 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,14 +94,35 @@ int	init_images(t_data *data)
 	return (0);
 }
 
+int	load_textures(t_data *data)
+{
+	char *path;
+
+	path = TEXTURE_PATH;
+	data->texture_1_text = mlx_load_png(path);
+	if (access(path, F_OK))
+		return(ft_error("Cant find file", 123));
+	if (!data->texture_1_text)
+		return(ft_error("Error on mlx_load_png", 123));
+	data->texture_1 = mlx_texture_to_image(data->mlx, data->texture_1_text);
+	if (!data->texture_1)
+		return(ft_error("failed to transofrm texture to image", 123));
+	if (mlx_image_to_window(data->mlx, data->texture_1, 120, 120) < 0)
+		return(ft_error("Error on mlx_image_to_window", 11));
+	return (0);
+}
+
 int	init_and_draw(t_data *data)
 {
 	if (init_images(data))
 		return (11);
+	if(load_textures(data))
+		return (123);
 	if (data->minimap)
 		draw_minimap(data);
 	draw_player(data);
 	draw_rays(data, data->ray);
+
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	mlx_loop(data->mlx);
 	mlx_terminate(data->mlx);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/20 17:45:38 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/21 18:25:44 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,21 @@
 # include "../lib/libft/libft.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 
-// # define MAPWIDTH 24
-// # define MAPHEIGHT 24
 // for future editions and now (dynamic mapsizes)
 # define MAX_MAPWIDTH 48
 # define MAX_MAPHEIGHT 48
 # define SCREENWIDTH 1280
-# define SCREENHEIGHT 720
+# define SCREENHEIGHT 860
 # define MINIZOOM SCREENWIDTH / 120
 # define PLAYERSIZE MINIZOOM / 2
-// # define STARTPOS 1.2
 # define RESOLUTION 5
+# define STARTPOS 1.2
 
 # define DEGR 0.0174533
 # define DEGR_RESO 0.0174533 / RESOLUTION
 # define FOV 60
+
+# define TEXTURE_PATH "./texture_tiger.png"
 
 //maths
 # define PI 3.14159265359
@@ -47,9 +47,6 @@
 # define SOUTH 90
 # define WEST 180
 # define NORTH 270
-
-//TEMP TEMP TEMP TEMP TEMP
-// # define STARTORIENT EAST
 
 //colors
 # define BLACK 0x000000FF
@@ -115,6 +112,8 @@ typedef struct s_data
 	mlx_image_t		*minimap;
 	mlx_image_t		*ceiling;
 	mlx_image_t		*floor;
+	mlx_texture_t	*texture_1_text;
+	mlx_image_t		*texture_1;
 	t_player		*player;
 	t_ray			*ray;
 	mlx_key_data_t	keydata;
@@ -133,7 +132,7 @@ typedef struct s_point
 {
 	int32_t				x;
 	int32_t				y;
-	unsigned int	color;
+	uint32_t		color;
 	void			*content;
 }					t_point;
 
