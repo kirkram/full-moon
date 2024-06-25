@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/25 13:54:05 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/25 14:13:30 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,28 +132,22 @@ int	init_and_draw(t_data *data)
 	data->nsew_path[i] = NULL;
 	// 1 extra for null
 	i = -1;
-	
+	data->txtrs = (mlx_texture_t **)malloc(TEXTURES_AMOUNT * sizeof(mlx_texture_t *));
 	while (++i < TEXTURES_AMOUNT)
 	{
-		data->txtrs[i] = NULL;
+		data->txtrs[i] = malloc(sizeof(mlx_texture_t *));
 		if (load_texture(data->nsew_path[i], &data->txtrs[i]))
 			return (123);
 	}
-	// data->txt_n = mlx_load_png(TEXTURE_PATH);
-	// if (!data->txt_n)
-	// 	return (123);
-	// data->txt_n = mlx_load_png(data->nsew_path[0]);
 	if (data->minimap)
 		draw_minimap(data);
 	draw_player(data);
 	draw_rays(data, data->ray);
-
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	mlx_loop(data->mlx);
-	
-	// int j = 1;
-	// while (j < TEXTURES_AMOUNT)
-	// 	mlx_delete_texture(data->txtrs[j]);
+	i = -1;
+	while (++i < TEXTURES_AMOUNT)
+		mlx_delete_texture(data->txtrs[i]);
 	mlx_terminate(data->mlx);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/25 13:53:29 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/25 14:12:02 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,12 @@ int	main(int ac, char **av)
 	init_and_draw(&data);
 
 	int i = -1;
-	while (data.nsew_path && ++i < TEXTURES_AMOUNT)
+	while (data.nsew_path && data.txtrs && ++i < TEXTURES_AMOUNT)
+	{
 		free(data.nsew_path[i]);
-	free(data.nsew_path);	
+	}
+	free(data.txtrs);
+	free(data.nsew_path);
 	free_2d_int(data.world_map, data.map_height);
 	
 	return (0);

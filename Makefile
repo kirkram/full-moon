@@ -47,7 +47,7 @@ $(OBJ_DIR):
 debug: .debug
 
 .debug: $(LIBFT) $(LIBMLX42) $(OBJ_DIR) $(OBJS)
-	cc $(CFLAGS) $(DEBUGFLAGS) $(HEADERS) $(OBJS) $(LIBFT) $(LIBS) -o debug.out
+	cc $(DEBUGFLAGS) $(HEADERS) $(OBJS) $(LIBFT) $(LIBS) -o debug.out
 	touch .debug
 
 %.o: %.c ./include/cub3d.h
