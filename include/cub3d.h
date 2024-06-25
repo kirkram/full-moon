@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/24 19:38:18 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/25 13:55:35 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # define FOV 60
 
 # define TEXTURE_PATH "./texture_cat.png"
+# define TEXTURES_AMOUNT 4 //+ 1 for null
 
 //maths
 # define PI 3.14159265359
@@ -113,7 +114,8 @@ typedef struct s_data
 	mlx_image_t		*ceiling;
 	mlx_image_t		*floor;
 	char			**nsew_path; // n s e w
-	mlx_texture_t	**txtrs; // n s e w
+	mlx_texture_t	*txtrs[TEXTURES_AMOUNT]; // n s e w
+	// mlx_texture_t	*txtrs
 	mlx_texture_t	*txt_n;
 	t_player		*player;
 	t_ray			*ray;

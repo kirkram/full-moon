@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/24 19:39:32 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/25 13:51:09 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,8 +214,6 @@ uint32_t	index_color(t_txt *txt, t_ray *ray)
 }
 
 
-//ORIGIANL WITH TEXTURE NOT IMAGE
-
 void	draw_column(t_data *data, t_ray *ray, int i)
 {
 	t_point		line;
@@ -227,7 +225,14 @@ void	draw_column(t_data *data, t_ray *ray, int i)
 	dist = ray->hor_dist;
 	txt.y = 0;
 	//north is 0, s 1, e 2, w 3
-	txt.ptr = data->txt_n;
+	// txt.ptr = data->txtrs[0];
+	
+	txt.ptr = data->txtrs[0];
+	if (txt.ptr == NULL)
+	{
+		ft_error("txt.ptr is NULL", 113);
+		exit (113);
+	}
 	txt.x = (double)txt.ptr->width * (ray->x - (int)ray->x);
 	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist && ray->vert_dist != 0))
 	{
@@ -335,6 +340,4 @@ void	put_pixel(t_data *data, t_point *point, mlx_image_t *img)
 	if (point->x < data->width && point->y < data->height && point->x >= 0
 		&& point->y >= 0)
 		mlx_put_pixel(img, point->x, point->y, point->color);
-	// else
-	// 	printf("can't put pixel\n");
 }
