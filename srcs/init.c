@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/25 17:36:23 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/25 19:44:29 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 
 void	init_map_data(t_data *data)
 {
+	int	i;
+
+	data->nsew_path = malloc((TEXTURES_AMOUNT + 1) * sizeof(char *));
+	if (!data->nsew_path)
+		map_validation_error("Error: texture malloc fail.\n", 0, NULL, data);
+	i = -1;
+	while (++i <= TEXTURES_AMOUNT)
+		data->nsew_path[i] = NULL;
 	data->map_path = NULL;
 	data->world_map = NULL;
 	data->startpos_x = 0;
@@ -116,21 +124,10 @@ int	load_texture(char *path, mlx_texture_t **txt)
 
 int	init_and_draw(t_data *data)
 {
+	int	i;
 	//Should use mlx terminate before returning early?
 	if (init_images(data))
 		return (11);
-	data->nsew_path = malloc((TEXTURES_AMOUNT + 1) * sizeof(char *));
-	if (!data->nsew_path)
-		return (12);
-	int i = -1;
-	//ASSIGN EARLIER FROM THE MAP
-	while (++i < TEXTURES_AMOUNT)
-		data->nsew_path[i] = malloc(666);
-	data->nsew_path[i] = NULL;
-	ft_strlcpy(data->nsew_path[0], N_PATH, -1);
-	ft_strlcpy(data->nsew_path[1], S_PATH, -1);
-	ft_strlcpy(data->nsew_path[2], E_PATH, -1);
-	ft_strlcpy(data->nsew_path[3], W_PATH, -1);
 	i = -1;
 	data->txtrs = (mlx_texture_t **)malloc(TEXTURES_AMOUNT * sizeof(mlx_texture_t *));
 	while (++i < TEXTURES_AMOUNT)
