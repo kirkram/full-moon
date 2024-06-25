@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/25 14:13:30 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/25 14:55:26 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,12 +125,12 @@ int	init_and_draw(t_data *data)
 	int i = -1;
 	//ASSIGN EARLIER FROM THE MAP
 	while (++i < TEXTURES_AMOUNT)
-	{
 		data->nsew_path[i] = malloc(666);
-		ft_strlcpy(data->nsew_path[i], TEXTURE_PATH, -1);
-	}
 	data->nsew_path[i] = NULL;
-	// 1 extra for null
+	ft_strlcpy(data->nsew_path[0], N_PATH, -1);
+	ft_strlcpy(data->nsew_path[1], S_PATH, -1);
+	ft_strlcpy(data->nsew_path[2], E_PATH, -1);
+	ft_strlcpy(data->nsew_path[3], W_PATH, -1);
 	i = -1;
 	data->txtrs = (mlx_texture_t **)malloc(TEXTURES_AMOUNT * sizeof(mlx_texture_t *));
 	while (++i < TEXTURES_AMOUNT)

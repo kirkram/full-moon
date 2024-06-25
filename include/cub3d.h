@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/25 14:05:09 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/25 14:54:33 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,12 @@
 # define DEGR_RESO 0.0174533 / RESOLUTION
 # define FOV 60
 
-# define TEXTURE_PATH "./texture_cat.png"
-# define TEXTURES_AMOUNT 1
+# define N_PATH "./textures/texture_cat.png"
+# define S_PATH "./textures/texture_gradient.png"
+# define E_PATH "./textures/texture_green.png"
+# define W_PATH "./textures/texture_tiger.png"
+# define TEXTURES_AMOUNT 4
+
 //maths
 # define PI 3.14159265359
 # define PI_N 4.71238898039

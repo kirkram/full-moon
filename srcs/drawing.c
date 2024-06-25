@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/25 14:24:32 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/25 14:56:30 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,6 @@ void	draw_column(t_data *data, t_ray *ray, int i)
 	txt.y = 0;
 	//north is 0, s 1, e 2, w 3
 	// txt.ptr = data->txtrs[0];
-	
 	txt.ptr = data->txtrs[0];
 	if (txt.ptr == NULL)
 	{
