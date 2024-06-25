@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/24 18:53:23 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/25 19:48:22 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 
 void	map_validation_error(char *msg, int rows, char *line, t_data *data)
 {
+	int	i;
+
+	i = -1;
+	while (++i < TEXTURES_AMOUNT)
+	{
+		if (data->nsew_path[i])
+			free(data->nsew_path[i]);
+	}
 	free(data->map_path);
 	if (line != NULL)
 		free(line);
@@ -22,15 +30,16 @@ void	map_validation_error(char *msg, int rows, char *line, t_data *data)
 	exit(ft_error(msg, 25));
 }
 
-// width of the map is always the length of the longest row, need to handle shorter
-// rows 
+// Rows that contain data such as texture names cannot start with space, 0 or 1 
 static void	count_mapdimensions(t_data *data)
 {
 	int		fd;
 	int		rows;
 	int		colsmax;
 	char	*line;
+	int		map_start;
 
+	map_start = 0;
 	fd = open(data->map_path, O_RDONLY);
 	if (fd == -1)
 		exit(ft_error("Error opening file for count\n", 22));
@@ -38,10 +47,15 @@ static void	count_mapdimensions(t_data *data)
 	colsmax = 0;
 	while ((line = get_next_line(fd)) != NULL)
 	{
-		if (colsmax < (int)(ft_strlen(line) - 1))
-			colsmax = (int)(ft_strlen(line) - 1);
+		if (!map_start && (line[0] == 32 || line[0] == 48 || line[0] == 49))
+			map_start = 1;
+		if (map_start)
+		{
+			if (colsmax < (int)(ft_strlen(line) - 1))
+				colsmax = (int)(ft_strlen(line) - 1);
+			rows++;
+		}
 		free(line);
-		rows++;
 	}
 	data->map_height = rows;
 	data->map_width = colsmax;
@@ -74,7 +88,7 @@ static void	get_player_startpos(int x, int y, t_data *data, int value)
 		data->player->angle = rad(WEST);
 }
 
-static int	write_mapline(char *line, int lno, t_data *data)
+static void	write_mapline(char *line, int lno, t_data *data)
 {
 	int	i;
 	int	value;
@@ -106,39 +120,76 @@ static int	write_mapline(char *line, int lno, t_data *data)
 			data->world_map[lno][i] = 1;
 		i++;
 	}
-	return (0);
 }
 
-// we need to have map_height and map_width in data not as defines
-// right now assumes a square map, but we need to handle spaces correctly
+static void	read_map_parameter(char *line, t_data *data)
+{
+	int		i;
+	char	*value_start;
+
+	value_start = line;
+	if (line[0] == 84)
+	{
+		value_start = ft_strchr(value_start, 61) + 1;
+		if (value_start)
+		{
+			i = -1;
+			while (value_start[++i] != '\0')
+			{
+				if (value_start[i] == '\n')
+					value_start[i] = '\0';
+			}
+			if (line[1] == 'N')
+				data->nsew_path[0] = ft_strjoin("./textures/", value_start);
+			else if (line[1] == 'S')
+				data->nsew_path[1] = ft_strjoin("./textures/", value_start);
+			else if (line[1] == 'E')
+				data->nsew_path[2] = ft_strjoin("./textures/", value_start);
+			else if (line[1] == 'W') 
+				data->nsew_path[3] = ft_strjoin("./textures/", value_start);
+			else
+				map_validation_error("Error: invalid map parameter", 0, line, data);
+		}
+	}
+}
+
 void	load_map(t_data *data)
 {
 	int		fd;
 	char	*line;
 	int		lno;
+	int		map_start;
 
+	map_start = 0;
 	count_mapdimensions(data);
 	if (data->map_height <= 0 || data->map_height > MAX_MAPHEIGHT
 		|| data->map_width <= 0 || data->map_width > MAX_MAPWIDTH)
 		map_validation_error("Error: invalid map dimensions", data->map_height, NULL, data);
-		//exit(ft_error("Map dimensions error", 22));
 	data->world_map = (int **)malloc((data->map_height + 1) * sizeof(int *));
 	fd = open(data->map_path, O_RDONLY);
 	if (fd == -1)
 		exit(ft_error("Error opening map file", 12));
 	data->world_map[data->map_height] = NULL;
 	lno = 0;
-	while (lno <= MAX_MAPHEIGHT)
+	while (1)
 	{
 		line = get_next_line(fd);
-		if (!line || write_mapline(line, lno, data))
-			break ;
+		if (!line)
+			break;
+		if (map_start == 0 && (line[0] == 32 || line[0] == 48 || line[0] == 49))
+			map_start = 1;
+		if (map_start == 1)
+		{
+			write_mapline(line, lno, data);
+			lno++;
+		}
+		if (map_start == 0)
+			read_map_parameter(line, data);
 		free(line);
-		lno++;
 	}
 	close(fd);
 	if (data->startpos_x == 0 || data->startpos_y == 0)
 	 	map_validation_error("Error: no player starting point", data->map_height, NULL, data);
-	print_2d_int(data->world_map, data->map_height, data->map_width);
+	// print_2d_int(data->world_map, data->map_height, data->map_width);
 	return ;
 }
