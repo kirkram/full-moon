@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/24 19:38:17 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/25 15:00:12 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	init_images(t_data *data)
 int	load_texture(char *path, mlx_texture_t **txt)
 {
 	*txt = mlx_load_png(path);
-
+	
 	if (!(*txt))
 		return(ft_error("Error on mlx_load_png", 123));
 	if (access(path, F_OK))
@@ -116,40 +116,39 @@ int	load_texture(char *path, mlx_texture_t **txt)
 
 int	init_and_draw(t_data *data)
 {
+	//Should use mlx terminate before returning early?
 	if (init_images(data))
 		return (11);
-
-	// data->nsew_path = malloc(5 * sizeof(char *));
-	// if (!data->nsew_path)
-	// 	return (12);
-	// int i = -1;
-	// while (++i < 4)
-	// {
-	// 	data->nsew_path[i] = malloc(666);
-	// }
-	// data->nsew_path[i] = NULL;
-	// data->txtrs = malloc(5 * sizeof(mlx_texture_t *));
-	// if (!data->txtrs)
-	// 	return (13);
-	// i = -1;
-	// while (++i < 4)
-	// {
-	// 	data->txtrs[i] = malloc(sizeof(mlx_texture_t *));
-	// }
-	// ft_strlcpy(data->nsew_path[0], TEXTURE_PATH, -1);
-	// data->txtrs[i] = NULL;
-	// printf("The path is %s\n", data->nsew_path[0]);
-	data->txt_n = mlx_load_png(TEXTURE_PATH);
-
-	// if(load_texture(data->nsew_path[0], &data->txtrs[0]))
-	// 	return (123);
+	data->nsew_path = malloc((TEXTURES_AMOUNT + 1) * sizeof(char *));
+	if (!data->nsew_path)
+		return (12);
+	int i = -1;
+	//ASSIGN EARLIER FROM THE MAP
+	while (++i < TEXTURES_AMOUNT)
+		data->nsew_path[i] = malloc(666);
+	data->nsew_path[i] = NULL;
+	ft_strlcpy(data->nsew_path[0], N_PATH, -1);
+	ft_strlcpy(data->nsew_path[1], S_PATH, -1);
+	ft_strlcpy(data->nsew_path[2], E_PATH, -1);
+	ft_strlcpy(data->nsew_path[3], W_PATH, -1);
+	i = -1;
+	data->txtrs = (mlx_texture_t **)malloc(TEXTURES_AMOUNT * sizeof(mlx_texture_t *));
+	while (++i < TEXTURES_AMOUNT)
+	{
+		data->txtrs[i] = malloc(sizeof(mlx_texture_t *));
+		if (load_texture(data->nsew_path[i], &data->txtrs[i]))
+			return (123);
+	}
 	if (data->minimap)
 		draw_minimap(data);
 	draw_player(data);
-	draw_rays(data, data->ray);
-
+	if(draw_rays(data, data->ray))
+		mlx_close_window(data->mlx);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	mlx_loop(data->mlx);
+	i = -1;
+	while (++i < TEXTURES_AMOUNT)
+		mlx_delete_texture(data->txtrs[i]);
 	mlx_terminate(data->mlx);
 	return (0);
 }
