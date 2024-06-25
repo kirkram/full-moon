@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
 /*   Updated: 2024/06/25 17:36:23 by mburakow         ###   ########.fr       */
@@ -101,37 +101,54 @@ int	init_images(t_data *data)
 	return (0);
 }
 
-int	load_textures(t_data *data)
+int	load_texture(char *path, mlx_texture_t **txt)
 {
-	char *path;
-
-	path = TEXTURE_PATH;
-	data->texture_1_text = mlx_load_png(path);
+	*txt = mlx_load_png(path);
+	
+	if (!(*txt))
+		return(ft_error("Error on mlx_load_png", 123));
 	if (access(path, F_OK))
 		return(ft_error("Cant find file", 123));
-	if (!data->texture_1_text)
-		return(ft_error("Error on mlx_load_png", 123));
-	data->texture_1 = mlx_texture_to_image(data->mlx, data->texture_1_text);
-	if (!data->texture_1)
-		return(ft_error("failed to transofrm texture to image", 123));
-	if (mlx_image_to_window(data->mlx, data->texture_1, 120, 120) < 0)
-		return(ft_error("Error on mlx_image_to_window", 11));
+	if ((*txt)->width > 4096 || (*txt)->height > 4096)
+		return(ft_error("The image dimensions should be less than 4096 pixels", 78));
 	return (0);
 }
 
 int	init_and_draw(t_data *data)
 {
+	//Should use mlx terminate before returning early?
 	if (init_images(data))
 		return (11);
-	if(load_textures(data))
-		return (123);
+	data->nsew_path = malloc((TEXTURES_AMOUNT + 1) * sizeof(char *));
+	if (!data->nsew_path)
+		return (12);
+	int i = -1;
+	//ASSIGN EARLIER FROM THE MAP
+	while (++i < TEXTURES_AMOUNT)
+		data->nsew_path[i] = malloc(666);
+	data->nsew_path[i] = NULL;
+	ft_strlcpy(data->nsew_path[0], N_PATH, -1);
+	ft_strlcpy(data->nsew_path[1], S_PATH, -1);
+	ft_strlcpy(data->nsew_path[2], E_PATH, -1);
+	ft_strlcpy(data->nsew_path[3], W_PATH, -1);
+	i = -1;
+	data->txtrs = (mlx_texture_t **)malloc(TEXTURES_AMOUNT * sizeof(mlx_texture_t *));
+	while (++i < TEXTURES_AMOUNT)
+	{
+		data->txtrs[i] = malloc(sizeof(mlx_texture_t *));
+		if (load_texture(data->nsew_path[i], &data->txtrs[i]))
+			return (123);
+	}
 	if (data->minimap)
 		draw_minimap(data);
 	draw_player(data);
-	draw_rays(data, data->ray);
-
+	if(draw_rays(data, data->ray))
+		mlx_close_window(data->mlx);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	mlx_loop(data->mlx);
+	i = -1;
+	while (++i < TEXTURES_AMOUNT)
+		mlx_delete_texture(data->txtrs[i]);
 	mlx_terminate(data->mlx);
 	return (0);
 }

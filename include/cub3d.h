@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/24 18:49:29 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/25 16:42:07 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,17 @@
 # define DEGR_RESO 0.0174533 / RESOLUTION
 # define FOV 60
 
-# define TEXTURE_PATH "./texture_tiger.png"
+# define N_PATH "./textures/N.png"
+# define S_PATH "./textures/S.png"
+# define E_PATH "./textures/E.png"
+# define W_PATH "./textures/W.png"
+# define TEXTURES_AMOUNT 4
 
 //maths
 # define PI 3.14159265359
 # define PI_N 4.71238898039
 # define PI_S PI / 2
+# define PI2 6.28318530718
 
 //direction angle
 # define EAST 0
@@ -112,8 +117,10 @@ typedef struct s_data
 	mlx_image_t		*minimap;
 	mlx_image_t		*ceiling;
 	mlx_image_t		*floor;
-	mlx_texture_t	*texture_1_text;
-	mlx_image_t		*texture_1;
+	char			**nsew_path; // n s e w
+	// mlx_texture_t	*txtrs[TEXTURES_AMOUNT]; // n s e w
+	mlx_texture_t	**txtrs;
+	mlx_texture_t	*txt_n;
 	t_player		*player;
 	t_ray			*ray;
 	mlx_key_data_t	keydata;
@@ -137,6 +144,21 @@ typedef struct s_point
 	void			*content;
 }					t_point;
 
+typedef struct s_textures
+{
+	uint8_t			red;
+	uint8_t			green;
+	uint8_t			blue;
+	uint8_t			alpha;
+	uint32_t		index;
+	double			y;
+	double			y_step;
+	double			x;
+	double			x_step;
+	double			save;
+	mlx_texture_t	*ptr;
+}					t_txt;
+
 //init
 void	init_map_data(t_data *data);
 int		load_valid_map(t_data *data, int ac, char **av);
@@ -152,8 +174,8 @@ void	put_pixel(t_data *data, t_point *point, mlx_image_t *img);
 int		draw_player(t_data *data);
 void	apply_rotation(t_data *data, t_point *point, int x, int y);
 double	rad(double angle);
-void	draw_rays(t_data *data, t_ray *ray);
-void	draw_column(t_data *data, t_ray *ray, int i);
+int		draw_rays(t_data *data, t_ray *ray);
+int		draw_column(t_data *data, t_ray *ray, int i);
 void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img);
 
 
