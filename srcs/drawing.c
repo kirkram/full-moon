@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/25 14:56:30 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/25 16:47:23 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ void	draw_minirays(t_data *data, t_ray *ray)
 
 void	fix_fisheye(t_data *data, t_ray *ray)
 {
-	float	curr_angle;
+	double	curr_angle;
 
 	curr_angle = data->player->angle - ray->ang;
 	if (curr_angle < 0)
-		curr_angle += 2 * PI;
-	else if (curr_angle >= 2 * PI)
-		curr_angle = curr_angle - (2 * PI);
+		curr_angle += PI2;
+	else if (curr_angle >= PI2)
+		curr_angle = curr_angle - (PI2);
 	ray->hor_dist *= cos(curr_angle);
 	ray->vert_dist *= cos(curr_angle);
 }
@@ -214,7 +214,7 @@ uint32_t	index_color(t_txt *txt, t_ray *ray)
 }
 
 
-void	draw_column(t_data *data, t_ray *ray, int i)
+int		draw_column(t_data *data, t_ray *ray, int i)
 {
 	t_point		line;
 	double		dist;
@@ -225,30 +225,42 @@ void	draw_column(t_data *data, t_ray *ray, int i)
 	dist = ray->hor_dist;
 	txt.y = 0;
 	//north is 0, s 1, e 2, w 3
-	// txt.ptr = data->txtrs[0];
-	txt.ptr = data->txtrs[0];
+	txt.ptr = data->txtrs[1];
 	if (txt.ptr == NULL)
 	{
 		ft_error("txt.ptr is NULL", 113);
-		exit (113);
+		return (1);
 	}
 	txt.x = (double)txt.ptr->width * (ray->x - (int)ray->x);
 	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist && ray->vert_dist != 0))
 	{
-		//if wall faces west
-		txt.x = (double)txt.ptr->width * (ray->y_v - (int)ray->y_v);
 		dist = ray->vert_dist;
 		ray->x = ray->x_v;
 		ray->y = ray->y_v;
 		ray->hor_dist = ray->vert_dist;
+		//if wall faces west, flip
 		if (ray->ang > PI_S && ray->ang < PI_N)
+		{
+			txt.ptr = data->txtrs[2];
+			txt.x = (double)txt.ptr->width * (ray->y_v - (int)ray->y_v);
 			txt.x = txt.ptr->width - txt.x;
+		}
+		else
+		{
+			txt.ptr = data->txtrs[3];
+			txt.x = (double)txt.ptr->width * (ray->y_v - (int)ray->y_v);
+		}	
 	}
 	else
 	{
-		//face north
+		//face north, flip
 		if (ray->ang < PI)
+		{
+			txt.ptr = data->txtrs[0];
+			txt.x = (double)txt.ptr->width * (ray->x - (int)ray->x);
 			txt.x = txt.ptr->width - txt.x;
+		}
+			
 	}
 	line_h = data->height / dist;
 	line_w = (double)data->width / ((double)(FOV * RESOLUTION));
@@ -272,9 +284,10 @@ void	draw_column(t_data *data, t_ray *ray, int i)
 		}
 		txt.y += txt.y_step;
 	}
+	return (0);
 }
 
-void	draw_rays(t_data *data, t_ray *ray)
+int	draw_rays(t_data *data, t_ray *ray)
 {
 	t_player	*player;
 	int			i;
@@ -284,9 +297,9 @@ void	draw_rays(t_data *data, t_ray *ray)
 	// dont touch when multiplaying rays
 	// printf("Ray->ang float == %f\n\n\n", player->angle * 180 / PI);
 	if (ray->ang < 0)
-		ray->ang += 2 * PI;
-	else if (ray->ang >= 2 * PI)
-		ray->ang -= 2 * PI;
+		ray->ang += PI2;
+	else if (ray->ang >= PI2)
+		ray->ang -= PI2;
 	i = -1;
 	while (++i < FOV * RESOLUTION)
 	{
@@ -295,13 +308,15 @@ void	draw_rays(t_data *data, t_ray *ray)
 		calc_distance(data, ray);
 		fix_fisheye(data, ray);
 		//draw_minirays(data, ray);
-		draw_column(data, ray, i);
+		if (draw_column(data, ray, i))
+			return (1);
 		ray->ang += DEGR_RESO;
 		if (ray->ang < 0)
-			ray->ang += 2 * PI;
-		else if ((float)ray->ang >= (float)2 * PI)
-			ray->ang = (float)ray->ang - (float)(2 * PI);
+			ray->ang += PI2;
+		else if ((float)ray->ang >= (float)PI2)
+			ray->ang = (float)ray->ang - (float)(PI2);
 	}
+	return (0);
 }
 
 int	draw_player(t_data *data)

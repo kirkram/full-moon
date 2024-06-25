@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/25 14:55:26 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/25 15:00:12 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,8 @@ int	init_and_draw(t_data *data)
 	if (data->minimap)
 		draw_minimap(data);
 	draw_player(data);
-	draw_rays(data, data->ray);
+	if(draw_rays(data, data->ray))
+		mlx_close_window(data->mlx);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	mlx_loop(data->mlx);
 	i = -1;

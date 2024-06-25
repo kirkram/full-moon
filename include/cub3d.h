@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/25 14:54:33 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/25 16:42:07 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,17 @@
 # define DEGR_RESO 0.0174533 / RESOLUTION
 # define FOV 60
 
-# define N_PATH "./textures/texture_cat.png"
-# define S_PATH "./textures/texture_gradient.png"
-# define E_PATH "./textures/texture_green.png"
-# define W_PATH "./textures/texture_tiger.png"
+# define N_PATH "./textures/N.png"
+# define S_PATH "./textures/S.png"
+# define E_PATH "./textures/E.png"
+# define W_PATH "./textures/W.png"
 # define TEXTURES_AMOUNT 4
 
 //maths
 # define PI 3.14159265359
 # define PI_N 4.71238898039
 # define PI_S PI / 2
+# define PI2 6.28318530718
 
 //direction angle
 # define EAST 0
@@ -173,8 +174,8 @@ void	put_pixel(t_data *data, t_point *point, mlx_image_t *img);
 int		draw_player(t_data *data);
 void	apply_rotation(t_data *data, t_point *point, int x, int y);
 double	rad(double angle);
-void	draw_rays(t_data *data, t_ray *ray);
-void	draw_column(t_data *data, t_ray *ray, int i);
+int		draw_rays(t_data *data, t_ray *ray);
+int		draw_column(t_data *data, t_ray *ray, int i);
 void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img);
 
 
