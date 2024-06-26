@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/25 16:47:23 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:16:09 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,7 +307,7 @@ int	draw_rays(t_data *data, t_ray *ray)
 		vertical_rays(data, ray);
 		calc_distance(data, ray);
 		fix_fisheye(data, ray);
-		//draw_minirays(data, ray);
+		draw_minirays(data, ray);
 		if (draw_column(data, ray, i))
 			return (1);
 		ray->ang += DEGR_RESO;

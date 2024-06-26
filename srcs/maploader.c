@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/25 19:48:22 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:33:23 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	count_mapdimensions(t_data *data)
 	map_start = 0;
 	fd = open(data->map_path, O_RDONLY);
 	if (fd == -1)
-		exit(ft_error("Error opening file for count\n", 22));
+		exit(ft_error("Error opening map file for count\n", 22));
 	rows = 0;
 	colsmax = 0;
 	while ((line = get_next_line(fd)) != NULL)

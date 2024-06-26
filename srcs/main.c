@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/25 14:12:02 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:47:14 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int	load_valid_map(t_data *data, int ac, char **av)
 {
 	if (ac == 1)
-		data->map_path = ft_strjoin("./maps/", "default.cub");
+		data->map_path = "./maps/default.cub";
 	else if (ac == 2)
-		data->map_path = ft_strjoin("./maps/", av[1]);
+		data->map_path = av[1];
 	else
 		exit(ft_error("Wrong argument count.", 25));
 	load_map(data);
