@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/26 13:51:05 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/26 16:28:49 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define MAX_MAPHEIGHT 48
 # define SCREENWIDTH 1280
 # define SCREENHEIGHT 860
-# define MINIZOOM SCREENWIDTH / 70
+# define MINIZOOM SCREENWIDTH / 100
 # define PLAYERSIZE MINIZOOM / 2
 # define RESOLUTION 5
 # define STARTPOS 1.2
@@ -44,7 +44,7 @@
 //maths
 # define PI 3.14159265359
 # define PI_N 4.71238898039
-# define PI_S PI / 2
+# define PI_S 1.5707963268
 # define PI2 6.28318530718
 
 //direction angle
@@ -84,28 +84,28 @@ typedef struct s_map
 
 typedef struct s_ray
 {
-	double		x;
-	double		y;
-	double		x_v;
-	double		y_v;
-	double		hor_dist;
-	double		vert_dist;
-	double		ang;
-	double		atan;
-	double		ntan;
-	double		y_off;
-	double		x_off;
+	float		x;
+	float		y;
+	float		x_v;
+	float		y_v;
+	float		hor_dist;
+	float		vert_dist;
+	float		ang;
+	float		atan;
+	float		ntan;
+	float		y_off;
+	float		x_off;
 	int16_t		dof;
 }				t_ray;
 
 typedef struct s_player
 {
 	mlx_image_t		*img;
-	double			x_pos;
-	double			y_pos;
-	double			x_pos_mini;
-	double			y_pos_mini;
-	double			angle;
+	float			x_pos;
+	float			y_pos;
+	float			x_pos_mini;
+	float			y_pos_mini;
+	float			angle;
 	int32_t			imgwidth;
 	int32_t			imgheight;
 }					t_player;
@@ -133,7 +133,7 @@ typedef struct s_data
 	int				map_width;
 	int				startpos_x;
 	int				startpos_y;
-	double			line_error;
+	float			line_error;
 }					t_data;
 
 typedef struct s_point
@@ -151,11 +151,12 @@ typedef struct s_textures
 	uint8_t			blue;
 	uint8_t			alpha;
 	uint32_t		index;
-	double			y;
-	double			y_step;
-	double			x;
-	double			x_step;
-	double			save;
+	uint32_t		maxindex;
+	float			y;
+	float			y_step;
+	float			x;
+	float			x_step;
+	float			save;
 	mlx_texture_t	*ptr;
 }					t_txt;
 
@@ -173,9 +174,8 @@ int		init_and_draw(t_data *data);
 void	put_pixel(t_data *data, t_point *point, mlx_image_t *img);
 int		draw_player(t_data *data);
 void	apply_rotation(t_data *data, t_point *point, int x, int y);
-double	rad(double angle);
+float	rad(float angle);
 int		draw_rays(t_data *data, t_ray *ray);
-int		draw_column(t_data *data, t_ray *ray, int i);
 void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img);
 
 
