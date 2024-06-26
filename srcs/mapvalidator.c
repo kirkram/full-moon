@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 11:02:18 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/24 18:57:28 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/26 15:13:23 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,14 @@ int flood_fill(int pos_y, int pos_x, int **wmap, t_data *data)
 int	validate_map(int **world_map, t_data *data)
 {
 	int	**test_map;
+	int	i;
 
+	i = -1;
+	while (++i < TEXTURES_AMOUNT)
+	{
+		if (data->nsew_path[i] == NULL)
+			map_validation_error("Error: missing texture", data->map_height, NULL, data);
+	}
 	test_map = copy_2d_int(world_map, data->map_height, data->map_width);
 	if (flood_fill(data->startpos_y, data->startpos_x, world_map, data))
 	{

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/26 14:47:14 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/26 15:09:55 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,5 @@ int	main(int ac, char **av)
 	free(data.txtrs);
 	free(data.nsew_path);
 	free_2d_int(data.world_map, data.map_height);
-	
 	return (0);
 }
