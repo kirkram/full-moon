@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/26 18:02:41 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/26 18:44:01 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,7 @@ void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img);
 
 //keyhook
 void	ft_hook_hub(void *param);
+void 	hook_mouse_move(double x, double y, void* param);
 t_data	*reinit_image(t_data *data, mlx_image_t *img);
 
 //helper
