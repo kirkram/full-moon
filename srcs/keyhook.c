@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/17 16:16:02 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/26 19:37:11 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,20 +67,41 @@ static void	ft_hook_movement(t_data *data)
 void	ft_hook_hub(void *param)
 {
 	t_data		*data;
-	t_player	prev;
+	//t_player	prev;
 
 	data = param;
-	prev = *(data->player);
+	//prev = *(data->player);
 	ft_hook_movement(data);
+	/*
 	if (prev.x_pos_mini != data->player->x_pos_mini
 		|| prev.y_pos_mini != data->player->y_pos_mini
 		|| prev.angle != data->player->angle)
 	{
-		color_whole_image(data->screen, FULL_TRANSPARENT,
-			data->player->imgwidth, data->player->imgheight);
-		color_whole_image(data->player->img, FULL_TRANSPARENT,
-			data->player->imgwidth, data->player->imgheight);
-		draw_player(data);
-		draw_rays(data, data->ray);
-	}
+	*/
+	color_whole_image(data->screen, FULL_TRANSPARENT,
+		data->player->imgwidth, data->player->imgheight);
+	color_whole_image(data->player->img, FULL_TRANSPARENT,
+		data->player->imgwidth, data->player->imgheight);
+	draw_player(data);
+	draw_rays(data, data->ray);
+}
+
+void hook_mouse_move(double x, double y, void* param) 
+{
+	t_data			*data;
+	t_player		*player;
+
+	data = param;
+	player = data->player;
+    double dx = x - data->width / 2;
+	// bs code to silence complire complaint for y
+    y = y + 1;
+
+	if (y > 2)
+		y = 0;
+    player->angle += dx * DEGR / 10;
+    if (player->angle < 0) player->angle += PI2;
+    if (player->angle >= PI2) player->angle -= PI2;
+	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
+    //printf("Player angle: %f\n", player->angle);
 }
