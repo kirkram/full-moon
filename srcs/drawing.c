@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/25 16:47:23 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:44:12 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,15 @@ void	vertical_rays(t_data *data, t_ray *ray)
 	player = data->player;
 	ray->ntan = -tan(ray->ang);
 	ray->dof = 0;
+	int range = data->map_height;
+	if (data->map_width > data->map_height)
+		range = data->map_width;
 	if ((float)ray->ang == (float)PI_N || (float)ray->ang == (float)PI_S)
 	{
 		// printf("North or South\n\n\n");
 		ray->x_v = player->x_pos;
 		ray->y_v = player->y_pos;
-		ray->dof = data->map_height;
+		ray->dof = range;
 	}
 	else if ((float)ray->ang < (float)PI_N && (float)ray->ang > (float)PI_S)
 	{
@@ -108,17 +111,17 @@ void	vertical_rays(t_data *data, t_ray *ray)
 		ray->x_off = 1;
 		ray->y_off = -ray->x_off * ray->ntan;
 	}
-	while (ray->dof < data->map_height)
+	while (ray->dof < range)
 	{
 		map.y = (int)ray->y_v;
 		map.x = (int)ray->x_v;
 		if ((float)ray->ang < (float)PI_N && (float)ray->ang > (float)PI_S)
 			map.x -= 1;
 		if (map.x < 0)
-			map.x = 0;
+			break ;
 		if (map.y < data->map_height && map.y >= 0 && map.x < data->map_width && map.x >= 0
 			&& data->world_map[map.y][map.x] == 1)
-			ray->dof = data->map_height;
+			break; 
 		else
 		{
 			if (ray->y_v > 0 && ray->y_v < data->map_height)
@@ -127,8 +130,8 @@ void	vertical_rays(t_data *data, t_ray *ray)
 				ray->x_v += ray->x_off;
 			ray->dof++;
 		}
-		if (ray->dof != data->map_height && (ray->y_v < 0 || ray->x_v < 0
-				|| ray->x_v >= data->map_width || ray->y_v >= data->map_height))
+		if (ray->y_v < 0 || ray->x_v < 0
+				|| ray->x_v >= data->map_width || ray->y_v >= data->map_height)
 			break ;
 	}
 }
@@ -141,12 +144,15 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 	player = data->player;
 	ray->atan = -1 / tan(ray->ang);
 	ray->dof = 0;
+	int range = data->map_height;
+	if (data->map_width > data->map_height)
+		range = data->map_width;
 	if ((float)ray->ang == (float)0 || (float)ray->ang == (float)PI)
 	{
 		// printf("0 or PI\n\n\n");
 		ray->y = player->y_pos;
 		ray->x = player->x_pos;
-		ray->dof = data->map_height;
+		ray->dof = range;
 	}
 	else if (ray->ang > PI)
 	{
@@ -162,17 +168,17 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 		ray->y_off = 1;
 		ray->x_off = -ray->y_off * ray->atan;
 	}
-	while (ray->dof < data->map_height) 
+	while (ray->dof < range) 
 	{
 		map.y = (int)ray->y;
 		map.x = (int)ray->x;
 		if (ray->ang > PI)
 			map.y -= 1;
 		if (map.y < 0)
-			map.y = 0;
+			break ;
 		if (map.y < data->map_height && map.y >= 0 && map.x < data->map_width && map.x >= 0
 			&& data->world_map[map.y][map.x] == 1)
-			ray->dof = data->map_height;
+			break ;
 		else
 		{
 			if (ray->y > 0 && ray->y < data->map_height)
@@ -181,9 +187,9 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 				ray->x += ray->x_off;
 			ray->dof++;
 		}
-		if (ray->dof != data->map_height && (ray->y < 0 || ray->x < 0
-				|| ray->x >= data->map_width || ray->y >= data->map_height))
-			ray->dof = data->map_height;
+		if (ray->y < 0 || ray->x < 0
+				|| ray->x >= data->map_width || ray->y >= data->map_height)
+			break ;
 	}
 }
 
@@ -301,13 +307,14 @@ int	draw_rays(t_data *data, t_ray *ray)
 	else if (ray->ang >= PI2)
 		ray->ang -= PI2;
 	i = -1;
+	//printf("map height is %d, width is %d\n", data->map_width, data->map_height);
 	while (++i < FOV * RESOLUTION)
 	{
 		horizontal_rays(data, ray);
 		vertical_rays(data, ray);
 		calc_distance(data, ray);
 		fix_fisheye(data, ray);
-		//draw_minirays(data, ray);
+		draw_minirays(data, ray);
 		if (draw_column(data, ray, i))
 			return (1);
 		ray->ang += DEGR_RESO;
@@ -316,6 +323,7 @@ int	draw_rays(t_data *data, t_ray *ray)
 		else if ((float)ray->ang >= (float)PI2)
 			ray->ang = (float)ray->ang - (float)(PI2);
 	}
+	//printf("player pos is now %f, %f\n", data->player->x_pos, data->player->y_pos);
 	return (0);
 }
 

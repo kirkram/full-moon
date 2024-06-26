@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/25 19:47:15 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/26 13:51:05 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define MAX_MAPHEIGHT 48
 # define SCREENWIDTH 1280
 # define SCREENHEIGHT 860
-# define MINIZOOM SCREENWIDTH / 120
+# define MINIZOOM SCREENWIDTH / 70
 # define PLAYERSIZE MINIZOOM / 2
 # define RESOLUTION 5
 # define STARTPOS 1.2
@@ -35,10 +35,10 @@
 # define DEGR_RESO 0.0174533 / RESOLUTION
 # define FOV 60
 
-# define N_PATH "./textures/N.png"
-# define S_PATH "./textures/S.png"
-# define E_PATH "./textures/E.png"
-# define W_PATH "./textures/W.png"
+# define N_PATH "./textures/cat.png"
+# define S_PATH "./textures/gradient.png"
+# define E_PATH "./textures/green.png"
+# define W_PATH "./textures/tiger.png"
 # define TEXTURES_AMOUNT 4
 
 //maths
