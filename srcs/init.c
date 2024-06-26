@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/26 18:00:24 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/26 18:24:28 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,6 @@ void	free_and_quit(t_data *data)
 	}
 	free(data->txtrs);
 	free(data->nsew_path);
-	free_2d_int(data->world_map, data->map_height);
 }
 
 
