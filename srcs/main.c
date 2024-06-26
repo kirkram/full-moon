@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/26 15:09:55 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/26 18:02:05 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ int	main(int ac, char **av)
 	init_map_data(&data);
 	load_valid_map(&data, ac, av);
 	init_and_draw(&data);
-
+	free_and_quit(&data);
+	/*
 	int i = -1;
 	while (data.nsew_path && data.txtrs && ++i < TEXTURES_AMOUNT)
 	{
@@ -50,5 +51,6 @@ int	main(int ac, char **av)
 	free(data.txtrs);
 	free(data.nsew_path);
 	free_2d_int(data.world_map, data.map_height);
+	*/
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/25 19:47:15 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/26 18:02:41 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ void	load_map(t_data *data);
 int		validate_map(int **world_map, t_data *data);
 void	map_validation_error(char *msg, int rows, char *line, t_data *data);
 int		color_whole_image(mlx_image_t *img, int color, int width, int height);
+void	free_and_quit(t_data *data);
 
 //drawing
 void	draw_minimap(t_data *data);
@@ -177,7 +178,6 @@ double	rad(double angle);
 int		draw_rays(t_data *data, t_ray *ray);
 int		draw_column(t_data *data, t_ray *ray, int i);
 void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img);
-
 
 //keyhook
 void	ft_hook_hub(void *param);

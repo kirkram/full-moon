@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/25 19:44:29 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/26 18:00:24 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,26 @@ int	load_texture(char *path, mlx_texture_t **txt)
 	return (0);
 }
 
+void	free_and_quit(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < TEXTURES_AMOUNT)
+		mlx_delete_texture(data->txtrs[i]);
+	free_2d_int(data->world_map, data->map_height);
+	mlx_terminate(data->mlx);
+	i = -1;
+	while (data->nsew_path && data->txtrs && ++i < TEXTURES_AMOUNT)
+	{
+		free(data->nsew_path[i]);
+	}
+	free(data->txtrs);
+	free(data->nsew_path);
+	free_2d_int(data->world_map, data->map_height);
+}
+
+
 int	init_and_draw(t_data *data)
 {
 	int	i;
@@ -143,9 +163,5 @@ int	init_and_draw(t_data *data)
 		mlx_close_window(data->mlx);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	mlx_loop(data->mlx);
-	i = -1;
-	while (++i < TEXTURES_AMOUNT)
-		mlx_delete_texture(data->txtrs[i]);
-	mlx_terminate(data->mlx);
 	return (0);
 }
