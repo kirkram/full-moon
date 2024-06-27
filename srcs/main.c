@@ -14,6 +14,7 @@
 
 int	load_valid_map(t_data *data, int ac, char **av)
 {
+
 	if (ac == 1)
 		data->map_path = "./maps/default.cub";
 	else if (ac == 2)

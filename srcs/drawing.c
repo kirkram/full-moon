@@ -6,16 +6,11 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/26 14:16:09 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/27 15:31:59 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-double	rad(double angle)
-{
-	return (angle * PI / 180);
-}
 
 void	apply_rotation(t_data *data, t_point *point, int x, int y)
 {
@@ -23,8 +18,8 @@ void	apply_rotation(t_data *data, t_point *point, int x, int y)
 	t_point		temp;
 
 	player = data->player;
-	temp.x = x * cos(player->angle) - y * sin(player->angle);
-	temp.y = x * sin(player->angle) + y * cos(player->angle);
+	temp.x = x * cosf(player->angle) - y * sinf(player->angle);
+	temp.y = x * sinf(player->angle) + y * cosf(player->angle);
 	point->x = temp.x;
 	point->y = temp.y;
 }
@@ -56,15 +51,15 @@ void	draw_minirays(t_data *data, t_ray *ray)
 
 void	fix_fisheye(t_data *data, t_ray *ray)
 {
-	double	curr_angle;
+	float	curr_angle;
 
 	curr_angle = data->player->angle - ray->ang;
 	if (curr_angle < 0)
 		curr_angle += PI2;
 	else if (curr_angle >= PI2)
 		curr_angle = curr_angle - (PI2);
-	ray->hor_dist *= cos(curr_angle);
-	ray->vert_dist *= cos(curr_angle);
+	ray->hor_dist *= cosf(curr_angle);
+	ray->vert_dist *= cosf(curr_angle);
 }
 
 void	calc_distance(t_data *data, t_ray *ray)
@@ -72,9 +67,9 @@ void	calc_distance(t_data *data, t_ray *ray)
 	t_player	*player;
 
 	player = data->player;
-	ray->hor_dist = sqrt((ray->x - player->x_pos) * (ray->x - player->x_pos)
+	ray->hor_dist = sqrtf((ray->x - player->x_pos) * (ray->x - player->x_pos)
 			+ (ray->y - player->y_pos) * (ray->y - player->y_pos));
-	ray->vert_dist = sqrt((ray->x_v - player->x_pos) * (ray->x_v
+	ray->vert_dist = sqrtf((ray->x_v - player->x_pos) * (ray->x_v
 				- player->x_pos) + (ray->y_v - player->y_pos) * (ray->y_v
 				- player->y_pos));
 }
@@ -87,14 +82,16 @@ void	vertical_rays(t_data *data, t_ray *ray)
 	player = data->player;
 	ray->ntan = -tan(ray->ang);
 	ray->dof = 0;
-	if ((float)ray->ang == (float)PI_N || (float)ray->ang == (float)PI_S)
+	int range = data->map_height;
+	if (data->map_width > data->map_height)
+		range = data->map_width;
+	if (ray->ang == PI_N || ray->ang == PI_S)
 	{
-		// printf("North or South\n\n\n");
 		ray->x_v = player->x_pos;
 		ray->y_v = player->y_pos;
-		ray->dof = data->map_height;
+		ray->dof = range;
 	}
-	else if ((float)ray->ang < (float)PI_N && (float)ray->ang > (float)PI_S)
+	else if (ray->ang < PI_N && ray->ang > PI_S)
 	{
 		ray->x_v = (int)player->x_pos;
 		ray->y_v = (player->x_pos - ray->x_v) * ray->ntan + player->y_pos;
@@ -108,17 +105,17 @@ void	vertical_rays(t_data *data, t_ray *ray)
 		ray->x_off = 1;
 		ray->y_off = -ray->x_off * ray->ntan;
 	}
-	while (ray->dof < data->map_height)
+	while (ray->dof < range)
 	{
 		map.y = (int)ray->y_v;
 		map.x = (int)ray->x_v;
-		if ((float)ray->ang < (float)PI_N && (float)ray->ang > (float)PI_S)
+		if (ray->ang > PI_S && ray->ang < PI_N)
 			map.x -= 1;
 		if (map.x < 0)
-			map.x = 0;
+			break ;
 		if (map.y < data->map_height && map.y >= 0 && map.x < data->map_width && map.x >= 0
 			&& data->world_map[map.y][map.x] == 1)
-			ray->dof = data->map_height;
+			break; 
 		else
 		{
 			if (ray->y_v > 0 && ray->y_v < data->map_height)
@@ -127,8 +124,8 @@ void	vertical_rays(t_data *data, t_ray *ray)
 				ray->x_v += ray->x_off;
 			ray->dof++;
 		}
-		if (ray->dof != data->map_height && (ray->y_v < 0 || ray->x_v < 0
-				|| ray->x_v >= data->map_width || ray->y_v >= data->map_height))
+		if (ray->y_v < 0 || ray->x_v < 0
+				|| ray->x_v >= data->map_width || ray->y_v >= data->map_height)
 			break ;
 	}
 }
@@ -139,14 +136,16 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 	t_map		map;
 
 	player = data->player;
-	ray->atan = -1 / tan(ray->ang);
+	ray->atan = -1 / tanf(ray->ang);
 	ray->dof = 0;
-	if ((float)ray->ang == (float)0 || (float)ray->ang == (float)PI)
+	int range = data->map_height;
+	if (data->map_width > data->map_height)
+		range = data->map_width;
+	if ((float)ray->ang == (float)0 || ray->ang == PI)
 	{
-		// printf("0 or PI\n\n\n");
 		ray->y = player->y_pos;
 		ray->x = player->x_pos;
-		ray->dof = data->map_height;
+		ray->dof = range;
 	}
 	else if (ray->ang > PI)
 	{
@@ -162,17 +161,17 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 		ray->y_off = 1;
 		ray->x_off = -ray->y_off * ray->atan;
 	}
-	while (ray->dof < data->map_height) 
+	while (ray->dof < range) 
 	{
 		map.y = (int)ray->y;
 		map.x = (int)ray->x;
 		if (ray->ang > PI)
 			map.y -= 1;
 		if (map.y < 0)
-			map.y = 0;
+			break ;
 		if (map.y < data->map_height && map.y >= 0 && map.x < data->map_width && map.x >= 0
 			&& data->world_map[map.y][map.x] == 1)
-			ray->dof = data->map_height;
+			break ;
 		else
 		{
 			if (ray->y > 0 && ray->y < data->map_height)
@@ -181,9 +180,9 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 				ray->x += ray->x_off;
 			ray->dof++;
 		}
-		if (ray->dof != data->map_height && (ray->y < 0 || ray->x < 0
-				|| ray->x >= data->map_width || ray->y >= data->map_height))
-			ray->dof = data->map_height;
+		if (ray->y < 0 || ray->x < 0
+				|| ray->x >= data->map_width || ray->y >= data->map_height)
+			break ;
 	}
 }
 
@@ -206,32 +205,59 @@ uint32_t	index_color(t_txt *txt, t_ray *ray)
 	//shade if a vertical ray
 	if (ray->x == ray->x_v)
 	{
-		txt->red /= 1.3;
-		txt->green /= 1.3;
-		txt->blue /= 1.3;
+		txt->red *= 0.75;
+		txt->green *= 0.75;
+		txt->blue *= 0.75;
 	}
 	return (txt->red << 24 | txt->green  << 16 | txt->blue << 8 | txt->alpha);
 }
 
+//Old drawinng
+// int	draw_column(t_data *data, t_ray *ray, int i)
+// {
+// 	t_point		line;
+// 	double		dist;
+// 	double		line_w;
 
-int		draw_column(t_data *data, t_ray *ray, int i)
+// 	dist = ray->hor_dist;
+// 	line.color = YEL_WHITE;
+// 	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist && ray->vert_dist != 0))
+// 	{
+// 		dist = ray->vert_dist;
+// 		line.color = YEL_WHITE_SHADE;
+// 	}
+// 	//will this cast work in every compiler?
+// 	line_w = (double)SCREENWIDTH / (FOV * RESOLUTION);
+// 	line.y = data->height / 2 - 1;
+// 	while (++line.y < (data->height / 2) + SCREENHEIGHT / dist / 2 && line.y < SCREENHEIGHT)
+// 	{
+// 		//error accumulates with the truncating of the line_w
+// 		line.x = line_w * i;
+// 		while (++line.x <= line_w * (i + 1) && line.x < SCREENWIDTH)
+// 			put_pixel(data, &line, data->screen);
+// 	}
+// 	line.y = data->height / 2;
+// 	while (--line.y > (data->height / 2) - SCREENHEIGHT / dist / 2 && line.y >= 0)
+// 	{
+// 		line.x = line_w * i;
+// 		while (++line.x <= line_w * (i + 1))
+// 			put_pixel(data, &line, data->screen);
+// 	}
+// 	return (0);
+// }
+
+int		draw_column(t_data *data, t_ray *ray, int i, float line_w)
 {
 	t_point		line;
-	double		dist;
-	double		line_w;
-	double		line_h;
+	float		dist;
+	float		line_h;
 	t_txt		txt;
 	
 	dist = ray->hor_dist;
 	txt.y = 0;
 	//north is 0, s 1, e 2, w 3
 	txt.ptr = data->txtrs[1];
-	if (txt.ptr == NULL)
-	{
-		ft_error("txt.ptr is NULL", 113);
-		return (1);
-	}
-	txt.x = (double)txt.ptr->width * (ray->x - (int)ray->x);
+	txt.x = txt.ptr->width * (ray->x - (int)ray->x);
 	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist && ray->vert_dist != 0))
 	{
 		dist = ray->vert_dist;
@@ -242,13 +268,13 @@ int		draw_column(t_data *data, t_ray *ray, int i)
 		if (ray->ang > PI_S && ray->ang < PI_N)
 		{
 			txt.ptr = data->txtrs[2];
-			txt.x = (double)txt.ptr->width * (ray->y_v - (int)ray->y_v);
+			txt.x = txt.ptr->width * (ray->y_v - (int)ray->y_v);
 			txt.x = txt.ptr->width - txt.x;
 		}
 		else
 		{
 			txt.ptr = data->txtrs[3];
-			txt.x = (double)txt.ptr->width * (ray->y_v - (int)ray->y_v);
+			txt.x = txt.ptr->width * (ray->y_v - (int)ray->y_v);
 		}	
 	}
 	else
@@ -257,17 +283,18 @@ int		draw_column(t_data *data, t_ray *ray, int i)
 		if (ray->ang < PI)
 		{
 			txt.ptr = data->txtrs[0];
-			txt.x = (double)txt.ptr->width * (ray->x - (int)ray->x);
+			txt.x = txt.ptr->width * (ray->x - (int)ray->x);
 			txt.x = txt.ptr->width - txt.x;
 		}
 			
 	}
 	line_h = data->height / dist;
-	line_w = (double)data->width / ((double)(FOV * RESOLUTION));
-	line.y = (data->height -line_h) / 2;
-	txt.y_step = (double)txt.ptr->height / line_h;
-	txt.x_step = (double)txt.ptr->width / ((double)(FOV * RESOLUTION)) / line_w;
+	//must have cast
+	line.y = (data->height - line_h) / 2;
+	txt.y_step = txt.ptr->height / line_h;
+	txt.x_step = txt.ptr->width / ((FOV * RESOLUTION)) / line_w;
 	txt.save = txt.x;
+	txt.maxindex = txt.ptr->width * txt.ptr->height * txt.ptr->bytes_per_pixel;
 	while (++line.y < (data->height - line_h) / 2 + line_h && line.y < data->height)
 	{
 		line.x = line_w * i;
@@ -276,8 +303,7 @@ int		draw_column(t_data *data, t_ray *ray, int i)
 		while (++line.x <= line_w * (i + 1) && line.x < data->width)
 		{	
 			// less than maxindex, unneecessary?
-			if (txt.index + 2 < (txt.ptr->width * txt.ptr->height * \
-			txt.ptr->bytes_per_pixel))
+			if (txt.index + 2 < txt.maxindex)
 				line.color = index_color(&txt, ray);
 			put_pixel(data, &line, data->screen);
 			txt.x += txt.x_step;
@@ -291,15 +317,15 @@ int	draw_rays(t_data *data, t_ray *ray)
 {
 	t_player	*player;
 	int			i;
+	float		line_w;
 
 	player = data->player;
 	ray->ang = player->angle - DEGR * FOV / 2;
-	// dont touch when multiplaying rays
-	// printf("Ray->ang float == %f\n\n\n", player->angle * 180 / PI);
 	if (ray->ang < 0)
 		ray->ang += PI2;
 	else if (ray->ang >= PI2)
 		ray->ang -= PI2;
+	line_w = data->width / ((float)(FOV * RESOLUTION));
 	i = -1;
 	while (++i < FOV * RESOLUTION)
 	{
@@ -308,13 +334,13 @@ int	draw_rays(t_data *data, t_ray *ray)
 		calc_distance(data, ray);
 		fix_fisheye(data, ray);
 		draw_minirays(data, ray);
-		if (draw_column(data, ray, i))
+		if (draw_column(data, ray, i, line_w))
 			return (1);
 		ray->ang += DEGR_RESO;
 		if (ray->ang < 0)
 			ray->ang += PI2;
-		else if ((float)ray->ang >= (float)PI2)
-			ray->ang = (float)ray->ang - (float)(PI2);
+		else if (ray->ang >= PI2)
+			ray->ang = ray->ang - (PI2);
 	}
 	return (0);
 }
