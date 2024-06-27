@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/27 17:33:20 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/27 21:08:19 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,26 +39,18 @@ int	init_sprites(t_data *data) // free these
 	if (!data->swordarm_tx)
 		return (1);
 	data->swordarm_tx[i] = NULL;
-	//data->swordarm = (mlx_image_t **)malloc(sizeof(mlx_image_t *) * i + 1);
-	//if (!data->swordarm)
-	//	return (1);
 	data->swordarm = NULL;
 	while (--i >= 0)
 	{
 		tmp = ft_strjoin("./sprites/sword", ft_itoa(i + 1));
 		fname = ft_strjoin(tmp, ".png");
 		data->swordarm_tx[i] = mlx_load_png(fname);
-		printf("Loading sprite file: %s\n", fname);
 		free(tmp);
 		tmp = NULL;
 		free(fname);
 		fname = NULL;
 		if (!data->swordarm_tx[i])
 			return (1);
-		//data->swordarm[i] = mlx_texture_to_image(data->mlx, data->swordarm_tx[i]);
-		//if (!data->swordarm[i])
-		//	return (1);
-		printf("Initialized sprite %d\n", i);
 	}
 	data->swordarm = mlx_texture_to_image(data->mlx, data->swordarm_tx[10]);
 	mlx_image_to_window(data->mlx, data->swordarm, 240, 1);
@@ -201,6 +193,7 @@ int	init_and_draw(t_data *data)
 	if(draw_rays(data, data->ray))
 		mlx_close_window(data->mlx);
 	mlx_cursor_hook(data->mlx, &hook_mouse_move, data);
+	//mlx_mouse_hook(data->mlx, &hook_mouse_button, data);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	while (!mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		mlx_loop(data->mlx);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/27 17:39:33 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/27 20:46:00 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ typedef struct s_data
 	mlx_texture_t	**swordarm_tx;
 	mlx_image_t		*swordarm;
 	double			last_update;
+	double			last_attack;
 	mlx_texture_t	**txtrs;
 	mlx_texture_t	*txt_n;			
 	t_player		*player;
@@ -131,6 +132,7 @@ typedef struct s_data
 	int32_t			width;
 	int32_t			height;
 	int32_t			zoom;
+	float			speed;
 	char			*map_path;
 	int				**world_map;
 	int				map_height;
@@ -186,6 +188,11 @@ void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img);
 //keyhook
 void	ft_hook_hub(void *param);
 void 	hook_mouse_move(double x, double y, void* param);
+void	hook_mouse_button(mouse_key_t button, action_t action, 
+			modifier_key_t mods, void *param);
+
+//animation
+void	attack_animation(t_data *data);
 
 //helper
 int		ft_error(char *msg, int	error_code);
