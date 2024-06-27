@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/27 17:42:55 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/27 21:15:21 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,22 @@ static void	ft_hook_movement(t_data *data)
 {
 	t_player	*player;
 	t_map		map;
-	float		speed;
 	float		x_off;
 	float		y_off;
+	double		current_time;
 
 	player = data->player;
-	speed = 0.003 / (1 / data->mlx->delta_time / 1000);
+	data->speed = 0.003 / (1 / data->mlx->delta_time / 1000);
 	//printf("The fps is %f\n", 1 / data->mlx->delta_time);
-
 	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
 	{
-		player->angle -= (speed / 1.5);
+		player->angle -= (data->speed / 1.5);
 		if (player->angle < 0)
 			player->angle = PI2 - (-player->angle);
 	}
 	else if (mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
 	{
-		player->angle += (speed / 1.5);
+		player->angle += (data->speed / 1.5);
 		if (player->angle > PI2)
 			player->angle = player->angle - PI2;
 	}
@@ -52,12 +51,12 @@ static void	ft_hook_movement(t_data *data)
 		{
 			if (data->world_map[(int)data->player->y_pos][map.x] != 1)
 			{
-				player->x_pos += speed * cosf(player->angle);
+				player->x_pos += data->speed * cosf(player->angle);
 				data->player->x_pos_mini = data->player->x_pos * data->zoom;
 			}
 			if (data->world_map[map.y][(int)data->player->x_pos] != 1)
 			{
-				player->y_pos += speed * sinf(player->angle);
+				player->y_pos += data->speed * sinf(player->angle);
 				data->player->y_pos_mini = data->player->y_pos * data->zoom;
 			}
 		}
@@ -70,12 +69,12 @@ static void	ft_hook_movement(t_data *data)
 		{
 			if (data->world_map[(int)data->player->y_pos][map.x] != 1)
 			{
-				player->x_pos += -speed * cosf(player->angle);
+				player->x_pos += -data->speed * cosf(player->angle);
 				data->player->x_pos_mini = data->player->x_pos * data->zoom;
 			}
 			if (data->world_map[map.y][(int)data->player->x_pos] != 1)
 			{
-				player->y_pos += -speed * sinf(player->angle);
+				player->y_pos += -data->speed * sinf(player->angle);
 				data->player->y_pos_mini = data->player->y_pos * data->zoom;
 			}
 		}
@@ -97,12 +96,12 @@ static void	ft_hook_movement(t_data *data)
 		{
 			if (data->world_map[(int)data->player->y_pos][map.x] != 1)
 			{
-				player->x_pos += -speed * cosf(player->angle + PI_S);
+				player->x_pos += -data->speed * cosf(player->angle + PI_S);
 				data->player->x_pos_mini = data->player->x_pos * data->zoom;
 			}
 			if (data->world_map[map.y][(int)data->player->x_pos] != 1)
 			{
-				player->y_pos += -speed * sinf(player->angle + PI_S);
+				player->y_pos += -data->speed * sinf(player->angle + PI_S);
 				data->player->y_pos_mini = data->player->y_pos * data->zoom;
 			}
 		}
@@ -123,16 +122,27 @@ static void	ft_hook_movement(t_data *data)
 		{
 			if (data->world_map[(int)data->player->y_pos][map.x] != 1)
 			{
-				player->x_pos += speed * cosf(player->angle + PI_S);
+				player->x_pos += data->speed * cosf(player->angle + PI_S);
 				data->player->x_pos_mini = data->player->x_pos * data->zoom;
 			}
 			if (data->world_map[map.y][(int)data->player->x_pos] != 1)
 			{
-				player->y_pos += speed * sinf(player->angle + PI_S);
+				player->y_pos += data->speed * sinf(player->angle + PI_S);
 				data->player->y_pos_mini = data->player->y_pos * data->zoom;
 			}
 		}
 	}
+	if (mlx_is_key_down(data->mlx, MLX_KEY_ENTER))
+	{
+		current_time = mlx_get_time();
+		if (current_time - data->last_attack >= ANIMATION_SPEED)
+			attack_animation(data);
+	}
+}
+
+void	attack_animation(t_data *data)
+{
+	data->last_attack = mlx_get_time();	
 }
 
 void	hook_animation(t_data *data)
@@ -142,17 +152,34 @@ void	hook_animation(t_data *data)
 	double			current_time;
 	
 	current_time = mlx_get_time();
-	printf("current time: %f\n", current_time);
-	if (current_time - last_update >= ANIMATION_SPEED / 10)
+	if ((current_time - last_update >= ANIMATION_SPEED / 4) &&
+			(current_time - data->last_attack >= ANIMATION_SPEED))
 	{
 		mlx_delete_image(data->mlx, data->swordarm);
 		data->swordarm = mlx_texture_to_image(data->mlx, data->swordarm_tx[frame]);
 		frame++;
-		if (frame > 10)
+		if (frame > 3)
 			frame = 0;
 		mlx_image_to_window(data->mlx, data->swordarm, 240, 1);
 		last_update = mlx_get_time();
-		printf("last update: %f\n", last_update);
+	}
+	else if (current_time - data->last_attack < ANIMATION_SPEED)
+	{
+		mlx_delete_image(data->mlx, data->swordarm);
+		if (current_time - data->last_attack < (ANIMATION_SPEED) / 10)
+			data->swordarm = mlx_texture_to_image(data->mlx, data->swordarm_tx[7]);
+		else if (current_time - data->last_attack < (ANIMATION_SPEED / 8))
+			data->swordarm = mlx_texture_to_image(data->mlx, data->swordarm_tx[8]);
+		else if (current_time - data->last_attack < (ANIMATION_SPEED / 6))
+			data->swordarm = mlx_texture_to_image(data->mlx, data->swordarm_tx[9]);
+		else
+			data->swordarm = mlx_texture_to_image(data->mlx, data->swordarm_tx[10]);
+		mlx_image_to_window(data->mlx, data->swordarm, 240, 1);
+	}
+	if (mlx_is_mouse_down(data->mlx, MLX_MOUSE_BUTTON_LEFT))
+	{
+		if (current_time - data->last_attack >= ANIMATION_SPEED)
+			attack_animation(data);
 	}
 }
 
@@ -171,22 +198,37 @@ void	ft_hook_hub(void *param)
 	draw_rays(data, data->ray);
 }
 
-void hook_mouse_move(double x, double y, void* param) 
+void	hook_mouse_move(double x, double y, void* param) 
 {
-	t_data			*data;
-	t_player		*player;
+	t_data		*data;
+	t_player	*player;
 
+	(void)y;
 	data = param;
 	player = data->player;
     double dx = x - data->width / 2;
-	// bs code to silence complire complaint for y
-    y = y + 1;
-
-	if (y > 2)
-		y = 0;
-    player->angle += dx * DEGR / 10;
+    player->angle += dx * DEGR * data->speed;
     if (player->angle < 0) player->angle += PI2;
     if (player->angle >= PI2) player->angle -= PI2;
 	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
-    //printf("Player angle: %f\n", player->angle);
 }
+
+/*
+void	hook_mouse_button(mouse_key_t button, action_t action, 
+			modifier_key_t mods, void *param)
+{
+	t_data	*data;
+	double	current_time;
+
+	data = param;
+	(void)mods;
+	printf("In mouse hook\n");
+	if (mlx_is_mouse_down(data->mlx, MLX_MOUSE_BUTTON_LEFT))
+	{
+		printf("Mouse left released\n");
+		current_time = mlx_get_time();
+		if (current_time - data->last_attack >= ANIMATION_SPEED)
+			attack_animation(data);
+	}
+}
+*/
