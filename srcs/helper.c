@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 14:39:44 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/18 19:45:16 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/27 15:04:44 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ int	ft_abs(int result)
 	if (result < 0)
 		result = -result;
 	return (result);
+}
+
+float	rad(float angle)
+{
+	return (angle * PI / 180);
 }
 
 void	print_2d_int(int **int_arr, int rows, int cols)
@@ -99,3 +104,4 @@ int	color_whole_image(mlx_image_t *img, int color, int width, int height)
 	}
 	return (0);
 }
+

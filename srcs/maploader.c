@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   maploader.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
 /*   Updated: 2024/06/26 17:26:43 by mburakow         ###   ########.fr       */
