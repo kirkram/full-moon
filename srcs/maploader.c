@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/26 15:14:31 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/26 17:26:43 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	map_validation_error(char *msg, int rows, char *line, t_data *data)
 		if (data->nsew_path[i])
 			free(data->nsew_path[i]);
 	}
-	free(data->map_path);
 	if (line != NULL)
 		free(line);
 	if (data->world_map != NULL)
@@ -42,7 +41,7 @@ static void	count_mapdimensions(t_data *data)
 	map_start = 0;
 	fd = open(data->map_path, O_RDONLY);
 	if (fd == -1)
-		exit(ft_error("Error opening file for count\n", 22));
+		exit(ft_error("Error opening map file for count\n", 22));
 	rows = 0;
 	colsmax = 0;
 	while ((line = get_next_line(fd)) != NULL)
@@ -124,33 +123,26 @@ static void	write_mapline(char *line, int lno, t_data *data)
 
 static void	read_map_parameter(char *line, t_data *data)
 {
-	int		i;
 	char	*value_start;
 
-	value_start = line;
-	if (line[0] == 84)
-	{
-		value_start = ft_strchr(value_start, 61) + 1;
-		if (value_start)
-		{
-			i = -1;
-			while (value_start[++i] != '\0')
-			{
-				if (value_start[i] == '\n')
-					value_start[i] = '\0';
-			}
-			if (line[1] == 'N')
-				data->nsew_path[0] = ft_strjoin("./textures/", value_start);
-			else if (line[1] == 'S')
-				data->nsew_path[1] = ft_strjoin("./textures/", value_start);
-			else if (line[1] == 'E')
-				data->nsew_path[2] = ft_strjoin("./textures/", value_start);
-			else if (line[1] == 'W') 
-				data->nsew_path[3] = ft_strjoin("./textures/", value_start);
-			else
-				map_validation_error("Error: invalid map parameter", 0, line, data);
-		}
-	}
+	if (line[0] == '\n')
+		return ;
+	if (line[0] != 'T' || !(line[1] == 'N' || line[1] == 'E' || 
+			line[1] == 'S' || line[1] == 'W') || line[2] != '=')
+		map_validation_error("Error: invalid map parameter", 0, line, data);
+	value_start = ft_strchr(line, 61) + 1;
+	if (value_start && (ft_strcpos(value_start, '\n') != -1))
+		value_start[ft_strcpos(value_start, '\n')] = '\0';
+	else
+		map_validation_error("Error: invalid map parameter", 0, line, data);
+	if (line[1] == 'N')
+		data->nsew_path[0] = ft_strjoin("./textures/", value_start);
+	else if (line[1] == 'S')
+		data->nsew_path[1] = ft_strjoin("./textures/", value_start);
+	else if (line[1] == 'E')
+		data->nsew_path[2] = ft_strjoin("./textures/", value_start);
+	else if (line[1] == 'W') 
+		data->nsew_path[3] = ft_strjoin("./textures/", value_start);
 }
 
 void	load_map(t_data *data)

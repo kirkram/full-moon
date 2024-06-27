@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/27 15:51:29 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/27 17:39:33 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define MINIZOOM SCREENWIDTH / 100
 # define PLAYERSIZE MINIZOOM / 2
 # define RESOLUTION 5
-# define STARTPOS 1.2
+# define ANIMATION_SPEED 1.2
 
 # define DEGR 0.0174533
 # define DEGR_RESO 0.0174533 / RESOLUTION
@@ -120,8 +120,11 @@ typedef struct s_data
 	mlx_image_t		*floor;
 	char			**nsew_path; // n s e w
 	// mlx_texture_t	*txtrs[TEXTURES_AMOUNT]; // n s e w
+	mlx_texture_t	**swordarm_tx;
+	mlx_image_t		*swordarm;
+	double			last_update;
 	mlx_texture_t	**txtrs;
-	mlx_texture_t	*txt_n;
+	mlx_texture_t	*txt_n;			
 	t_player		*player;
 	t_ray			*ray;
 	mlx_key_data_t	keydata;
@@ -168,6 +171,7 @@ void	load_map(t_data *data);
 int		validate_map(int **world_map, t_data *data);
 void	map_validation_error(char *msg, int rows, char *line, t_data *data);
 int		color_whole_image(mlx_image_t *img, int color, int width, int height);
+void	free_and_quit(t_data *data);
 
 //drawing
 void	draw_minimap(t_data *data);
@@ -179,10 +183,9 @@ float	rad(float angle);
 int		draw_rays(t_data *data, t_ray *ray);
 void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img);
 
-
 //keyhook
 void	ft_hook_hub(void *param);
-//t_data	*reinit_image(t_data *data, mlx_image_t *img);
+void 	hook_mouse_move(double x, double y, void* param);
 
 //helper
 int		ft_error(char *msg, int	error_code);

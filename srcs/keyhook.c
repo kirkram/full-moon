@@ -135,6 +135,27 @@ static void	ft_hook_movement(t_data *data)
 	}
 }
 
+void	hook_animation(t_data *data)
+{
+	static double	last_update = 0;
+	static int		frame = 0;
+	double			current_time;
+	
+	current_time = mlx_get_time();
+	printf("current time: %f\n", current_time);
+	if (current_time - last_update >= ANIMATION_SPEED / 10)
+	{
+		mlx_delete_image(data->mlx, data->swordarm);
+		data->swordarm = mlx_texture_to_image(data->mlx, data->swordarm_tx[frame]);
+		frame++;
+		if (frame > 10)
+			frame = 0;
+		mlx_image_to_window(data->mlx, data->swordarm, 240, 1);
+		last_update = mlx_get_time();
+		printf("last update: %f\n", last_update);
+	}
+}
+
 void	ft_hook_hub(void *param)
 {
 	t_data		*data;
@@ -143,8 +164,29 @@ void	ft_hook_hub(void *param)
 	ft_hook_movement(data);
 	color_whole_image(data->screen, FULL_TRANSPARENT,
 		data->width, data->height);
+	hook_animation(data);
 	color_whole_image(data->player->img, FULL_TRANSPARENT,
 		data->player->imgwidth, data->player->imgheight);
 	draw_player(data);
 	draw_rays(data, data->ray);
+}
+
+void hook_mouse_move(double x, double y, void* param) 
+{
+	t_data			*data;
+	t_player		*player;
+
+	data = param;
+	player = data->player;
+    double dx = x - data->width / 2;
+	// bs code to silence complire complaint for y
+    y = y + 1;
+
+	if (y > 2)
+		y = 0;
+    player->angle += dx * DEGR / 10;
+    if (player->angle < 0) player->angle += PI2;
+    if (player->angle >= PI2) player->angle -= PI2;
+	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
+    //printf("Player angle: %f\n", player->angle);
 }

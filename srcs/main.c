@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/26 12:58:58 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/27 13:13:46 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int	load_valid_map(t_data *data, int ac, char **av)
 {
 
 	if (ac == 1)
-		data->map_path = ft_strjoin("./maps/", "default.cub");
+		data->map_path = "./maps/default.cub";
 	else if (ac == 2)
-		data->map_path = ft_strdup(av[1]);
+		data->map_path = av[1];
 	else
 		exit(ft_error("Wrong argument count.", 25));
 	load_map(data);
@@ -42,15 +42,6 @@ int	main(int ac, char **av)
 	init_map_data(&data);
 	load_valid_map(&data, ac, av);
 	init_and_draw(&data);
-
-	int i = -1;
-	while (data.nsew_path && data.txtrs && ++i < TEXTURES_AMOUNT)
-	{
-		free(data.nsew_path[i]);
-	}
-	free(data.txtrs);
-	free(data.nsew_path);
-	free_2d_int(data.world_map, data.map_height);
-	
+	free_and_quit(&data);
 	return (0);
 }
