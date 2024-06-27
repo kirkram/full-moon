@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/26 19:37:11 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/27 17:38:31 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,27 @@ static void	ft_hook_movement(t_data *data)
 	}
 }
 
+void	hook_animation(t_data *data)
+{
+	static double	last_update = 0;
+	static int		frame = 0;
+	double			current_time;
+	
+	current_time = mlx_get_time();
+	printf("current time: %f\n", current_time);
+	if (current_time - last_update >= ANIMATION_SPEED / 10)
+	{
+		mlx_delete_image(data->mlx, data->swordarm);
+		data->swordarm = mlx_texture_to_image(data->mlx, data->swordarm_tx[frame]);
+		frame++;
+		if (frame > 10)
+			frame = 0;
+		mlx_image_to_window(data->mlx, data->swordarm, 240, 1);
+		last_update = mlx_get_time();
+		printf("last update: %f\n", last_update);
+	}
+}
+
 void	ft_hook_hub(void *param)
 {
 	t_data		*data;
@@ -72,6 +93,7 @@ void	ft_hook_hub(void *param)
 	data = param;
 	//prev = *(data->player);
 	ft_hook_movement(data);
+	hook_animation(data);
 	/*
 	if (prev.x_pos_mini != data->player->x_pos_mini
 		|| prev.y_pos_mini != data->player->y_pos_mini

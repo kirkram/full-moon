@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/26 18:44:01 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/27 17:39:33 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define MINIZOOM SCREENWIDTH / 120
 # define PLAYERSIZE MINIZOOM / 2
 # define RESOLUTION 5
-# define STARTPOS 1.2
+# define ANIMATION_SPEED 1.2
 
 # define DEGR 0.0174533
 # define DEGR_RESO 0.0174533 / RESOLUTION
@@ -119,8 +119,11 @@ typedef struct s_data
 	mlx_image_t		*floor;
 	char			**nsew_path; // n s e w
 	// mlx_texture_t	*txtrs[TEXTURES_AMOUNT]; // n s e w
+	mlx_texture_t	**swordarm_tx;
+	mlx_image_t		*swordarm;
+	double			last_update;
 	mlx_texture_t	**txtrs;
-	mlx_texture_t	*txt_n;
+	mlx_texture_t	*txt_n;			
 	t_player		*player;
 	t_ray			*ray;
 	mlx_key_data_t	keydata;

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/26 19:29:26 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/27 17:33:20 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,47 @@ void	init_map_data(t_data *data)
 	data->startpos_y = 0;
 }
 
+int	init_sprites(t_data *data) // free these
+{
+	int		i;
+	char	*tmp;
+	char	*fname;
+
+	i = 11;
+	data->swordarm_tx = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) * i + 1);
+	if (!data->swordarm_tx)
+		return (1);
+	data->swordarm_tx[i] = NULL;
+	//data->swordarm = (mlx_image_t **)malloc(sizeof(mlx_image_t *) * i + 1);
+	//if (!data->swordarm)
+	//	return (1);
+	data->swordarm = NULL;
+	while (--i >= 0)
+	{
+		tmp = ft_strjoin("./sprites/sword", ft_itoa(i + 1));
+		fname = ft_strjoin(tmp, ".png");
+		data->swordarm_tx[i] = mlx_load_png(fname);
+		printf("Loading sprite file: %s\n", fname);
+		free(tmp);
+		tmp = NULL;
+		free(fname);
+		fname = NULL;
+		if (!data->swordarm_tx[i])
+			return (1);
+		//data->swordarm[i] = mlx_texture_to_image(data->mlx, data->swordarm_tx[i]);
+		//if (!data->swordarm[i])
+		//	return (1);
+		printf("Initialized sprite %d\n", i);
+	}
+	data->swordarm = mlx_texture_to_image(data->mlx, data->swordarm_tx[10]);
+	mlx_image_to_window(data->mlx, data->swordarm, 240, 1);
+	return (0);
+}
+
 int	init_player(t_data *data)
 {
+	if (init_sprites(data))
+		return (ft_error("Error on sprite initialization\n", 11));
 	data->player->x_pos = data->startpos_x;
 	data->player->y_pos = data->startpos_y;
 	data->player->imgwidth = data->width; // or MAPHEIGHT * data->zoom
