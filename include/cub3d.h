@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/26 16:28:49 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/27 15:51:29 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define DEGR 0.0174533
 # define DEGR_RESO 0.0174533 / RESOLUTION
 # define FOV 60
+# define COLL 0.6
 
 # define N_PATH "./textures/cat.png"
 # define S_PATH "./textures/gradient.png"
@@ -181,7 +182,7 @@ void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img);
 
 //keyhook
 void	ft_hook_hub(void *param);
-t_data	*reinit_image(t_data *data, mlx_image_t *img);
+//t_data	*reinit_image(t_data *data, mlx_image_t *img);
 
 //helper
 int		ft_error(char *msg, int	error_code);

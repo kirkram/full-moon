@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/26 16:30:31 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/27 15:31:59 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	vertical_rays(t_data *data, t_ray *ray)
 	{
 		map.y = (int)ray->y_v;
 		map.x = (int)ray->x_v;
-		if (ray->ang < PI_N && ray->ang > PI_S)
+		if (ray->ang > PI_S && ray->ang < PI_N)
 			map.x -= 1;
 		if (map.x < 0)
 			break ;
@@ -317,6 +317,7 @@ int	draw_rays(t_data *data, t_ray *ray)
 {
 	t_player	*player;
 	int			i;
+	float		line_w;
 
 	player = data->player;
 	ray->ang = player->angle - DEGR * FOV / 2;
@@ -324,8 +325,8 @@ int	draw_rays(t_data *data, t_ray *ray)
 		ray->ang += PI2;
 	else if (ray->ang >= PI2)
 		ray->ang -= PI2;
+	line_w = data->width / ((float)(FOV * RESOLUTION));
 	i = -1;
-	float line_w = data->width / ((float)(FOV * RESOLUTION));
 	while (++i < FOV * RESOLUTION)
 	{
 		horizontal_rays(data, ray);
