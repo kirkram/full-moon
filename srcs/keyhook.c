@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/27 21:15:21 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/28 12:41:03 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ static void	ft_hook_movement(t_data *data)
 	}
 }
 
+// here logic for attack
 void	attack_animation(t_data *data)
 {
 	data->last_attack = mlx_get_time();	
@@ -207,28 +208,8 @@ void	hook_mouse_move(double x, double y, void* param)
 	data = param;
 	player = data->player;
     double dx = x - data->width / 2;
-    player->angle += dx * DEGR * data->speed;
+    player->angle += dx * DEGR * 1.5 * data->speed;
     if (player->angle < 0) player->angle += PI2;
     if (player->angle >= PI2) player->angle -= PI2;
 	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
 }
-
-/*
-void	hook_mouse_button(mouse_key_t button, action_t action, 
-			modifier_key_t mods, void *param)
-{
-	t_data	*data;
-	double	current_time;
-
-	data = param;
-	(void)mods;
-	printf("In mouse hook\n");
-	if (mlx_is_mouse_down(data->mlx, MLX_MOUSE_BUTTON_LEFT))
-	{
-		printf("Mouse left released\n");
-		current_time = mlx_get_time();
-		if (current_time - data->last_attack >= ANIMATION_SPEED)
-			attack_animation(data);
-	}
-}
-*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/27 15:31:59 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/28 12:41:19 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,17 @@ void	vertical_rays(t_data *data, t_ray *ray)
 	int range = data->map_height;
 	if (data->map_width > data->map_height)
 		range = data->map_width;
+	/*
+	Compiler in OSX gave warning:
+	srcs/drawing.c:88:15: error: floating-point comparison is always false; constant cannot be represented exactly in type 'float' [-Werror,-Wliteral-range]
+        if (ray->ang == PI_N || ray->ang == PI_S)
 	if (ray->ang == PI_N || ray->ang == PI_S)
 	{
 		ray->x_v = player->x_pos;
 		ray->y_v = player->y_pos;
 		ray->dof = range;
 	}
+	*/
 	else if (ray->ang < PI_N && ray->ang > PI_S)
 	{
 		ray->x_v = (int)player->x_pos;
@@ -141,7 +146,13 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 	int range = data->map_height;
 	if (data->map_width > data->map_height)
 		range = data->map_width;
-	if ((float)ray->ang == (float)0 || ray->ang == PI)
+	/*
+	OSX compiler gave warning:
+	srcs/drawing.c:144:46: error: floating-point comparison is always false; 
+	constant cannot be represented exactly in type 'float' [-Werror,-Wliteral-range]
+        if ((float)ray->ang == (float)0 || ray->ang == PI)
+	*/
+	if ((float)ray->ang == (float)0) // || ray->ang == PI)
 	{
 		ray->y = player->y_pos;
 		ray->x = player->x_pos;

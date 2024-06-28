@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/27 21:08:19 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/28 12:41:09 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,6 @@ int	init_and_draw(t_data *data)
 	if(draw_rays(data, data->ray))
 		mlx_close_window(data->mlx);
 	mlx_cursor_hook(data->mlx, &hook_mouse_move, data);
-	//mlx_mouse_hook(data->mlx, &hook_mouse_button, data);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	while (!mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		mlx_loop(data->mlx);
