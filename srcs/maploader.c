@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/29 00:47:04 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/29 01:32:20 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,7 +254,7 @@ void	load_map(t_data *data)
 		if (!line)
 			break;
 		convert_tabs(&line);
-		printf("%s", line);
+		//printf("%s", line);
 		if (map_start == 0 && (line[0] == 32 || line[0] == 48 || line[0] == 49))
 			map_start = 1;
 		if (map_start == 1)
@@ -280,7 +280,7 @@ void	load_map(t_data *data)
 		printf("Floor color not found, default gray\n");
 		data->floorcolor = FLOOR;
 	}
-	printf("\n\nNumeric map:\n");
-	print_2d_int(data->world_map, data->map_height, data->map_width);
+	//printf("\n\nNumeric map:\n");
+	//print_2d_int(data->world_map, data->map_height, data->map_width);
 	return ;
 }
