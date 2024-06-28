@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/28 12:41:03 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/28 14:49:46 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static void	ft_hook_movement(t_data *data)
 			x_off = COLL;
 		map.y = floorf(data->player->y_pos + y_off);
 		map.x = floorf(data->player->x_pos + x_off);
-		printf("ang is %f, player->y is %f, map.y is %d\n", player->angle, player->y_pos, map.y);
+		// printf("ang is %f, player->y is %f, map.y is %d\n", player->angle, player->y_pos, map.y);
 		if ((map.y >= 0 && map.y < data->map_height && map.x >= 0 && map.x < data->map_width))
 		{
 			if (data->world_map[(int)data->player->y_pos][map.x] != 1)
