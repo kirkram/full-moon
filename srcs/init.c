@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/27 21:08:19 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/28 14:42:46 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	init_map_data(t_data *data)
 	data->world_map = NULL;
 	data->startpos_x = 0;
 	data->startpos_y = 0;
+	data->floorcolor = 0x0;
+	data->ceilingcolor = 0x0;
 }
 
 int	init_sprites(t_data *data) // free these
@@ -84,14 +86,14 @@ int	put_background(t_data *data)
 	// returns index of the instance. should it be used?
 	if (mlx_image_to_window(data->mlx, data->floor, 0, 0) < 0)
 		ft_error("Error on mlx_image_to_window\n", 11);
-	color_whole_image(data->floor, FLOOR, data->width, data->height);
+	color_whole_image(data->floor, data->floorcolor, data->width, data->height);
 	data->ceiling = mlx_new_image(data->mlx, data->width, data->height);
 	if (!data->ceiling)
 		ft_error("Error on mlx_new_image\n", 11);
 	// returns index of the instance. should it be used?
 	if (mlx_image_to_window(data->mlx, data->ceiling, 0, 0) < 0)
 		ft_error("Error on mlx_image_to_window\n", 11);
-	color_whole_image(data->ceiling, CEILING, data->width, data->height / 2);
+	color_whole_image(data->ceiling, data->ceilingcolor, data->width, data->height / 2);
 	mlx_put_string(data->mlx, "CUB3D_0.1", data->width - 100, 1);
 	return (0);
 }
@@ -193,7 +195,6 @@ int	init_and_draw(t_data *data)
 	if(draw_rays(data, data->ray))
 		mlx_close_window(data->mlx);
 	mlx_cursor_hook(data->mlx, &hook_mouse_move, data);
-	//mlx_mouse_hook(data->mlx, &hook_mouse_button, data);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	while (!mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		mlx_loop(data->mlx);

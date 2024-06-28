@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mapvalidator.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 11:02:18 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/26 18:27:25 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/28 15:49:35 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int flood_fill(int pos_y, int pos_x, int **wmap, t_data *data)
 	int ret;
 
 	ret = 0;
-	if (wmap[pos_y][pos_x] == 1 || wmap[pos_y][pos_x] == 2) // 2 could be for doors
+	if (wmap[pos_y][pos_x] == 1 || wmap[pos_y][pos_x] == 2) // 2 means visited here, doors could have another number
 		return (0);
 	if (pos_y == 0 || pos_y == (data->map_height - 1) ||
 		pos_x == 0 || pos_x == data->map_width - 1)

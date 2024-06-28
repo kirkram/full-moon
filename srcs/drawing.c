@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/27 15:31:59 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/06/29 01:25:39 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,10 @@ void	calc_distance(t_data *data, t_ray *ray)
 				- player->y_pos));
 }
 
+static int is_equal(float a, float b) {
+    return fabs(a - b) < EPSILON;
+}
+
 void	vertical_rays(t_data *data, t_ray *ray)
 {
 	t_player	*player;
@@ -85,7 +89,7 @@ void	vertical_rays(t_data *data, t_ray *ray)
 	int range = data->map_height;
 	if (data->map_width > data->map_height)
 		range = data->map_width;
-	if (ray->ang == PI_N || ray->ang == PI_S)
+	if (is_equal(ray->ang, PI_N) || is_equal(ray->ang, PI_S))
 	{
 		ray->x_v = player->x_pos;
 		ray->y_v = player->y_pos;
@@ -141,7 +145,13 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 	int range = data->map_height;
 	if (data->map_width > data->map_height)
 		range = data->map_width;
-	if ((float)ray->ang == (float)0 || ray->ang == PI)
+	/*
+	error: floating-point comparison is always false; 
+	constant cannot be represented exactly in type 'float'
+	because how they are represented as bits.
+	this is why some maps failed to show EW textures.
+	*/
+	if (is_equal(ray->ang, 0.0) || is_equal(ray->ang, PI))
 	{
 		ray->y = player->y_pos;
 		ray->x = player->x_pos;

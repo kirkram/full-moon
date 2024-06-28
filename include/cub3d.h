@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/27 20:46:00 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/29 01:21:54 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,8 @@
 # include "../lib/libft/libft.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 
-// for future editions and now (dynamic mapsizes)
-# define MAX_MAPWIDTH 48
-# define MAX_MAPHEIGHT 48
+# define MAX_MAPWIDTH 256
+# define MAX_MAPHEIGHT 256
 # define SCREENWIDTH 1280
 # define SCREENHEIGHT 860
 # define MINIZOOM SCREENWIDTH / 100
@@ -47,6 +46,7 @@
 # define PI_N 4.71238898039
 # define PI_S 1.5707963268
 # define PI2 6.28318530718
+# define EPSILON 1e-6
 
 //direction angle
 # define EAST 0
@@ -76,6 +76,8 @@
 // get next line
 # define BUFFER_SIZE 10
 # define FD_SIZE 1028
+
+# define TAB_WIDTH 4
 
 typedef struct s_map
 {
@@ -118,6 +120,8 @@ typedef struct s_data
 	mlx_image_t		*minimap;
 	mlx_image_t		*ceiling;
 	mlx_image_t		*floor;
+	unsigned int	ceilingcolor;
+	unsigned int 	floorcolor;
 	char			**nsew_path; // n s e w
 	// mlx_texture_t	*txtrs[TEXTURES_AMOUNT]; // n s e w
 	mlx_texture_t	**swordarm_tx;
