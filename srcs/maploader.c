@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/29 01:32:20 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/29 14:19:50 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,11 @@
 
 void	map_validation_error(char *msg, int rows, char *line, t_data *data)
 {
-	int	i;
-
-	i = -1;
-	while (++i < TEXTURES_AMOUNT)
-	{
-		if (data->nsew_path[i])
-			free(data->nsew_path[i]);
-	}
 	if (line != NULL)
 		free(line);
-	if (data->world_map != NULL)
+	if (data->world_map)
 		free_2d_int(data->world_map, rows);
-	exit(ft_error(msg, 25));
+	free_all_and_quit(data, msg, 25);
 }
 
 static void	replace_tabs_with_spaces(const char *input_line, char *output_line) 

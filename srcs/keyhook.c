@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/28 14:49:46 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/29 14:23:27 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	ft_hook_movement(t_data *data)
 	if (player->angle > PI)
 		y_off = -COLL;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(data->mlx);
+        free_all_and_quit(data, "Bye!", 0);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
 	{
 		map.y = floorf(data->player->y_pos + y_off);
