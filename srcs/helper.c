@@ -6,11 +6,38 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 14:39:44 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/29 00:22:12 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/29 13:24:41 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	free_textures(t_data *data)
+{
+    int i;
+
+    if (data->swordarm_tx)
+    {
+        i = PL_FRAMECOUNT;
+        while (--i >= 0)
+        {
+            if (data->swordarm_tx[i])
+                mlx_delete_texture(data->swordarm_tx[i]);
+        }
+        free(data->swordarm_tx);
+    }
+
+    if (data->txtrs)
+    {
+        i = TEXTURES_AMOUNT;
+        while (--i >= 0)
+        {
+            if (data->txtrs[i])
+                mlx_delete_texture(data->txtrs[i]);
+        }
+        free(data->txtrs);
+    }
+}
 
 int	ft_error(char *msg, int error_code)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/27 13:13:46 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/29 14:22:05 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,6 @@ int	main(int ac, char **av)
 	init_map_data(&data);
 	load_valid_map(&data, ac, av);
 	init_and_draw(&data);
-	free_and_quit(&data);
+	free_all_and_quit(&data, "Bye!", 0);
 	return (0);
 }

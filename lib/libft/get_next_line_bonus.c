@@ -6,11 +6,11 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 03:18:04 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/29 12:38:56 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/29 14:54:12 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
 static void	ft_shift_left(char buffer[BUFFER_SIZE + 1], int offset)
 {

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/28 14:42:46 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/29 14:48:54 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ void	init_map_data(t_data *data)
 {
 	int	i;
 
-	data->nsew_path = malloc((TEXTURES_AMOUNT + 1) * sizeof(char *));
+	data->nsew_path = malloc(TEXTURES_AMOUNT * sizeof(char *));
 	if (!data->nsew_path)
 		map_validation_error("Error: texture malloc fail.\n", 0, NULL, data);
 	i = -1;
-	while (++i <= TEXTURES_AMOUNT)
+	while (++i < TEXTURES_AMOUNT)
 		data->nsew_path[i] = NULL;
 	data->map_path = NULL;
 	data->world_map = NULL;
@@ -30,31 +30,39 @@ void	init_map_data(t_data *data)
 	data->ceilingcolor = 0x0;
 }
 
+static int create_fname(char *fname, int i)
+{
+	char	*num_str;
+	
+	num_str = ft_itoa(i + 1);
+	if (!num_str)
+		return (1);
+	ft_strlcpy(fname, "./sprites/sword", 1024);
+	ft_strlcat(fname, num_str, 1024);
+	ft_strlcat(fname, ".png", 1024);
+	free(num_str);
+	return (0);
+}
+
 int	init_sprites(t_data *data) // free these
 {
 	int		i;
-	char	*tmp;
-	char	*fname;
+	char	fname[1024];
 
-	i = 11;
-	data->swordarm_tx = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) * i + 1);
+	data->swordarm_tx = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) * (PL_FRAMECOUNT + 1));
 	if (!data->swordarm_tx)
 		return (1);
-	data->swordarm_tx[i] = NULL;
+	data->swordarm_tx[PL_FRAMECOUNT] = NULL;
 	data->swordarm = NULL;
+	i = PL_FRAMECOUNT;
 	while (--i >= 0)
 	{
-		tmp = ft_strjoin("./sprites/sword", ft_itoa(i + 1));
-		fname = ft_strjoin(tmp, ".png");
+		create_fname(fname, i);
 		data->swordarm_tx[i] = mlx_load_png(fname);
-		free(tmp);
-		tmp = NULL;
-		free(fname);
-		fname = NULL;
 		if (!data->swordarm_tx[i])
-			return (1);
+			free_all_and_quit(data, "player sprite load", 26);
 	}
-	data->swordarm = mlx_texture_to_image(data->mlx, data->swordarm_tx[10]);
+	data->swordarm = mlx_texture_to_image(data->mlx, data->swordarm_tx[4]);
 	mlx_image_to_window(data->mlx, data->swordarm, 240, 1);
 	return (0);
 }
@@ -142,35 +150,36 @@ int	init_images(t_data *data)
 	return (0);
 }
 
-int	load_texture(char *path, mlx_texture_t **txt)
+void	load_texture(t_data *data, int i)
 {
-	*txt = mlx_load_png(path);
-	
-	if (!(*txt))
-		return(ft_error("Error on mlx_load_png", 123));
-	if (access(path, F_OK))
-		return(ft_error("Cant find file", 123));
-	if ((*txt)->width > 4096 || (*txt)->height > 4096)
-		return(ft_error("The image dimensions should be less than 4096 pixels", 78));
-	return (0);
+	if (access(data->nsew_path[i], F_OK))
+		free_all_and_quit(data, "can't find texture file", 76);
+	data->txtrs[i] = mlx_load_png(data->nsew_path[i]);
+	if (!data->txtrs[i])
+		free_all_and_quit(data, "error on mlx_load_png", 77);
+	if (data->txtrs[i]->width > 4096 || data->txtrs[i]->height > 4096)
+		free_all_and_quit(data, "image dimensions should be less than 4096 pixels", 78);
 }
 
-void	free_and_quit(t_data *data)
+void	free_all_and_quit(t_data *data, char *msg, int exitcode)
 {
 	int	i;
 
-	i = -1;
-	while (++i < TEXTURES_AMOUNT)
-		mlx_delete_texture(data->txtrs[i]);
-	free_2d_int(data->world_map, data->map_height);
+	mlx_close_window(data->mlx);
 	mlx_terminate(data->mlx);
-	i = -1;
-	while (data->nsew_path && data->txtrs && ++i < TEXTURES_AMOUNT)
+	free_textures(data);
+	if (data->world_map)
+		free_2d_int(data->world_map, data->map_height);
+	i = TEXTURES_AMOUNT;
+	while (--i >= 0 && data->nsew_path)
 	{
-		free(data->nsew_path[i]);
+		if (data->nsew_path[i])
+			free(data->nsew_path[i]);
 	}
-	free(data->txtrs);
 	free(data->nsew_path);
+	if (exitcode)
+		printf("Error:");
+	exit(ft_error(msg, exitcode));
 }
 
 int	init_and_draw(t_data *data)
@@ -178,25 +187,22 @@ int	init_and_draw(t_data *data)
 	int	i;
 	//Should use mlx terminate before returning early?
 	if (init_images(data))
-		return (11);
-	i = -1;
-	data->txtrs = (mlx_texture_t **)malloc(TEXTURES_AMOUNT * sizeof(mlx_texture_t *));
-	while (++i < TEXTURES_AMOUNT)
-	{
-		data->txtrs[i] = malloc(sizeof(mlx_texture_t *));
-		if (load_texture(data->nsew_path[i], &data->txtrs[i]))
-			return (123);
-	}
+		free_all_and_quit(data, "image initialization", 11);
+	data->txtrs = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) * (TEXTURES_AMOUNT + 1));
+	if (!data->txtrs)
+		free_all_and_quit(data, "texture loading malloc", 11);
+	i = TEXTURES_AMOUNT;
+	while (--i >= 0)
+		load_texture(data, i);
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
 	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
 	if (data->minimap)
 		draw_minimap(data);
 	draw_player(data);
 	if(draw_rays(data, data->ray))
-		mlx_close_window(data->mlx);
+		free_all_and_quit(data, "ray drawing", 13);
 	mlx_cursor_hook(data->mlx, &hook_mouse_move, data);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
-	while (!mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
-		mlx_loop(data->mlx);
+	mlx_loop(data->mlx);
 	return (0);
 }

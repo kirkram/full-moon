@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/29 01:21:54 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/06/29 14:27:47 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@
 # define E_PATH "./textures/green.png"
 # define W_PATH "./textures/tiger.png"
 # define TEXTURES_AMOUNT 4
+
+//sprites
+# define PL_FRAMECOUNT 11
 
 //maths
 # define PI 3.14159265359
@@ -177,7 +180,7 @@ void	load_map(t_data *data);
 int		validate_map(int **world_map, t_data *data);
 void	map_validation_error(char *msg, int rows, char *line, t_data *data);
 int		color_whole_image(mlx_image_t *img, int color, int width, int height);
-void	free_and_quit(t_data *data);
+void	free_all_and_quit(t_data *data, char *msg, int exitcode);
 
 //drawing
 void	draw_minimap(t_data *data);
@@ -202,6 +205,7 @@ void	attack_animation(t_data *data);
 int		ft_error(char *msg, int	error_code);
 int		ft_abs(int result);
 int		**copy_2d_int(int **int_arr, int rows, int cols);
+void	free_textures(t_data *data);
 int		free_2d_int(int **int_arr, int rows);
 void	print_2d_int(int **int_arr, int rows, int cols);
 char	*get_next_line(int fd);
