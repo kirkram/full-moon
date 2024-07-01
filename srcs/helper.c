@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 14:39:44 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/29 13:24:41 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/01 13:12:03 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+unsigned long	current_time(void)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, 0);
+	return (time.tv_sec * 1000 + time.tv_usec);
+}
+
 
 void	free_textures(t_data *data)
 {

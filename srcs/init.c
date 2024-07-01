@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/29 14:48:54 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/01 14:37:17 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,10 +164,12 @@ void	load_texture(t_data *data, int i)
 void	free_all_and_quit(t_data *data, char *msg, int exitcode)
 {
 	int	i;
-
+	free_textures(data);
+	
 	mlx_close_window(data->mlx);
 	mlx_terminate(data->mlx);
-	free_textures(data);
+	
+	
 	if (data->world_map)
 		free_2d_int(data->world_map, data->map_height);
 	i = TEXTURES_AMOUNT;
