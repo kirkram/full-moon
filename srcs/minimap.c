@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:13:41 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/24 13:56:41 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/01 16:30:47 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,11 @@ t_point	new_p(int x, int y, t_data *data)
 	point.x = x;
 	point.y = y;
 	if (data->world_map[y][x] == 1)
-		point.color = MAGENTA;
+		point.color = GRAY;
 	else if (data->world_map[y][x] == 2)
-		point.color = YELLOW;
+	{
+		point.color = WHITE;
+	}
 	else if (data->world_map[y][x] == 3)
 		point.color = RED;
 	else if (data->world_map[y][x] == 4)
@@ -47,7 +49,7 @@ t_point	new_p(int x, int y, t_data *data)
 	else if (data->world_map[y][x] == 5)
 		point.color = GREEN;
 	else
-		point.color = WHITE;
+		point.color = YELLOW;
 	point.x *= data->zoom;
 	point.y *= data->zoom;
 	return (point);
@@ -76,7 +78,7 @@ void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img)
 	}
 }
 
-void	draw_minimap(t_data *data)
+int		draw_minimap(t_data *data)
 {
 	int	x;
 	int	y;
@@ -97,4 +99,5 @@ void	draw_minimap(t_data *data)
 		}
 		y++;
 	}
+	return (0);
 }

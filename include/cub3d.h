@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/01 14:43:09 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/01 16:19:01 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,20 @@ unsigned long	current_time(void);
 # define SCREENHEIGHT 860
 # define MINIZOOM SCREENWIDTH / 100
 # define PLAYERSIZE MINIZOOM / 2
-# define RESOLUTION 5
+# define RESOLUTION 3
 # define ANIMATION_SPEED 1.2
 
 # define DEGR 0.0174533
 # define DEGR_RESO 0.0174533 / RESOLUTION
 # define FOV 60
-# define COLL 0.6
+# define COLL 0.3
 
 # define N_PATH "./textures/cat.png"
 # define S_PATH "./textures/gradient.png"
 # define E_PATH "./textures/green.png"
 # define W_PATH "./textures/tiger.png"
 # define TEXTURES_AMOUNT 4
+# define MAPBACKG_PATH "./textures/mapbackg.png"
 
 //sprites
 # define PL_FRAMECOUNT 11
@@ -127,6 +128,7 @@ typedef struct s_data
 	mlx_t			*mlx;
 	mlx_image_t		*screen;
 	mlx_image_t		*minimap;
+	mlx_image_t		*minimap_img;
 	mlx_image_t		*ceiling;
 	mlx_image_t		*floor;
 	unsigned int	ceilingcolor;
@@ -138,7 +140,7 @@ typedef struct s_data
 	double			last_update;
 	double			last_attack;
 	mlx_texture_t	**txtrs;
-	mlx_texture_t	*txt_n;			
+	mlx_texture_t	*txt_n;
 	t_player		*player;
 	t_ray			*ray;
 	mlx_key_data_t	keydata;
@@ -189,7 +191,7 @@ int		color_whole_image(mlx_image_t *img, int color, int width, int height);
 void	free_all_and_quit(t_data *data, char *msg, int exitcode);
 
 //drawing
-void	draw_minimap(t_data *data);
+int		draw_minimap(t_data *data);
 int		init_and_draw(t_data *data);
 void	put_pixel(t_data *data, t_point *point, mlx_image_t *img);
 int		draw_player(t_data *data);

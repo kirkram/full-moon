@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/01 14:04:02 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/01 16:22:05 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	ft_hook_movement(t_data *data)
 
 	player = data->player;
 	data->speed = 0.003 / (1 / data->mlx->delta_time / 1000);
-	printf("The fps is %f\n", 1 / data->mlx->delta_time);
+	//printf("The fps is %f\n", 1 / data->mlx->delta_time);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
 	{
 		player->angle -= (data->speed / 1.5);
@@ -161,7 +161,7 @@ void	hook_animation(t_data *data)
 		frame++;
 		if (frame > 3)
 			frame = 0;
-		mlx_image_to_window(data->mlx, data->swordarm, 240, 1);
+		mlx_image_to_window(data->mlx, data->swordarm, data->width * 0.45, 1);
 		last_update = mlx_get_time();
 	}
 	else if (current_time - data->last_attack < ANIMATION_SPEED)
