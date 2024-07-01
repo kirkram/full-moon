@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/29 14:23:27 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/01 14:04:02 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	ft_hook_movement(t_data *data)
 
 	player = data->player;
 	data->speed = 0.003 / (1 / data->mlx->delta_time / 1000);
-	//printf("The fps is %f\n", 1 / data->mlx->delta_time);
+	printf("The fps is %f\n", 1 / data->mlx->delta_time);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
 	{
 		player->angle -= (data->speed / 1.5);
@@ -42,7 +42,7 @@ static void	ft_hook_movement(t_data *data)
 	if (player->angle > PI)
 		y_off = -COLL;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
-        free_all_and_quit(data, "Bye!", 0);
+		free_all_and_quit(data, "Bye!", 0);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
 	{
 		map.y = floorf(data->player->y_pos + y_off);
@@ -208,7 +208,7 @@ void	hook_mouse_move(double x, double y, void* param)
 	data = param;
 	player = data->player;
     double dx = x - data->width / 2;
-    player->angle += dx * DEGR * 1.5 * data->speed;
+    player->angle += dx * DEGR * 1.5 * data->speed * 0.2;
     if (player->angle < 0) player->angle += PI2;
     if (player->angle >= PI2) player->angle -= PI2;
 	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);

@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/29 01:25:39 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/01 14:44:56 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+
 
 void	apply_rotation(t_data *data, t_point *point, int x, int y)
 {
@@ -75,13 +77,14 @@ void	calc_distance(t_data *data, t_ray *ray)
 }
 
 static int is_equal(float a, float b) {
-    return fabs(a - b) < EPSILON;
+	return (fabs(a - b) < EPSILON);
 }
 
 void	vertical_rays(t_data *data, t_ray *ray)
 {
 	t_player	*player;
 	t_map		map;
+
 
 	player = data->player;
 	ray->ntan = -tan(ray->ang);
@@ -151,6 +154,7 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 	because how they are represented as bits.
 	this is why some maps failed to show EW textures.
 	*/
+	//unsigned long start = current_time();
 	if (is_equal(ray->ang, 0.0) || is_equal(ray->ang, PI))
 	{
 		ray->y = player->y_pos;
@@ -194,6 +198,7 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 				|| ray->x >= data->map_width || ray->y >= data->map_height)
 			break ;
 	}
+	//printf("Drew a hor ray in %lu\n", current_time() - start);
 }
 
 void	make_color_opaque(unsigned int	*color)
@@ -213,7 +218,8 @@ uint32_t	index_color(t_txt *txt, t_ray *ray)
 	txt->blue = txt->ptr->pixels[txt->index + 2];
 	txt->alpha = 0x000000FF;
 	//shade if a vertical ray
-	if (ray->x == ray->x_v)
+	//(void)ray;
+	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist && ray->vert_dist != 0))
 	{
 		txt->red *= 0.75;
 		txt->green *= 0.75;
@@ -262,6 +268,8 @@ int		draw_column(t_data *data, t_ray *ray, int i, float line_w)
 	float		dist;
 	float		line_h;
 	t_txt		txt;
+
+	//unsigned long start = current_time();
 	
 	dist = ray->hor_dist;
 	txt.y = 0;
@@ -273,7 +281,7 @@ int		draw_column(t_data *data, t_ray *ray, int i, float line_w)
 		dist = ray->vert_dist;
 		ray->x = ray->x_v;
 		ray->y = ray->y_v;
-		ray->hor_dist = ray->vert_dist;
+		//ray->hor_dist = ray->vert_dist;
 		//if wall faces west, flip
 		if (ray->ang > PI_S && ray->ang < PI_N)
 		{
@@ -299,25 +307,23 @@ int		draw_column(t_data *data, t_ray *ray, int i, float line_w)
 			
 	}
 	line_h = data->height / dist;
-	//must have cast
 	line.y = (data->height - line_h) / 2;
 	txt.y_step = txt.ptr->height / line_h;
-	txt.x_step = txt.ptr->width / ((FOV * RESOLUTION)) / line_w;
-	txt.save = txt.x;
+	//txt.x_step = txt.ptr->width / ((FOV * RESOLUTION)) / line_w;
 	txt.maxindex = txt.ptr->width * txt.ptr->height * txt.ptr->bytes_per_pixel;
-	while (++line.y < (data->height - line_h) / 2 + line_h && line.y < data->height)
+	if (line.y < 0)
+	{
+		txt.y = fabs(txt.y_step * line.y);
+		line.y = 0;
+	}
+	while (line.y < (data->height - line_h) / 2 + line_h && line.y < data->height)
 	{
 		line.x = line_w * i;
-		txt.x = txt.save;
 		txt.index = ((uint32_t)txt.y * txt.ptr->width + (uint32_t)txt.x) * txt.ptr->bytes_per_pixel;
+		line.color = index_color(&txt, ray);
 		while (++line.x <= line_w * (i + 1) && line.x < data->width)
-		{	
-			// less than maxindex, unneecessary?
-			if (txt.index + 2 < txt.maxindex)
-				line.color = index_color(&txt, ray);
 			put_pixel(data, &line, data->screen);
-			txt.x += txt.x_step;
-		}
+		line.y ++;
 		txt.y += txt.y_step;
 	}
 	return (0);
@@ -343,7 +349,7 @@ int	draw_rays(t_data *data, t_ray *ray)
 		vertical_rays(data, ray);
 		calc_distance(data, ray);
 		fix_fisheye(data, ray);
-		draw_minirays(data, ray);
+		//draw_minirays(data, ray);
 		if (draw_column(data, ray, i, line_w))
 			return (1);
 		ray->ang += DEGR_RESO;
