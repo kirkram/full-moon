@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/06/29 14:27:47 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/01 14:43:09 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@
 # include <math.h>
 # include "../lib/libft/libft.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
+
+//FOR DEBUGGING DEL
+# include <sys/time.h>
+
+//FOR DEBUGGIN
+unsigned long	current_time(void);
 
 # define MAX_MAPWIDTH 256
 # define MAX_MAPHEIGHT 256
@@ -213,5 +219,8 @@ size_t	gnl_strlen(const char *str);
 char	*gnl_strjoin(char *s1, char *s2);
 int		gnl_strcpos(const char *s, int c);
 char	*gnl_substr(char *buffer, unsigned int start, size_t len);
+
+
+
 
 #endif
