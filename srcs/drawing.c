@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/01 14:44:56 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/01 18:10:47 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ void	fix_fisheye(t_data *data, t_ray *ray)
 		curr_angle = curr_angle - (PI2);
 	ray->hor_dist *= cosf(curr_angle);
 	ray->vert_dist *= cosf(curr_angle);
+	printf("curr ang is %f, distance is %f ", curr_angle * 180 / PI, ray->dist);
+	ray->dist *= cosf(curr_angle);
+	printf("and with correction its %f\n", ray->dist);
+	sleep(1);
 }
 
 void	calc_distance(t_data *data, t_ray *ray)
@@ -74,6 +78,10 @@ void	calc_distance(t_data *data, t_ray *ray)
 	ray->vert_dist = sqrtf((ray->x_v - player->x_pos) * (ray->x_v
 				- player->x_pos) + (ray->y_v - player->y_pos) * (ray->y_v
 				- player->y_pos));
+	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist && ray->vert_dist != 0))
+		ray->dist = ray->vert_dist;
+	else
+		ray->dist = ray->hor_dist;
 }
 
 static int is_equal(float a, float b) {
@@ -234,7 +242,6 @@ uint32_t	index_color(t_txt *txt, t_ray *ray)
 // 	t_point		line;
 // 	double		dist;
 // 	double		line_w;
-
 // 	dist = ray->hor_dist;
 // 	line.color = YEL_WHITE;
 // 	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist && ray->vert_dist != 0))
@@ -336,7 +343,7 @@ int	draw_rays(t_data *data, t_ray *ray)
 	float		line_w;
 
 	player = data->player;
-	ray->ang = player->angle - DEGR * FOV / 2;
+	ray->ang = player->angle - (DEGR * FOV) / 2;
 	if (ray->ang < 0)
 		ray->ang += PI2;
 	else if (ray->ang >= PI2)

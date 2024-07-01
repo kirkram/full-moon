@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/01 16:19:01 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/01 18:03:26 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ unsigned long	current_time(void);
 # define MAX_MAPHEIGHT 256
 # define SCREENWIDTH 1280
 # define SCREENHEIGHT 860
-# define MINIZOOM SCREENWIDTH / 100
+# define MINIZOOM SCREENWIDTH / 150
 # define PLAYERSIZE MINIZOOM / 2
 # define RESOLUTION 3
 # define ANIMATION_SPEED 1.2
@@ -103,6 +103,7 @@ typedef struct s_ray
 	float		y_v;
 	float		hor_dist;
 	float		vert_dist;
+	float		dist;
 	float		ang;
 	float		atan;
 	float		ntan;
