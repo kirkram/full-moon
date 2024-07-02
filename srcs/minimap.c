@@ -78,7 +78,7 @@ void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img)
 	}
 }
 
-int		draw_minimap(t_data *data)
+int	draw_minimap(t_data *data)
 {
 	int	x;
 	int	y;

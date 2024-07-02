@@ -14,7 +14,6 @@
 
 int	load_valid_map(t_data *data, int ac, char **av)
 {
-
 	if (ac == 1)
 		data->map_path = "./maps/default.cub";
 	else if (ac == 2)
@@ -23,7 +22,8 @@ int	load_valid_map(t_data *data, int ac, char **av)
 		exit(ft_error("Wrong argument count.", 25));
 	load_map(data);
 	if (validate_map(data->world_map, data))
-		map_validation_error("Error: map validation", data->map_height, NULL, data);
+		map_validation_error("Error: map validation", data->map_height, NULL,
+			data);
 	return (0);
 }
 

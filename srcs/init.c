@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/02 15:29:37 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/02 17:52:44 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void	init_map_data(t_data *data)
 	data->ceilingcolor = 0x0;
 }
 
-static int create_fname(char *fname, int i)
+static int	create_fname(char *fname, int i)
 {
 	char	*num_str;
-	
+
 	num_str = ft_itoa(i + 1);
 	if (!num_str)
 		return (1);
@@ -49,10 +49,11 @@ static int create_fname(char *fname, int i)
 
 int	init_sprites(t_data *data) // free these
 {
-	int		i;
-	char	fname[1024];
+	int i;
+	char fname[1024];
 
-	data->swordarm_tx = (mlx_texture_t **)ft_calloc(PL_FRAMECOUNT + 1, sizeof(mlx_texture_t *));
+	data->swordarm_tx = (mlx_texture_t **)ft_calloc(PL_FRAMECOUNT + 1,
+			sizeof(mlx_texture_t *));
 	if (!data->swordarm_tx)
 		return (1);
 	data->swordarm_tx[PL_FRAMECOUNT] = NULL;
@@ -102,7 +103,8 @@ int	put_background(t_data *data)
 		ft_error("Error on mlx_new_image\n", 11);
 	if (mlx_image_to_window(data->mlx, data->ceiling, 0, 0) < 0)
 		ft_error("Error on mlx_image_to_window\n", 11);
-	color_whole_image(data->ceiling, data->ceilingcolor, data->width, data->height / 2);
+	color_whole_image(data->ceiling, data->ceilingcolor, data->width,
+		data->height / 2);
 	mlx_put_string(data->mlx, "CUB3D_0.9", data->width - 100, 1);
 	return (0);
 }
@@ -110,7 +112,7 @@ int	put_background(t_data *data)
 int	init_minimap(t_data *data)
 {
 	mlx_texture_t	*minimap_txt;
-	
+
 	minimap_txt = mlx_load_png(MAPBACKG_PATH);
 	if (!minimap_txt)
 		return (12);
@@ -143,7 +145,6 @@ int	init_canvases(t_data *data)
 {
 	// int32_t mon_width;
 	// int32_t mon_height;
-	
 	data->width = SCREENWIDTH;
 	data->height = SCREENHEIGHT;
 	data->ceiling = NULL;
@@ -169,39 +170,20 @@ void	load_texture(t_data *data, int i)
 	if (!data->txtrs[i])
 		free_all_and_quit(data, "error on mlx_load_png", 77);
 	if (data->txtrs[i]->width > 4096 || data->txtrs[i]->height > 4096)
-		free_all_and_quit(data, "image dimensions should be less than 4096 pixels", 78);
-}
-
-void	free_all_and_quit(t_data *data, char *msg, int exitcode)
-{
-	int	i;
-	
-	if (data->mlx)
-	{
-		mlx_close_window(data->mlx);
-		mlx_terminate(data->mlx);
-	}
-	free_textures(data);
-	if (data->world_map)
-		free_2d_int(data->world_map, data->map_height);
-	i = TEXTURES_AMOUNT;
-	while (--i >= 0 && data->nsew_path)
-	{
-		if (data->nsew_path[i])
-			free(data->nsew_path[i]);
-	}
-	if (data->nsew_path)
-		free(data->nsew_path);
-	exit(ft_error(msg, exitcode));
+		free_all_and_quit(data,
+			"image dimensions should be less than 4096 pixels", 78);
 }
 
 int	init_and_draw(t_data *data)
 {
 	int	i;
-	//Should use mlx terminate before returning early?
+	int	j;
+
+	// Should use mlx terminate before returning early?
 	if (init_canvases(data))
 		free_all_and_quit(data, "image initialization", 11);
-	data->txtrs = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) * (TEXTURES_AMOUNT + 1));
+	data->txtrs = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *)
+			* (TEXTURES_AMOUNT + 1));
 	if (!data->txtrs)
 		free_all_and_quit(data, "texture loading malloc", 11);
 	i = TEXTURES_AMOUNT;
@@ -210,14 +192,14 @@ int	init_and_draw(t_data *data)
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
 	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
 	if (draw_minimap(data))
-			return (11);
+		return (11);
 	draw_player(data);
-	if(draw_rays(data, data->ray))
+	if (draw_rays(data, data->ray))
 		free_all_and_quit(data, "ray drawing", 13);
 	i = -1;
 	while (++i < data->map_height)
 	{
-		int j = -1;
+		j = -1;
 		while (++j < data->map_width)
 		{
 			printf("%d ", data->world_map[i][j]);
