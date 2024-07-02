@@ -66,7 +66,7 @@ int	init_sprites(t_data *data) // free these
 			free_all_and_quit(data, "player sprite load", 26);
 	}
 	data->swordarm = mlx_texture_to_image(data->mlx, data->swordarm_tx[4]);
-	mlx_image_to_window(data->mlx, data->swordarm, 240, 1);
+	mlx_image_to_window(data->mlx, data->swordarm, 1, 1);
 	return (0);
 }
 
@@ -94,32 +94,38 @@ int	put_background(t_data *data)
 	data->floor = mlx_new_image(data->mlx, data->width, data->height);
 	if (!data->floor)
 		ft_error("Error on mlx_new_image\n", 11);
-	// returns index of the instance. should it be used?
 	if (mlx_image_to_window(data->mlx, data->floor, 0, 0) < 0)
 		ft_error("Error on mlx_image_to_window\n", 11);
 	color_whole_image(data->floor, data->floorcolor, data->width, data->height);
 	data->ceiling = mlx_new_image(data->mlx, data->width, data->height);
 	if (!data->ceiling)
 		ft_error("Error on mlx_new_image\n", 11);
-	// returns index of the instance. should it be used?
 	if (mlx_image_to_window(data->mlx, data->ceiling, 0, 0) < 0)
 		ft_error("Error on mlx_image_to_window\n", 11);
 	color_whole_image(data->ceiling, data->ceilingcolor, data->width, data->height / 2);
-	mlx_put_string(data->mlx, "CUB3D_0.1", data->width - 100, 1);
+	mlx_put_string(data->mlx, "CUB3D_0.9", data->width - 100, 1);
 	return (0);
 }
 
 int	init_minimap(t_data *data)
 {
+	mlx_texture_t	*minimap_txt;
+	
+	minimap_txt = mlx_load_png(MAPBACKG_PATH);
+	if (!minimap_txt)
+		return (12);
+	minimap_txt->height = data->map_height * data->zoom;
+	minimap_txt->width = data->map_width * data->zoom;
+	data->minimap_img = mlx_texture_to_image(data->mlx, minimap_txt);
+	if (!data->minimap_img)
+		return (11);
+	if (mlx_image_to_window(data->mlx, data->minimap_img, 0, 0) < 0)
+		return (11);
 	data->minimap = mlx_new_image(data->mlx, data->width, data->height);
 	if (!data->minimap)
 		ft_error("Error on mlx_new_image\n", 11);
 	if (mlx_image_to_window(data->mlx, data->minimap, 0, 0) < 0)
-	{
-		if (data->mlx)
-			mlx_terminate(data->mlx);
 		return (ft_error("Error on mlx_image_to_window", 11));
-	}
 	return (0);
 }
 
@@ -133,8 +139,11 @@ int	init_main_screen(t_data *data)
 	return (0);
 }
 
-int	init_images(t_data *data)
+int	init_canvases(t_data *data)
 {
+	// int32_t mon_width;
+	// int32_t mon_height;
+	
 	data->width = SCREENWIDTH;
 	data->height = SCREENHEIGHT;
 	data->ceiling = NULL;
@@ -145,11 +154,10 @@ int	init_images(t_data *data)
 		return (ft_error("Error on mlx_init\n", 11));
 	if (put_background(data) || init_main_screen(data) || init_minimap(data)
 		|| init_player(data))
-	{
-		if (data->mlx)
-			mlx_terminate(data->mlx);
 		return (11);
-	}
+	// mlx_get_monitor_size(0, &mon_width, &mon_height);
+	// mlx_set_window_pos(data->mlx, mon_width / 3.3, mon_height / 4);
+	data->player->angle = rad(NORTH);
 	return (0);
 }
 
@@ -191,7 +199,7 @@ int	init_and_draw(t_data *data)
 {
 	int	i;
 	//Should use mlx terminate before returning early?
-	if (init_images(data))
+	if (init_canvases(data))
 		free_all_and_quit(data, "image initialization", 11);
 	data->txtrs = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) * (TEXTURES_AMOUNT + 1));
 	if (!data->txtrs)
@@ -201,11 +209,21 @@ int	init_and_draw(t_data *data)
 		load_texture(data, i);
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
 	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
-	if (data->minimap)
-		draw_minimap(data);
+	if (draw_minimap(data))
+			return (11);
 	draw_player(data);
 	if(draw_rays(data, data->ray))
 		free_all_and_quit(data, "ray drawing", 13);
+	i = -1;
+	while (++i < data->map_height)
+	{
+		int j = -1;
+		while (++j < data->map_width)
+		{
+			printf("%d ", data->world_map[i][j]);
+		}
+		printf("\n");
+	}
 	mlx_cursor_hook(data->mlx, &hook_mouse_move, data);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	mlx_loop(data->mlx);
