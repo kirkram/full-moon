@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/02 14:03:21 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/02 17:42:23 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,8 @@ void	init_map_data(t_data *data);
 int		load_valid_map(t_data *data, int ac, char **av);
 void	load_map(t_data *data);
 int		validate_map(int **world_map, t_data *data);
+int		validate_mapsquare(int value);
+int		flood_fill(int pos_y, int pos_x, int **wmap, t_data *data);
 void	map_validation_error(char *msg, int rows, char *line, t_data *data);
 int		color_whole_image(mlx_image_t *img, int color, int width, int height);
 void	free_all_and_quit(t_data *data, char *msg, int exitcode);
@@ -213,17 +215,12 @@ void	attack_animation(t_data *data);
 //helper
 int		ft_error(char *msg, int	error_code);
 int		ft_abs(int result);
-int		**copy_2d_int(int **int_arr, int rows, int cols);
 void	free_textures(t_data *data);
+char	*get_next_line(int fd);
+
+//maptools
+int		**copy_2d_int(int **int_arr, int rows, int cols);
 int		free_2d_int(int **int_arr, int rows);
 void	print_2d_int(int **int_arr, int rows, int cols);
-char	*get_next_line(int fd);
-size_t	gnl_strlen(const char *str);
-char	*gnl_strjoin(char *s1, char *s2);
-int		gnl_strcpos(const char *s, int c);
-char	*gnl_substr(char *buffer, unsigned int start, size_t len);
-
-
-
 
 #endif
