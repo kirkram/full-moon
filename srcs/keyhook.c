@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/01 14:04:02 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/02 14:59:55 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ static void	ft_hook_movement(t_data *data)
 
 	player = data->player;
 	data->speed = 0.003 / (1 / data->mlx->delta_time / 1000);
-	printf("The fps is %f\n", 1 / data->mlx->delta_time);
+	//printf("The fps is %f\n", 1 / data->mlx->delta_time);
+	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
+		free_all_and_quit(data, "Bye!", 0);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
 	{
 		player->angle -= (data->speed / 1.5);
@@ -41,8 +43,6 @@ static void	ft_hook_movement(t_data *data)
 		x_off = -COLL;
 	if (player->angle > PI)
 		y_off = -COLL;
-	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
-		free_all_and_quit(data, "Bye!", 0);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
 	{
 		map.y = floorf(data->player->y_pos + y_off);
@@ -132,6 +132,24 @@ static void	ft_hook_movement(t_data *data)
 			}
 		}
 	}
+	if (mlx_is_key_down(data->mlx, MLX_KEY_E))
+	{
+		y_off = COLL * 4;
+		x_off = COLL * 4;
+		if (player->angle > PI_S && player->angle < PI_N)
+			x_off = -COLL * 4;
+		if (player->angle > PI)
+			y_off = -COLL * 4;
+		map.y = floorf(data->player->y_pos + y_off);
+		map.x = floorf(data->player->x_pos + x_off);
+		if ((map.y >= 0 && map.y < data->map_height && map.x >= 0 && map.x < data->map_width))
+		{
+			if (data->world_map[(int)data->player->y_pos][map.x] == 4)
+				data->world_map[(int)data->player->y_pos][map.x] = 0;
+			if (data->world_map[map.y][(int)data->player->x_pos] == 4)
+				data->world_map[map.y][(int)data->player->x_pos] = 0;
+		}
+	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ENTER))
 	{
 		current_time = mlx_get_time();
@@ -161,7 +179,7 @@ void	hook_animation(t_data *data)
 		frame++;
 		if (frame > 3)
 			frame = 0;
-		mlx_image_to_window(data->mlx, data->swordarm, 240, 1);
+		mlx_image_to_window(data->mlx, data->swordarm, data->width * 0.45, 1);
 		last_update = mlx_get_time();
 	}
 	else if (current_time - data->last_attack < ANIMATION_SPEED)
