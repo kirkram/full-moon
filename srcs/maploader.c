@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/02 13:45:52 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/02 15:33:51 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ void	map_validation_error(char *msg, int rows, char *line, t_data *data)
 	if (line != NULL)
 		free(line);
 	if (data->world_map)
+	{
 		free_2d_int(data->world_map, rows);
+		data->world_map = NULL;
+	}
 	free_all_and_quit(data, msg, 25);
 }
 
@@ -258,18 +261,18 @@ void	load_map(t_data *data)
 			read_map_parameter(line, data);
 		free(line);
 	}
-	//printf("\nlno at end: %d\n", lno);
+	// printf("\nlno at end: %d\n", lno);
 	close(fd);
 	if (data->startpos_x == 0 || data->startpos_y == 0)
 	 	map_validation_error("Error: no player starting point", data->map_height, NULL, data);
 	if (data->ceilingcolor == 0x0)
 	{
-		printf("Ceiling color not found, default skyblue\n");
+		//printf("Ceiling color not found, default skyblue\n");
 		data->ceilingcolor = CEILING;
 	}
 	if (data->floorcolor == 0x0)
 	{
-		printf("Floor color not found, default gray\n");
+		//printf("Floor color not found, default gray\n");
 		data->floorcolor = FLOOR;
 	}
 	//printf("\n\nNumeric map:\n");

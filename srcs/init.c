@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/02 14:23:08 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/02 15:29:37 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,17 @@ void	init_map_data(t_data *data)
 {
 	int	i;
 
-	data->nsew_path = malloc(TEXTURES_AMOUNT * sizeof(char *));
+	data->mlx = NULL;
+	data->nsew_path = ft_calloc(TEXTURES_AMOUNT, sizeof(char *));
 	if (!data->nsew_path)
-		map_validation_error("Error: texture malloc fail.\n", 0, NULL, data);
+		map_validation_error("Error: texture path malloc\n", 0, NULL, data);
 	i = -1;
 	while (++i < TEXTURES_AMOUNT)
 		data->nsew_path[i] = NULL;
 	data->map_path = NULL;
 	data->world_map = NULL;
+	data->txtrs = NULL;
+	data->swordarm_tx = NULL;
 	data->startpos_x = 0;
 	data->startpos_y = 0;
 	data->floorcolor = 0x0;
@@ -49,7 +52,7 @@ int	init_sprites(t_data *data) // free these
 	int		i;
 	char	fname[1024];
 
-	data->swordarm_tx = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *) * (PL_FRAMECOUNT + 1));
+	data->swordarm_tx = (mlx_texture_t **)ft_calloc(PL_FRAMECOUNT + 1, sizeof(mlx_texture_t *));
 	if (!data->swordarm_tx)
 		return (1);
 	data->swordarm_tx[PL_FRAMECOUNT] = NULL;
@@ -172,23 +175,23 @@ void	load_texture(t_data *data, int i)
 void	free_all_and_quit(t_data *data, char *msg, int exitcode)
 {
 	int	i;
-	//free_textures(data);
 	
-	//mlx_close_window(data->mlx);
-	//mlx_terminate(data->mlx);
-	
-	
-	// if (data->world_map)
-	// 	free_2d_int(data->world_map, data->map_height);
+	if (data->mlx)
+	{
+		mlx_close_window(data->mlx);
+		mlx_terminate(data->mlx);
+	}
+	free_textures(data);
+	if (data->world_map)
+		free_2d_int(data->world_map, data->map_height);
 	i = TEXTURES_AMOUNT;
 	while (--i >= 0 && data->nsew_path)
 	{
 		if (data->nsew_path[i])
 			free(data->nsew_path[i]);
 	}
-	free(data->nsew_path);
-	if (exitcode)
-		printf("Error:");
+	if (data->nsew_path)
+		free(data->nsew_path);
 	exit(ft_error(msg, exitcode));
 }
 

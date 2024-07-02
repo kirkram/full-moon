@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 14:39:44 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/01 13:12:03 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/02 15:28:21 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	free_textures(t_data *data)
 {
     int i;
 
-    if (data->swordarm_tx)
+    if (data->swordarm_tx != NULL)
     {
         i = PL_FRAMECOUNT;
         while (--i >= 0)
@@ -33,18 +33,20 @@ void	free_textures(t_data *data)
             if (data->swordarm_tx[i])
                 mlx_delete_texture(data->swordarm_tx[i]);
         }
-        free(data->swordarm_tx);
+		if (data->swordarm_tx)
+        	free(data->swordarm_tx);
     }
-
-    if (data->txtrs)
+    if (data->txtrs != NULL)
     {
         i = TEXTURES_AMOUNT;
         while (--i >= 0)
         {
             if (data->txtrs[i])
+
                 mlx_delete_texture(data->txtrs[i]);
         }
-        free(data->txtrs);
+		if (data->txtrs)
+        	free(data->txtrs);
     }
 }
 
