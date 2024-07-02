@@ -6,58 +6,11 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/02 17:41:44 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/02 19:09:03 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	map_validation_error(char *msg, int rows, char *line, t_data *data)
-{
-	if (line != NULL)
-		free(line);
-	if (data->world_map)
-	{
-		free_2d_int(data->world_map, rows);
-		data->world_map = NULL;
-	}
-	free_all_and_quit(data, msg, 25);
-}
-
-static void	replace_tabs_with_spaces(const char *input_line, char *output_line)
-{
-	int	i;
-	int	j;
-	int	input_len;
-	int	output_index;
-	int	space_count;
-
-	input_len = ft_strlen(input_line);
-	output_index = 0;
-	i = -1;
-	while (++i < input_len)
-	{
-		if (input_line[i] == '\t')
-		{
-			space_count = TAB_WIDTH - (output_index % TAB_WIDTH);
-			j = -1;
-			while (++j < space_count)
-				output_line[output_index++] = ' ';
-		}
-		else
-			output_line[output_index++] = input_line[i];
-	}
-	output_line[output_index] = '\0';
-}
-
-static void	convert_tabs(char **line)
-{
-	char	output_line[MAX_MAPWIDTH * TAB_WIDTH];
-
-	replace_tabs_with_spaces(*line, output_line);
-	free(*line);
-	*line = ft_strdup(output_line);
-}
 
 // Rows that contain data such as texture names cannot start with space, 0 or 1
 static void	count_mapdimensions(t_data *data)
@@ -151,23 +104,6 @@ static void	write_mapline(char *line, int lno, t_data *data)
 		}
 		i++;
 	}
-}
-
-static int	is_valid_hex(const char *hex_str)
-{
-	char	digit;
-
-	if (hex_str[0] == '0' && (hex_str[1] == 'x' || hex_str[1] == 'X'))
-		hex_str += 2;
-	while (*hex_str)
-	{
-		digit = *hex_str;
-		if (!ft_isdigit(digit) && !(digit >= 'a' && digit <= 'f')
-			&& !(digit >= 'A' && digit <= 'F'))
-			return (0);
-		hex_str++;
-	}
-	return (1);
 }
 
 static void	read_map_parameter(char *line, t_data *data)
