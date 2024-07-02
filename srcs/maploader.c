@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/29 14:19:50 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/02 13:45:52 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,9 @@ static void	count_mapdimensions(t_data *data)
 
 static int	validate_mapsquare(int value)
 {
-	if (value == 48 || value == 49 || value == 32)
+	if (value == '0' || value == '1' || value == '4' || value == ' ')
 		return (0);
-	else if (value == 78 || value == 69 || value == 83 || value == 87)
+	else if (value == 'N' || value == 'E' || value == 'S' || value == 'W')
 		return (0);
 	else
 		return (1);

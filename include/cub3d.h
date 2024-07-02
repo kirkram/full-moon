@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/01 18:03:26 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/02 14:03:21 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ unsigned long	current_time(void);
 
 # define MAX_MAPWIDTH 256
 # define MAX_MAPHEIGHT 256
-# define SCREENWIDTH 1280
-# define SCREENHEIGHT 860
+# define SCREENWIDTH 1280 
+# define SCREENHEIGHT 860 
 # define MINIZOOM SCREENWIDTH / 150
 # define PLAYERSIZE MINIZOOM / 2
 # define RESOLUTION 3

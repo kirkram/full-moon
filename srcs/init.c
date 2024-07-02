@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/01 16:13:11 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/02 14:23:08 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,9 @@ int	init_main_screen(t_data *data)
 
 int	init_canvases(t_data *data)
 {
+	// int32_t mon_width;
+	// int32_t mon_height;
+	
 	data->width = SCREENWIDTH;
 	data->height = SCREENHEIGHT;
 	data->ceiling = NULL;
@@ -149,6 +152,9 @@ int	init_canvases(t_data *data)
 	if (put_background(data) || init_main_screen(data) || init_minimap(data)
 		|| init_player(data))
 		return (11);
+	// mlx_get_monitor_size(0, &mon_width, &mon_height);
+	// mlx_set_window_pos(data->mlx, mon_width / 3.3, mon_height / 4);
+	data->player->angle = rad(NORTH);
 	return (0);
 }
 
@@ -166,14 +172,14 @@ void	load_texture(t_data *data, int i)
 void	free_all_and_quit(t_data *data, char *msg, int exitcode)
 {
 	int	i;
-	free_textures(data);
+	//free_textures(data);
 	
-	mlx_close_window(data->mlx);
-	mlx_terminate(data->mlx);
+	//mlx_close_window(data->mlx);
+	//mlx_terminate(data->mlx);
 	
 	
-	if (data->world_map)
-		free_2d_int(data->world_map, data->map_height);
+	// if (data->world_map)
+	// 	free_2d_int(data->world_map, data->map_height);
 	i = TEXTURES_AMOUNT;
 	while (--i >= 0 && data->nsew_path)
 	{
@@ -205,6 +211,16 @@ int	init_and_draw(t_data *data)
 	draw_player(data);
 	if(draw_rays(data, data->ray))
 		free_all_and_quit(data, "ray drawing", 13);
+	i = -1;
+	while (++i < data->map_height)
+	{
+		int j = -1;
+		while (++j < data->map_width)
+		{
+			printf("%d ", data->world_map[i][j]);
+		}
+		printf("\n");
+	}
 	mlx_cursor_hook(data->mlx, &hook_mouse_move, data);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	mlx_loop(data->mlx);
