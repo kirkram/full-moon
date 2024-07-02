@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mapvalidator.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 11:02:18 by mburakow          #+#    #+#             */
-/*   Updated: 2024/06/28 15:49:35 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/02 15:32:45 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ int	validate_map(int **world_map, t_data *data)
 	int	i;
 
 	i = -1;
-	while (++i < TEXTURES_AMOUNT)
+	while (++i < TEXTURES_AMOUNT && data->nsew_path)
 	{
 		if (data->nsew_path[i] == NULL)
 			map_validation_error("Error: missing texture", data->map_height, NULL, data);
 	}
 	test_map = copy_2d_int(world_map, data->map_height, data->map_width);
-	if (flood_fill(data->startpos_y, data->startpos_x, world_map, data))
+	if (flood_fill(data->startpos_y, data->startpos_x, test_map, data))
 	{
 		free_2d_int(test_map, data->map_height);
 		return (1);
