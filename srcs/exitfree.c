@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 17:48:48 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/02 19:06:07 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:32:21 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,23 @@ void	free_textures(t_data *data)
 	}
 }
 
+void	free_enemies(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	if (data->enemies != NULL)
+	{
+		while (data->enemies[++i] != NULL)
+		{
+			free(data->enemies[i]);
+			data->enemies[i] = NULL;
+		}
+		free(data->enemies);
+		data->enemies = NULL;
+	}
+}
+
 void	free_all_and_quit(t_data *data, char *msg, int exitcode)
 {
 	int	i;
@@ -68,6 +85,7 @@ void	free_all_and_quit(t_data *data, char *msg, int exitcode)
 		mlx_terminate(data->mlx);
 	}
 	free_textures(data);
+	free_enemies(data);
 	if (data->world_map)
 		free_2d_int(data->world_map, data->map_height);
 	i = TEXTURES_AMOUNT;

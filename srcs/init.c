@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/02 19:26:47 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:20:08 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	init_map_data(t_data *data)
 	data->startpos_y = 0;
 	data->floorcolor = 0x0;
 	data->ceilingcolor = 0x0;
+	data->enemies = ft_calloc(1, sizeof(t_enemy *));
 }
 
 static int	create_fname(char *fname, int i)

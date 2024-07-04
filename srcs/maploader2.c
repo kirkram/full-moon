@@ -6,11 +6,55 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:05:11 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/02 20:51:56 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:33:45 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	add_new_enemy(int x, int y, t_data *data, char *line)
+{
+	t_enemy	*enemy;
+	t_enemy	**enemies;
+	size_t	i;
+
+	data->world_map[y][x] = 0;
+	enemy = malloc(sizeof(t_enemy));
+	if (!enemy)
+		map_validation_error("Error: enemy malloc fail.\n", y, line, data);
+	enemy->x_pos = x;
+	enemy->y_pos = y;
+	i = 0;
+	if (data->enemies != NULL)
+	{
+		while (data->enemies[i] != NULL)
+			i++;
+	}
+	enemies = ft_calloc((i + 2), sizeof(t_enemy *));
+	if (!enemies)
+		map_validation_error("Error: enemies malloc fail.\n", y, line, data);
+	i = -1;
+	if (data->enemies != NULL)
+	{
+		while (data->enemies[++i])
+			enemies[i] = data->enemies[i];
+	}
+	enemies[i] = enemy;
+	enemies[i + 1] = NULL;
+	if (data->enemies != NULL)
+		free(data->enemies);
+	data->enemies = enemies;
+	printf("Total %lu enemies.\n", i + 1);
+}
+
+void	fill_with_ones(t_data *data, int y, int x)
+{
+	while (x < data->map_width)
+	{
+		data->world_map[y][x] = 1;
+		x++;
+	}
+}
 
 // Rows that contain data such as texture names cannot start with space, 0 or 1
 void	count_mapdimensions(t_data *data)

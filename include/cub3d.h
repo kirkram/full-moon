@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/02 19:56:45 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:26:22 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,12 @@ typedef struct s_player
 	int32_t			imgheight;
 }					t_player;
 
+typedef struct s_enemy
+{
+	int				x_pos;
+	int				y_pos;
+}					t_enemy;
+
 typedef struct s_data
 {
 	mlx_t			*mlx;
@@ -155,6 +161,7 @@ typedef struct s_data
 	int				map_width;
 	int				startpos_x;
 	int				startpos_y;
+	t_enemy			**enemies;
 	float			line_error;
 }					t_data;
 
@@ -189,6 +196,8 @@ void	load_map(t_data *data);
 int		validate_map(int **world_map, t_data *data);
 int		validate_mapsquare(int value);
 void	convert_tabs(char **line);
+void	add_new_enemy(int x, int y, t_data *data, char *line);
+void	fill_with_ones(t_data *data, int y, int x);
 void	count_mapdimensions(t_data *data);
 int		get_player_startpos(int x, int y, t_data *data, char *line);
 int		flood_fill(int pos_y, int pos_x, int **wmap, t_data *data);
@@ -220,6 +229,7 @@ void	attack_animation(t_data *data);
 int		ft_error(char *msg, int	error_code);
 int		ft_abs(int result);
 void	free_textures(t_data *data);
+void	free_enemies(t_data *data);
 int		is_valid_hex(const char *hex_str);
 char	*get_next_line(int fd);
 
