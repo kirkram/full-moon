@@ -1,10 +1,10 @@
-TN=wall1.png
-TE=wall2.png
-TS=wall3.png
-TW=wall4.png
+NO wall1.png
+SO wall2.png
+WE wall3.png
+EA wall4.png
 
-CF=0x71797EFF
-CC=0x87CEFAEE
+F 220,100,0
+C 225,30,0
 
 		1111111111111111111111111
 		1000000000110000000000001

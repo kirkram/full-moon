@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/02 19:56:59 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/04 14:57:35 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,14 @@ void	load_map(t_data *data)
 		map_validation_error("Error: no player starting point",
 			data->map_height, NULL, data);
 	if (data->ceilingcolor == 0x0)
+	{
+		printf("No ceiling color found, default SKYBLUE\n");
 		data->ceilingcolor = CEILING;
+	}
 	if (data->floorcolor == 0x0)
+	{
+		printf("No floor color found, default GRAY\n");
 		data->floorcolor = FLOOR;
+	}
 	return ;
 }
