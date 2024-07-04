@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/04 18:08:39 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/04 19:11:43 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -346,6 +346,12 @@ int	draw_rays(t_data *data, t_ray *ray)
 			ray->ang = ray->ang - (PI2);
 	}
 	return (0);
+}
+
+void	draw_sprites(t_data *data)
+{
+	(void)data;
+	return ;
 }
 
 int	draw_player(t_data *data)

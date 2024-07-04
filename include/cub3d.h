@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/04 18:26:22 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/04 19:12:03 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,7 @@ typedef struct s_textures
 
 //init
 void	init_map_data(t_data *data);
+int		create_fname(char *fname, int i);
 int		load_valid_map(t_data *data, int ac, char **av);
 void	load_map(t_data *data);
 int		validate_map(int **world_map, t_data *data);
@@ -209,8 +210,11 @@ void	free_all_and_quit(t_data *data, char *msg, int exitcode);
 //drawing
 int		draw_minimap(t_data *data);
 int		init_and_draw(t_data *data);
+int		put_background(t_data *data);
+int		init_player(t_data *data);
 void	put_pixel(t_data *data, t_point *point, mlx_image_t *img);
 int		draw_player(t_data *data);
+void	draw_sprites(t_data *data);
 void	apply_rotation(t_data *data, t_point *point, int x, int y);
 float	rad(float angle);
 int		draw_rays(t_data *data, t_ray *ray);
