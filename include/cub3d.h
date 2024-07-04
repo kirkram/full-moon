@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/02 17:42:23 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/02 19:56:45 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,11 @@ int		load_valid_map(t_data *data, int ac, char **av);
 void	load_map(t_data *data);
 int		validate_map(int **world_map, t_data *data);
 int		validate_mapsquare(int value);
+void	convert_tabs(char **line);
+void	count_mapdimensions(t_data *data);
+int		get_player_startpos(int x, int y, t_data *data, char *line);
 int		flood_fill(int pos_y, int pos_x, int **wmap, t_data *data);
+void	read_map_parameter(char *line, t_data *data);
 void	map_validation_error(char *msg, int rows, char *line, t_data *data);
 int		color_whole_image(mlx_image_t *img, int color, int width, int height);
 void	free_all_and_quit(t_data *data, char *msg, int exitcode);
@@ -216,6 +220,7 @@ void	attack_animation(t_data *data);
 int		ft_error(char *msg, int	error_code);
 int		ft_abs(int result);
 void	free_textures(t_data *data);
+int		is_valid_hex(const char *hex_str);
 char	*get_next_line(int fd);
 
 //maptools

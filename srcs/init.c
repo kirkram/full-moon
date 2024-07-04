@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/02 17:52:44 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/02 19:26:47 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	init_map_data(t_data *data)
 		data->nsew_path[i] = NULL;
 	data->map_path = NULL;
 	data->world_map = NULL;
+	data->map_height = 0;
+	data->map_width = 0;
 	data->txtrs = NULL;
 	data->swordarm_tx = NULL;
 	data->startpos_x = 0;
