@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/05 14:50:46 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/05 18:45:11 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,9 +131,10 @@ typedef struct s_player
 
 typedef struct s_enemy
 {
-	int				x_pos;
-	int				y_pos;
-	mlx_texture_t	txtr;
+	float			x_pos;
+	float			y_pos;
+	int				current_frame;
+	int				visible;
 }					t_enemy;
 
 typedef struct s_data
@@ -169,6 +170,7 @@ typedef struct s_data
 	t_enemy			**enemies;
 	mlx_texture_t	*enemy_ssheet;
 	mlx_image_t		**enemy_frame;
+	mlx_image_t		*enemy_img;
 	int				ess_width;
 	int				ess_height;
 	float			line_error;
@@ -220,14 +222,15 @@ void	free_all_and_quit(t_data *data, char *msg, int exitcode);
 int		draw_minimap(t_data *data);
 int		init_and_draw(t_data *data);
 int		put_background(t_data *data);
+int		redraw_background(t_data *data);
 int		init_player(t_data *data);
-int		init_enemy(t_data *data);
+int		init_enemy_frames(t_data *data);
 void	put_pixel(t_data *data, t_point *point, mlx_image_t *img);
-int		draw_player(t_data *data);
+int		draw_player_minimap(t_data *data);
 void	draw_sprites(t_data *data);
 void	apply_rotation(t_data *data, t_point *point, int x, int y);
 float	rad(float angle);
-int		draw_rays(t_data *data, t_ray *ray);
+int		draw_rays(t_data *data);
 void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img);
 
 //keyhook
@@ -235,6 +238,9 @@ void	ft_hook_hub(void *param);
 void 	hook_mouse_move(double x, double y, void* param);
 void	hook_mouse_button(mouse_key_t button, action_t action, 
 			modifier_key_t mods, void *param);
+
+//enemy
+void	hook_enemies(t_data *data);
 
 //animation
 void	attack_animation(t_data *data);

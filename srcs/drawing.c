@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/04 19:11:43 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/05 17:56:26 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,11 +316,13 @@ int	draw_column(t_data *data, t_ray *ray, int i, float line_w)
 // 	return (0);
 // }
 
-int	draw_rays(t_data *data, t_ray *ray)
+int	draw_rays(t_data *data)
 {
 	t_player	*player;
+	t_ray 		*ray;
 	int			i;
 	float		line_w;
+	// static int	maxrays = 0;
 
 	player = data->player;
 	ray->ang = player->angle - (DEGR * FOV) / 2;
@@ -354,7 +356,7 @@ void	draw_sprites(t_data *data)
 	return ;
 }
 
-int	draw_player(t_data *data)
+int	draw_player_minimap(t_data *data)
 {
 	t_player	*player;
 	t_point		point;

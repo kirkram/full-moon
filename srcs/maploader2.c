@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:05:11 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/04 18:33:45 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/05 16:55:34 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ void	add_new_enemy(int x, int y, t_data *data, char *line)
 	enemy = malloc(sizeof(t_enemy));
 	if (!enemy)
 		map_validation_error("Error: enemy malloc fail.\n", y, line, data);
-	enemy->x_pos = x;
-	enemy->y_pos = y;
+	enemy->x_pos = (float)x;
+	enemy->y_pos = (float)y;
+	enemy->current_frame = 0;
 	i = 0;
 	if (data->enemies != NULL)
 	{

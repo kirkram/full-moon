@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/05 14:54:59 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/05 18:45:06 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ mlx_image_t *create_enemy_sprite(t_data *data, int x, int y)
 	return (sprite);
 }
 
-int	init_enemy(t_data *data)
+int	init_enemy_frames(t_data *data)
 {
 	int	i;
 
@@ -135,6 +135,8 @@ int	init_enemy(t_data *data)
 			free_all_and_quit(data, "enemy texture loading", 11);
 	}
 	data->enemy_frame[EN_FRAMECOUNT] = NULL;
+	data->enemy_img = mlx_new_image(data->mlx, data->player->imgwidth,
+			data->player->imgheight);
 	return (0);
 }
 

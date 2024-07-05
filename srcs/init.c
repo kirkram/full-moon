@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/05 13:54:29 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/05 17:56:24 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ int	init_canvases(t_data *data)
 	if (!data->mlx)
 		return (ft_error("Error on mlx_init\n", 11));
 	if (put_background(data) || init_main_screen(data) || init_minimap(data)
-		|| init_player(data) || init_enemy(data))
+		|| init_player(data) || init_enemy_frames(data))
 		return (11);
 	return (0);
 }
 
-void	load_texture(t_data *data, int i)
+void	load_wall_texture(t_data *data, int i)
 {
 	if (access(data->nsew_path[i], F_OK))
 		free_all_and_quit(data, "can't find texture file", 76);
@@ -84,16 +84,17 @@ int	init_and_draw(t_data *data)
 		free_all_and_quit(data, "texture loading malloc", 11);
 	i = TEXTURES_AMOUNT;
 	while (--i >= 0)
-		load_texture(data, i);
+		load_wall_texture(data, i);
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
 	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
 	if (draw_minimap(data))
 		return (11);
-	draw_player(data);
-	if (draw_rays(data, data->ray))
+	draw_player_minimap(data);
+	if (draw_rays(data))
 		free_all_and_quit(data, "ray drawing", 13);
 	draw_sprites(data);
 	print_2d_int(data->world_map, data->map_height, data->map_width);
+	// Main loop
 	mlx_cursor_hook(data->mlx, &hook_mouse_move, data);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	mlx_loop(data->mlx);
