@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/04 19:12:03 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/04 22:21:56 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ typedef struct s_enemy
 {
 	int				x_pos;
 	int				y_pos;
+	mlx_texture_t	txtr;
 }					t_enemy;
 
 typedef struct s_data
@@ -140,8 +141,7 @@ typedef struct s_data
 	mlx_image_t		*floor;
 	unsigned int	ceilingcolor;
 	unsigned int 	floorcolor;
-	char			**nsew_path; // n s e w
-	// mlx_texture_t	*txtrs[TEXTURES_AMOUNT]; // n s e w
+	char			**nsew_path;
 	mlx_texture_t	**swordarm_tx;
 	mlx_image_t		*swordarm;
 	double			last_update;
@@ -162,13 +162,14 @@ typedef struct s_data
 	int				startpos_x;
 	int				startpos_y;
 	t_enemy			**enemies;
+	mlx_texture_t	*enemy_ssheet;
 	float			line_error;
 }					t_data;
 
 typedef struct s_point
 {
-	int32_t				x;
-	int32_t				y;
+	int32_t			x;
+	int32_t			y;
 	uint32_t		color;
 	void			*content;
 }					t_point;

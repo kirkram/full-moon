@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/04 19:08:57 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/05 10:13:12 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ int	init_main_screen(t_data *data)
 
 int	init_canvases(t_data *data)
 {
-	// int32_t mon_width;
-	// int32_t mon_height;
 	data->width = SCREENWIDTH;
 	data->height = SCREENHEIGHT;
 	data->ceiling = NULL;
@@ -59,9 +57,6 @@ int	init_canvases(t_data *data)
 	if (put_background(data) || init_main_screen(data) || init_minimap(data)
 		|| init_player(data))
 		return (11);
-	// mlx_get_monitor_size(0, &mon_width, &mon_height);
-	// mlx_set_window_pos(data->mlx, mon_width / 3.3, mon_height / 4);
-	data->player->angle = rad(NORTH);
 	return (0);
 }
 
@@ -91,6 +86,9 @@ int	init_and_draw(t_data *data)
 	i = TEXTURES_AMOUNT;
 	while (--i >= 0)
 		load_texture(data, i);
+	data->enemy_ssheet = mlx_load_png("./sprites/ratman_paletted_a.png");
+	if (data->enemy_ssheet == NULL)
+		free_all_and_quit(data, "enemy texture loading", 11);
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
 	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
 	if (draw_minimap(data))

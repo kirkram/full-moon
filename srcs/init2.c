@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/04 19:08:33 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/05 10:13:09 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	create_fname(char *fname, int i)
 	return (0);
 }
 
-int	init_sprites(t_data *data) // free these
+int	init_player_sprites(t_data *data) // free these
 {
 	int i;
 	char fname[1024];
@@ -76,7 +76,7 @@ int	init_sprites(t_data *data) // free these
 
 int	init_player(t_data *data)
 {
-	if (init_sprites(data))
+	if (init_player_sprites(data))
 		return (ft_error("Error on sprite initialization\n", 11));
 	data->player->x_pos = data->startpos_x;
 	data->player->y_pos = data->startpos_y;
