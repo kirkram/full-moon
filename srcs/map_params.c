@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_params.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:55:23 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/04 18:08:41 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:54:10 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static unsigned int	read_rgb_color_value(char *line, t_data *data)
 		if (rgb[i] > 255)
 			map_validation_error("Error: invalid map parameter", 0, line, data);
 	}
-	color = (rgb[0] << 16) | (rgb[1] << 8) | rgb[2];
+	color = (rgb[0] << 24) | (rgb[1] << 16) | (rgb[2] << 8) | 255 ;
 	return (color);
 }
 

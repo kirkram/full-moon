@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/05 10:13:09 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:53:58 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,52 @@ int	init_player(t_data *data)
 		return (ft_error("Error on mlx_image_to_window\n", 11));
 	data->player->y_pos_mini = data->player->y_pos * data->zoom;
 	data->player->x_pos_mini = data->player->x_pos * data->zoom;
+	return (0);
+}
+
+mlx_image_t *create_enemy_sprite(t_data *data, int x, int y)
+{
+	mlx_image_t *sprite;
+	int			cx;
+	int 		cy;
+	int 		sheet_index;
+	int 		sprite_index;
+
+	sprite = mlx_new_image(data->mlx, ESW, ESH);
+	cy = -1;
+	while (++cy < ESH)
+	{
+		cx = -1;
+		while (++cx < ESW)
+		{
+		    sheet_index = ((y + cy) * ESSW + (x + cx)) * 4;
+            sprite_index = (cy * ESW + cx) * 4;
+            sprite->pixels[sprite_index + 0] = data->enemy_ssheet->pixels[sheet_index + 0];
+            sprite->pixels[sprite_index + 1] = data->enemy_ssheet->pixels[sheet_index + 1];
+            sprite->pixels[sprite_index + 2] = data->enemy_ssheet->pixels[sheet_index + 2];
+            sprite->pixels[sprite_index + 3] = data->enemy_ssheet->pixels[sheet_index + 3];	
+		}
+	}
+	return (sprite);
+}
+
+int	init_enemy(t_data *data)
+{
+	int	i;
+	int	ssx;
+	int	ssy;
+
+	data->enemy_ssheet = mlx_load_png("./sprites/ratman_paletted_a.png");
+	if (data->enemy_ssheet == NULL)
+		free_all_and_quit(data, "enemy texture loading", 11);
+	data->enemy_frame = (mlx_image_t *)ft_calloc(EN_FRAMECOUNT + 1, sizeof(mlx_image_t *))
+	i = -1;
+	while (++i < 64)
+	{
+		ssx = i % 8;
+		ssy = i / 8;
+		data->enemy_frame[i] = create_enemy_sprite(data, ssx, ssy);
+	}
 	return (0);
 }
 

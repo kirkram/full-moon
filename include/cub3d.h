@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/04 22:21:56 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:54:13 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,11 @@ unsigned long	current_time(void);
 
 //sprites
 # define PL_FRAMECOUNT 11
+# define EN_FRAMECOUNT 64
+# define ESW 74	// enemy sprite width
+# define ESH 81	// enemy sprite height
+# define ESSW 592 // enemy spritesheet width
+# define ESSH 648 // enemy spritesheet height
 
 //maths
 # define PI 3.14159265359
@@ -163,6 +168,9 @@ typedef struct s_data
 	int				startpos_y;
 	t_enemy			**enemies;
 	mlx_texture_t	*enemy_ssheet;
+	mlx_image_t		**enemy_frame;
+	int				ess_width;
+	int				ess_height;
 	float			line_error;
 }					t_data;
 

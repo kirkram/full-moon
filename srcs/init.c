@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/05 10:13:12 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:54:29 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	init_canvases(t_data *data)
 	if (!data->mlx)
 		return (ft_error("Error on mlx_init\n", 11));
 	if (put_background(data) || init_main_screen(data) || init_minimap(data)
-		|| init_player(data))
+		|| init_player(data) || init_enemy(data))
 		return (11);
 	return (0);
 }
@@ -76,7 +76,6 @@ int	init_and_draw(t_data *data)
 {
 	int	i;
 
-	// Should use mlx terminate before returning early?
 	if (init_canvases(data))
 		free_all_and_quit(data, "image initialization", 11);
 	data->txtrs = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *)
@@ -86,9 +85,6 @@ int	init_and_draw(t_data *data)
 	i = TEXTURES_AMOUNT;
 	while (--i >= 0)
 		load_texture(data, i);
-	data->enemy_ssheet = mlx_load_png("./sprites/ratman_paletted_a.png");
-	if (data->enemy_ssheet == NULL)
-		free_all_and_quit(data, "enemy texture loading", 11);
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
 	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
 	if (draw_minimap(data))
