@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/05 13:53:58 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/05 14:54:59 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,20 +122,19 @@ mlx_image_t *create_enemy_sprite(t_data *data, int x, int y)
 int	init_enemy(t_data *data)
 {
 	int	i;
-	int	ssx;
-	int	ssy;
 
 	data->enemy_ssheet = mlx_load_png("./sprites/ratman_paletted_a.png");
 	if (data->enemy_ssheet == NULL)
 		free_all_and_quit(data, "enemy texture loading", 11);
-	data->enemy_frame = (mlx_image_t *)ft_calloc(EN_FRAMECOUNT + 1, sizeof(mlx_image_t *))
+	data->enemy_frame = (mlx_image_t **)ft_calloc(EN_FRAMECOUNT + 1, sizeof(mlx_image_t *));
 	i = -1;
 	while (++i < 64)
 	{
-		ssx = i % 8;
-		ssy = i / 8;
-		data->enemy_frame[i] = create_enemy_sprite(data, ssx, ssy);
+		data->enemy_frame[i] = create_enemy_sprite(data, (i % 8), (i / 8));
+		if (data->enemy_frame[i] == NULL)
+			free_all_and_quit(data, "enemy texture loading", 11);
 	}
+	data->enemy_frame[EN_FRAMECOUNT] = NULL;
 	return (0);
 }
 

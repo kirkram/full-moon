@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/05 13:54:13 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/05 14:50:46 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,7 @@ int		draw_minimap(t_data *data);
 int		init_and_draw(t_data *data);
 int		put_background(t_data *data);
 int		init_player(t_data *data);
+int		init_enemy(t_data *data);
 void	put_pixel(t_data *data, t_point *point, mlx_image_t *img);
 int		draw_player(t_data *data);
 void	draw_sprites(t_data *data);
