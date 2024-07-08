@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/08 15:27:07 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/08 15:33:31 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ void    draw_enemy(t_data *data, int i, uint32_t screen_x)
     printf("distance was: %f\n", data->enemies[i]->distance);
     if (data->enemies[i]->distance < 1.0)
         data->enemies[i]->distance = 1.0;
-    new_height = (ESH * 20 / (int)data->enemies[i]->distance);
-    new_width = (ESW * 20 / (int)data->enemies[i]->distance);
+    new_height = (int)(ESH * 20 / data->enemies[i]->distance);
+    new_width = (int)(ESW * 20 / data->enemies[i]->distance);
     //printf("new width: %d\n", new_width);
     //printf("new height: %d\n", new_height);
     if (mlx_resize_image(drawframe, new_width, new_height) != 1)
