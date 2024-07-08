@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/05 17:56:24 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/08 13:18:42 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,9 +223,10 @@ void	ft_hook_hub(void *param)
 	hook_animation(data);
 	color_whole_image(data->player->img, FULL_TRANSPARENT,
 		data->player->imgwidth, data->player->imgheight);
-
 	draw_player_minimap(data);
 	draw_rays(data);
+	color_whole_image(data->enemy_img, FULL_TRANSPARENT,
+		data->player->imgwidth, data->player->imgheight);
 	hook_enemies(data);
 }
 
