@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/08 17:42:05 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/08 21:39:57 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,6 @@ void	init_map_data(t_data *data)
 	data->floorcolor = 0x0;
 	data->ceilingcolor = 0x0;
 	data->enemies = ft_calloc(1, sizeof(t_enemy *));
-	i = -1;
-	while (++i < FOV * RESOLUTION)
-	{
-		data->rays[i] = malloc(sizeof(t_ray));
-		if (!data->rays[i])
-			map_validation_error("Error: rays array malloc\n", 0, NULL, data);
-	}
 }
 
 int	create_fname(char *fname, int i)
