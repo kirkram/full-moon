@@ -4,7 +4,7 @@ LIBMLX_PATH = ./lib/MLX42
 LIBFT = $(LIBFT_PATH)/libft.a
 LIBMLX42 = $(LIBMLX_PATH)/build/libmlx42.a
 CFLAGS = -Wall -Wextra -Werror -Wunreachable-code 
-HEADERS = -I ./include -I $(LIBMLX_PATH)/include/ -I /usr/local/Cellar/glfw/include
+HEADERS = -O2 -I ./include -I $(LIBMLX_PATH)/include/ -I /usr/local/Cellar/glfw/include
 DEBUGFLAGS = -g -fsanitize=address,undefined 
 LIBS = $(LIBMLX42) -lm -lglfw -L /Users/$(USER)/.brew/opt/glfw -L/Users/$(USER)/.brew/lib -L/opt/homebrew/lib #-framework Cocoa -framework OpenGL -framework IOKit
 SRC_DIR = 	./srcs

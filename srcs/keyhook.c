@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/08 13:18:42 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/08 17:48:19 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	ft_hook_movement(t_data *data)
 
 	player = data->player;
 	data->speed = 0.003 / (1 / data->mlx->delta_time / 1000);
-	// printf("The fps is %f\n", 1 / data->mlx->delta_time);
+	printf("The fps is %f\n", 1 / data->mlx->delta_time);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		free_all_and_quit(data, "Bye!", 0);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
