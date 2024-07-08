@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/08 14:13:05 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/08 16:53:36 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ typedef struct s_enemy
 	float			x_pos;
 	float			y_pos;
 	float			distance;
+	float			rel_angle;
 	int				current_frame;
 	int				visible;
 }					t_enemy;
@@ -242,6 +243,7 @@ void	hook_mouse_button(mouse_key_t button, action_t action,
 
 //enemy
 void	hook_enemies(t_data *data);
+void	sort_enemy_arr(t_data *data);
 
 //animation
 void	attack_animation(t_data *data);

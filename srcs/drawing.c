@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/05 19:36:36 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/08 16:15:41 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -326,7 +326,7 @@ int	draw_rays(t_data *data)
 
 	player = data->player;
 	ray = data->ray;
-	ray->ang = player->angle - (DEGR * FOV) / 2;
+	ray->ang = player->angle - rad(FOV / 2); //(DEGR * FOV) / 2;
 	if (ray->ang < 0)
 		ray->ang += PI2;
 	else if (ray->ang >= PI2)

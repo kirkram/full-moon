@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/08 16:10:08 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/08 17:00:16 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,30 +99,35 @@ void	hook_enemies(t_data *data)
     float       dx;
     float       dy;
     float       angle;
-    float       rel_angle;
+    float       rel_ang;
     uint32_t     screen_x;
 
     i = -1;
+    sort_enemy_arr(data);
     while (data->enemies[++i] != NULL)
     {
         dx = data->enemies[i]->x_pos - data->player->x_pos;
         dy = data->enemies[i]->y_pos - data->player->y_pos;
-        //printf("player angle: %f\n", data->player->angle);
         data->enemies[i]->distance = sqrtf(dx * dx + dy * dy);
         angle = atan2(dy, dx);
-        //printf("angle: %f\n", angle);
-        rel_angle = angle - data->player->angle; // - angle;
-        rel_angle = atan2f(sinf(rel_angle), cosf(rel_angle));
-        //printf("REL angle: %f\n", angle);
-        if (rel_angle >= -rad(FOV / 2) && rel_angle <= rad(FOV / 2))
-        {
-            screen_x = (uint32_t)((rel_angle + rad(FOV / 2)) / rad(FOV) * data->width);
-            //printf("screen x: %u", screen_x);
+        rel_ang = angle - data->player->angle;
+        data->enemies[i]->rel_angle = atan2f(sinf(rel_ang), cosf(rel_ang));
+        if (data->enemies[i]->rel_angle >= -rad(FOV / 2) && 
+                data->enemies[i]->rel_angle <= rad(FOV / 2))
             data->enemies[i]->visible = 1;
-            draw_enemy(data, i, screen_x);
-        }
         else
             data->enemies[i]->visible = 0;
-    } 
+    }
+    //sort_enemy_arr(data);
+    i = -1;
+    while (data->enemies[++i] != NULL)
+    {
+        if (data->enemies[i]->visible)
+        {
+            screen_x = (uint32_t)((data->enemies[i]->rel_angle + rad(FOV / 2)) 
+                / rad(FOV) * data->width);
+            draw_enemy(data, i, screen_x);
+        }
+    }
     mlx_image_to_window(data->mlx, data->enemy_img, 0, 0); 
 }
