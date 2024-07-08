@@ -6,19 +6,20 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/08 12:47:32 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/08 12:54:27 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // Here account for not visible: skip drawing: partially visible: draw partially
-void    draw_enemy(t_data *data, int i, float x, float y)
+void    draw_enemy(t_data *data, int i, float screen_x)
 {
     mlx_image_t*    current;
     mlx_image_t*    drawframe;
     int             new_width;
     int             new_height;
+    float           screen_y;
 
     current = data->enemy_frame[data->enemies[i]->current_frame];
     drawframe = NULL;
@@ -33,7 +34,8 @@ void    draw_enemy(t_data *data, int i, float x, float y)
     printf("new height: %d\n", new_height);
     if (mlx_resize_image(drawframe, new_width, new_height) != 1)
         free_all_and_quit(data, "sprite frame resize error", 35);
-    mlx_image_to_window(data->mlx, drawframe, x, y);
+    screen_y = data->mlx->height / 2 - new_height / 2;
+    mlx_image_to_window(data->mlx, drawframe, screen_x, screen_y);
 }
 
 void	hook_enemies(t_data *data)
@@ -44,9 +46,7 @@ void	hook_enemies(t_data *data)
     float   dy;
     float   angle;
     float   rel_angle;
-    // int     is_visible;
     int     screen_x;
-    int     screen_y;
 
     i = -1;
     while (data->enemies[++i] != NULL)
@@ -62,8 +62,7 @@ void	hook_enemies(t_data *data)
         if (rel_angle >= -(FOV / 2) && rel_angle <= (FOV / 2))
         {
             screen_x = (rel_angle + (FOV / 2) / FOV) * data->mlx->width;
-            screen_y = data->mlx->height / 2;
-            draw_enemy(data, i, screen_x, screen_y);
+            draw_enemy(data, i, screen_x);
         }
     }    
 }
