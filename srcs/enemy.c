@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/08 15:33:31 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/08 16:10:08 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@ uint32_t get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y)
     return (red << 24 | green << 16 | blue << 8 | alpha);
 }
 
+// Get the alpha channel.
+uint32_t get_a(uint32_t rgba)
+{
+    // Move 0 bytes to the right and mask out the first byte.
+    return (rgba & 0xFF);
+}
+
 void draw_image_onto_image(mlx_image_t *dest, mlx_image_t *src, int dest_x, int dest_y) {
 
     t_point     pt;
@@ -41,9 +48,12 @@ void draw_image_onto_image(mlx_image_t *dest, mlx_image_t *src, int dest_x, int 
         while (++(pt.y) < (int32_t)src->height) 
         {
             pt.color = get_pixel_color(src, (uint32_t)pt.x, (uint32_t)pt.y);
-            if ((dest_x + pt.x) >= 0 && (uint32_t)(dest_x + pt.x) < dest->width &&
-                (dest_y + pt.y) >= 0 && (uint32_t)(dest_y + pt.y) < dest->height) {
-                mlx_put_pixel(dest, dest_x + pt.x, dest_y + pt.y, pt.color);
+            if (get_a(pt.color) > 0)
+            {
+                if ((dest_x + pt.x) >= 0 && (uint32_t)(dest_x + pt.x) < dest->width &&
+                    (dest_y + pt.y) >= 0 && (uint32_t)(dest_y + pt.y) < dest->height) {
+                    mlx_put_pixel(dest, dest_x + pt.x, dest_y + pt.y, pt.color);
+                }
             }
         }
         pt.y = -1;
@@ -59,14 +69,14 @@ void    draw_enemy(t_data *data, int i, uint32_t screen_x)
     int             new_height;
     uint32_t        screen_y;
 
-    printf("screen x: %u\n", screen_x);
+    //printf("screen x: %u\n", screen_x);
     current = data->enemy_frame[data->enemies[i]->current_frame];
     drawframe = NULL;
     drawframe = mlx_new_image(data->mlx, current->width, current->height);
     if (!drawframe)
         free_all_and_quit(data, "sprite frame draw error", 35);
     ft_memcpy(drawframe->pixels, current->pixels, current->width * current->height * sizeof(uint32_t));
-    printf("distance was: %f\n", data->enemies[i]->distance);
+    //printf("distance was: %f\n", data->enemies[i]->distance);
     if (data->enemies[i]->distance < 1.0)
         data->enemies[i]->distance = 1.0;
     new_height = (int)(ESH * 20 / data->enemies[i]->distance);
@@ -77,7 +87,7 @@ void    draw_enemy(t_data *data, int i, uint32_t screen_x)
         free_all_and_quit(data, "sprite frame resize error", 35);
     screen_x = screen_x - new_width / 2;
     screen_y = data->mlx->height / 2 - new_height / 2;
-    printf("Enemy sx:%u sy:%u\n", screen_x, screen_y);
+    //printf("Enemy sx:%u sy:%u\n", screen_x, screen_y);
     draw_image_onto_image(data->enemy_img, drawframe, screen_x, screen_y);
     mlx_delete_image(data->mlx, drawframe);
 }
@@ -97,17 +107,17 @@ void	hook_enemies(t_data *data)
     {
         dx = data->enemies[i]->x_pos - data->player->x_pos;
         dy = data->enemies[i]->y_pos - data->player->y_pos;
-        printf("player angle: %f\n", data->player->angle);
+        //printf("player angle: %f\n", data->player->angle);
         data->enemies[i]->distance = sqrtf(dx * dx + dy * dy);
         angle = atan2(dy, dx);
-        printf("angle: %f\n", angle);
+        //printf("angle: %f\n", angle);
         rel_angle = angle - data->player->angle; // - angle;
         rel_angle = atan2f(sinf(rel_angle), cosf(rel_angle));
-        printf("REL angle: %f\n", angle);
+        //printf("REL angle: %f\n", angle);
         if (rel_angle >= -rad(FOV / 2) && rel_angle <= rad(FOV / 2))
         {
             screen_x = (uint32_t)((rel_angle + rad(FOV / 2)) / rad(FOV) * data->width);
-            printf("screen x: %u", screen_x);
+            //printf("screen x: %u", screen_x);
             data->enemies[i]->visible = 1;
             draw_enemy(data, i, screen_x);
         }
