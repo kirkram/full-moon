@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/05 18:44:57 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/05 19:37:13 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	hook_enemies(t_data *data)
     int     i;
     float   dx;
     float   dy;
-    float   distance;
+    //float   distance;
     float   angle;
     float   rel_angle;
     // int     is_visible;
@@ -39,7 +39,7 @@ void	hook_enemies(t_data *data)
         dx = data->enemies[i]->x_pos - data->player->x_pos;
         dy = data->enemies[i]->y_pos - data->player->y_pos;
         printf("player angle: %f\n", data->player->angle);
-        distance = sqrtf(dx * dx + dy * dy);
+        //distance = sqrtf(dx * dx + dy * dy);
         angle = atan2(dy, dx);
         printf("angle: %f\n", angle);
         rel_angle = data->player->angle - angle;
