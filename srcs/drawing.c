@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/08 17:36:29 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/08 18:37:05 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,7 +322,6 @@ int	draw_rays(t_data *data)
 	t_ray 		*ray;
 	int			i;
 	float		line_w;
-	// static int	maxrays = 0;
 
 	player = data->player;
 	ray = data->ray;

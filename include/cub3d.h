@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/08 17:33:37 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/08 18:13:55 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ typedef struct s_data
 	t_player		*player;
 	t_ray			*ray;
 	t_ray			*rays[FOV * RESOLUTION];
+    mlx_image_t*    drawframe;
 	mlx_key_data_t	keydata;
 	int32_t			width;
 	int32_t			height;

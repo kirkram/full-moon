@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/08 17:00:16 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/08 18:37:02 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,23 @@ uint32_t get_a(uint32_t rgba)
     return (rgba & 0xFF);
 }
 
-void draw_image_onto_image(mlx_image_t *dest, mlx_image_t *src, int dest_x, int dest_y) {
+void draw_enemy_onto_canvas(t_data *data, int i, int dest_x, int dest_y) {
 
     t_point     pt;
+    mlx_image_t *dest;
+    mlx_image_t *src;
+    float       line_w;
 
+    dest = data->enemy_img;
+    src = data->drawframe;
+    line_w = data->width / ((float)(FOV * RESOLUTION));
     pt.y = -1;
     pt.x = -1;
     pt.color = 0;
     while(++(pt.x) < (int32_t)src->width) 
     {
+        // check if line not behind some wall
+        if (dest_x + pt.x)
         while (++(pt.y) < (int32_t)src->height) 
         {
             pt.color = get_pixel_color(src, (uint32_t)pt.x, (uint32_t)pt.y);
@@ -61,19 +69,18 @@ void draw_image_onto_image(mlx_image_t *dest, mlx_image_t *src, int dest_x, int 
 }
 
 // Here account for not visible: skip drawing: partially visible: draw partially
-void    draw_enemy(t_data *data, int i, uint32_t screen_x)
+void    draw_enemy(t_data *data, int i, uint32_t screen_x, float start_ray, float end_ray)
 {
     mlx_image_t*    current;
-    mlx_image_t*    drawframe;
     int             new_width;
     int             new_height;
     uint32_t        screen_y;
 
     //printf("screen x: %u\n", screen_x);
     current = data->enemy_frame[data->enemies[i]->current_frame];
-    drawframe = NULL;
-    drawframe = mlx_new_image(data->mlx, current->width, current->height);
-    if (!drawframe)
+    data->drawframe = NULL;
+    data->drawframe = mlx_new_image(data->mlx, current->width, current->height);
+    if (!data->drawframe)
         free_all_and_quit(data, "sprite frame draw error", 35);
     ft_memcpy(drawframe->pixels, current->pixels, current->width * current->height * sizeof(uint32_t));
     //printf("distance was: %f\n", data->enemies[i]->distance);
@@ -88,7 +95,7 @@ void    draw_enemy(t_data *data, int i, uint32_t screen_x)
     screen_x = screen_x - new_width / 2;
     screen_y = data->mlx->height / 2 - new_height / 2;
     //printf("Enemy sx:%u sy:%u\n", screen_x, screen_y);
-    draw_image_onto_image(data->enemy_img, drawframe, screen_x, screen_y);
+    draw_enemy_onto_canvas(data, i, screen_x, screen_y);
     mlx_delete_image(data->mlx, drawframe);
 }
 
@@ -100,10 +107,10 @@ void	hook_enemies(t_data *data)
     float       dy;
     float       angle;
     float       rel_ang;
-    uint32_t     screen_x;
+    float       enemy_angle_width;
+    uint32_t    screen_x;
 
     i = -1;
-    sort_enemy_arr(data);
     while (data->enemies[++i] != NULL)
     {
         dx = data->enemies[i]->x_pos - data->player->x_pos;
@@ -118,15 +125,23 @@ void	hook_enemies(t_data *data)
         else
             data->enemies[i]->visible = 0;
     }
-    //sort_enemy_arr(data);
+    sort_enemy_arr(data);
     i = -1;
     while (data->enemies[++i] != NULL)
     {
         if (data->enemies[i]->visible)
         {
+            enemy_angle_width = atan2f((float)ESW / 2, data->enemies[i]->distance);
             screen_x = (uint32_t)((data->enemies[i]->rel_angle + rad(FOV / 2)) 
                 / rad(FOV) * data->width);
-            draw_enemy(data, i, screen_x);
+                    // Calculate the start and end angles
+            float start_angle = data->enemies[i]->rel_angle - enemy_angle_width;
+            float end_angle = data->enemies[i]->rel_angle + enemy_angle_width;
+
+            // Convert angles to corresponding rays
+            start_ray = (int)((start_angle + rad(FOV / 2)) / rad(FOV) * data->width);
+            end_ray = (int)((end_angle + rad(FOV / 2)) / rad(FOV) * data->width);
+            draw_enemy(data, i, screen_x, start_ray, end_ray); // screen_x);
         }
     }
     mlx_image_to_window(data->mlx, data->enemy_img, 0, 0); 
