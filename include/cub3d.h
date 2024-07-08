@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/08 16:53:36 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/08 17:33:37 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ typedef struct s_data
 	mlx_texture_t	*txt_n;
 	t_player		*player;
 	t_ray			*ray;
+	t_ray			*rays[FOV * RESOLUTION];
 	mlx_key_data_t	keydata;
 	int32_t			width;
 	int32_t			height;

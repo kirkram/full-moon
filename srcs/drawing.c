@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/08 16:15:41 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/08 17:36:29 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -342,6 +342,7 @@ int	draw_rays(t_data *data)
 		draw_minirays(data, ray);
 		if (draw_column(data, ray, i, line_w))
 			return (1);
+		ft_memcpy(data->rays[i], ray, sizeof(t_ray));
 		ray->ang += DEGR_RESO;
 		if (ray->ang < 0)
 			ray->ang += PI2;
