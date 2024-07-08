@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/05 18:45:11 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/08 12:01:38 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ typedef struct s_enemy
 {
 	float			x_pos;
 	float			y_pos;
+	float			distance;
 	int				current_frame;
 	int				visible;
 }					t_enemy;
