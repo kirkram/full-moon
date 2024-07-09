@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/08 12:59:58 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/09 17:37:00 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	init_minimap(t_data *data)
 	data->minimap_img = mlx_texture_to_image(data->mlx, minimap_txt);
 	if (!data->minimap_img)
 		return (11);
+	//mlx_delete_texture(minimap_txt);
 	if (mlx_image_to_window(data->mlx, data->minimap_img, 0, 0) < 0)
 		return (11);
 	data->minimap = mlx_new_image(data->mlx, data->width, data->height);

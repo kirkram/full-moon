@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 17:48:48 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/04 18:32:21 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/09 17:39:29 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,20 @@ void	free_textures(t_data *data)
 		}
 		if (data->txtrs)
 			free(data->txtrs);
+	}
+	// Do these do the seqfault?
+	if (data->enemy_ssheet != NULL)
+		mlx_delete_texture(data->enemy_ssheet);
+	if (data->enemy_frame != NULL)
+	{
+		i = EN_FRAMECOUNT;
+		while (--i >= 0)
+		{
+			if (data->enemy_frame[i] != NULL)
+				mlx_delete_image(data->mlx, data->enemy_frame[i]);
+		}
+		if (data->enemy_frame)
+			free(data->enemy_frame);
 	}
 }
 

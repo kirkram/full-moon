@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/08 21:35:04 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/09 15:07:00 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	ft_hook_movement(t_data *data)
 
 	player = data->player;
 	data->speed = 0.003 / (1 / data->mlx->delta_time / 1000);
-	// printf("The fps is %f\n", 1 / data->mlx->delta_time);
+	printf("The fps is %f\n", 1 / data->mlx->delta_time);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		free_all_and_quit(data, "Bye!", 0);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
@@ -185,6 +185,7 @@ void	hook_animation(t_data *data)
 		if (frame > 3)
 			frame = 0;
 		mlx_image_to_window(data->mlx, data->swordarm, data->width * 0.45, 1);
+		//mlx_set_instance_depth(data->swordarm, 100);
 		last_update = mlx_get_time();
 	}
 	// Fix to use image array instead
@@ -228,6 +229,7 @@ void	ft_hook_hub(void *param)
 	color_whole_image(data->enemy_img, FULL_TRANSPARENT,
 		data->player->imgwidth, data->player->imgheight);
 	hook_enemies(data);
+	mlx_image_to_window(data->mlx, data->enemy_img, 0, 0);
 }
 
 void	hook_mouse_move(double x, double y, void *param)
