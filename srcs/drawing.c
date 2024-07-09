@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/08 21:38:32 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/09 17:34:08 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,18 +89,13 @@ static int	is_equal(float a, float b)
 	return (fabs(a - b) < EPSILON);
 }
 
-void	vertical_rays(t_data *data, t_ray *ray)
+static void	vertical_rays_off(t_data *data, t_ray *ray, int range)
 {
 	t_player	*player;
-	t_map		map;
-	int			range;
 
 	player = data->player;
 	ray->ntan = -tan(ray->ang);
 	ray->dof = 0;
-	range = data->map_height;
-	if (data->map_width > data->map_height)
-		range = data->map_width;
 	if (is_equal(ray->ang, PI_N) || is_equal(ray->ang, PI_S))
 	{
 		ray->x_v = player->x_pos;
@@ -121,6 +116,17 @@ void	vertical_rays(t_data *data, t_ray *ray)
 		ray->x_off = 1;
 		ray->y_off = -ray->x_off * ray->ntan;
 	}
+}	
+
+void	vertical_rays(t_data *data, t_ray *ray)
+{
+	t_map		map;
+	int			range;
+	
+	range = data->map_height;
+	if (data->map_width > data->map_height)
+		range = data->map_width;
+	vertical_rays_off(data, ray, range);
 	while (ray->dof < range)
 	{
 		map.y = (int)ray->y_v;
@@ -129,18 +135,24 @@ void	vertical_rays(t_data *data, t_ray *ray)
 			map.x -= 1;
 		if (map.x < 0)
 			break ;
+		 
 		if (map.y < data->map_height && map.y >= 0 && map.x < data->map_width
-			&& map.x >= 0 && (data->world_map[map.y][map.x] == 1
-				|| data->world_map[map.y][map.x] == 4))
-			break ;
-		else
+		&& map.x >= 0)
 		{
+			if (data->world_map[map.y][map.x] == 1)
+				break ;
+			if (data->world_map[map.y][map.x] == 4 )
+			{
+				ray->is_doorv = 1;
+				break ;
+			}	
+		}
 			if (ray->y_v > 0 && ray->y_v < data->map_height)
 				ray->y_v += ray->y_off;
 			if (ray->x_v > 0 && ray->x_v < data->map_width)
 				ray->x_v += ray->x_off;
 			ray->dof++;
-		}
+		
 		if (ray->y_v < 0 || ray->x_v < 0 || ray->x_v >= data->map_width
 			|| ray->y_v >= data->map_height)
 			break ;
@@ -189,22 +201,25 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 		if (map.y < 0)
 			break ;
 		if (map.y < data->map_height && map.y >= 0 && map.x < data->map_width
-			&& map.x >= 0 && (data->world_map[map.y][map.x] == 1
-				|| data->world_map[map.y][map.x] == 4))
-			break ;
-		else
+			&& map.x >= 0 )
 		{
-			if (ray->y > 0 && ray->y < data->map_height)
-				ray->y += ray->y_off;
-			if (ray->x > 0 && ray->x < data->map_width)
-				ray->x += ray->x_off;
-			ray->dof++;
+			if (data->world_map[map.y][map.x] == 1)
+				break ;
+			if (data->world_map[map.y][map.x] == 4)
+			{
+				ray->is_doorh = 1;
+				break ;
+			}		
 		}
+		if (ray->y > 0 && ray->y < data->map_height)
+			ray->y += ray->y_off;
+		if (ray->x > 0 && ray->x < data->map_width)
+			ray->x += ray->x_off;
+		ray->dof++;
 		if (ray->y < 0 || ray->x < 0 || ray->x >= data->map_width
 			|| ray->y >= data->map_height)
 			break ;
 	}
-	// printf("Drew a hor ray in %lu\n", current_time() - start);
 }
 
 void	make_color_opaque(unsigned int *color)
@@ -223,8 +238,6 @@ uint32_t	index_color(t_txt *txt, t_ray *ray)
 	txt->green = txt->ptr->pixels[txt->index + 1];
 	txt->blue = txt->ptr->pixels[txt->index + 2];
 	txt->alpha = 0x000000FF;
-	// shade if a vertical ray
-	//(void)ray;
 	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist
 			&& ray->vert_dist != 0))
 	{
@@ -242,46 +255,46 @@ int	draw_column(t_data *data, t_ray *ray, int i, float line_w)
 	float	line_h;
 	t_txt	txt;
 
-	// unsigned long start = current_time();
 	dist = ray->hor_dist;
 	txt.y = 0;
-	// north is 0, s 1, e 2, w 3
 	txt.ptr = data->txtrs[1];
 	txt.x = txt.ptr->width * (ray->x - (int)ray->x);
+	if (ray->is_doorh || ray->is_doorv)
+		txt.ptr = data->txtrs[4];
 	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist
 			&& ray->vert_dist != 0))
 	{
 		dist = ray->vert_dist;
 		ray->x = ray->x_v;
 		ray->y = ray->y_v;
-		// ray->hor_dist = ray->vert_dist;
-		// if wall faces west, flip
 		if (ray->ang > PI_S && ray->ang < PI_N)
 		{
-			txt.ptr = data->txtrs[2];
+			if (!ray->is_doorv)
+				txt.ptr = data->txtrs[2];
 			txt.x = txt.ptr->width * (ray->y_v - (int)ray->y_v);
 			txt.x = txt.ptr->width - txt.x;
 		}
 		else
 		{
-			txt.ptr = data->txtrs[3];
+			if (!ray->is_doorv)
+				txt.ptr = data->txtrs[3];
 			txt.x = txt.ptr->width * (ray->y_v - (int)ray->y_v);
 		}
 	}
 	else
 	{
-		// face north, flip
 		if (ray->ang < PI)
 		{
-			txt.ptr = data->txtrs[0];
+			if (!ray->is_doorh)
+				txt.ptr = data->txtrs[0];
 			txt.x = txt.ptr->width * (ray->x - (int)ray->x);
 			txt.x = txt.ptr->width - txt.x;
 		}
-	}
+	}		
+		
 	line_h = data->height / dist * 1.5;
 	line.y = (data->height - line_h) / 2;
 	txt.y_step = txt.ptr->height / line_h;
-	// txt.x_step = txt.ptr->width / ((FOV * RESOLUTION)) / line_w;
 	txt.maxindex = txt.ptr->width * txt.ptr->height * txt.ptr->bytes_per_pixel;
 	if (line.y < 0)
 	{
@@ -301,20 +314,8 @@ int	draw_column(t_data *data, t_ray *ray, int i, float line_w)
 		line.y++;
 		txt.y += txt.y_step;
 	}
-	// line.y is the start position for the floor
-	// while (line.y < data->height)
-	// {
-	// 	line.y ++;
-	// }
-	// int	player_height = data->height / data->zoom;
 	return (0);
 }
-
-// int	draw_floor(t_data *data, t_ray *ray, int i)
-// {
-
-// 	return (0);
-// }
 
 int	draw_rays(t_data *data)
 {
@@ -334,11 +335,13 @@ int	draw_rays(t_data *data)
 	i = -1;
 	while (++i < FOV * RESOLUTION)
 	{
+		ray->is_doorh = 0;
+		ray->is_doorv = 0;
 		horizontal_rays(data, ray);
 		vertical_rays(data, ray);
 		calc_distance(data, ray);
 		fix_fisheye(data, ray);
-		draw_minirays(data, ray);
+		//draw_minirays(data, ray);
 		if (draw_column(data, ray, i, line_w))
 			return (1);
 		data->raydis[i] = ray->dist;
@@ -374,8 +377,6 @@ int	draw_player_minimap(t_data *data)
 			point.x = x;
 			point.y = y;
 			apply_rotation(data, &point, x, y);
-			// later may use rounding for more precise results (extra)
-			// later may use put_pixel function for less verbosity
 			if (player->x_pos_mini + point.x >= 0 && player->y_pos_mini
 				+ point.y >= 0 && player->x_pos_mini
 				+ point.x < player->imgwidth && player->y_pos_mini
@@ -393,41 +394,3 @@ void	put_pixel(t_data *data, t_point *point, mlx_image_t *img)
 		&& point->y >= 0)
 		mlx_put_pixel(img, point->x, point->y, point->color);
 }
-
-/*
-// Old drawinng
-// int	draw_column(t_data *data, t_ray *ray, int i)
-// {
-// 	t_point		line;
-// 	double		dist;
-// 	double		line_w;
-// 	dist = ray->hor_dist;
-// 	line.color = YEL_WHITE;
-// 	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist
-//			&& ray->vert_dist != 0))
-// 	{
-// 		dist = ray->vert_dist;
-// 		line.color = YEL_WHITE_SHADE;
-// 	}
-// 	//will this cast work in every compiler?
-// 	line_w = (double)SCREENWIDTH / (FOV * RESOLUTION);
-// 	line.y = data->height / 2 - 1;
-// 	while (++line.y < (data->height / 2) + SCREENHEIGHT / dist / 2
-		&& line.y < SCREENHEIGHT)
-// 	{
-// 		//error accumulates with the truncating of the line_w
-// 		line.x = line_w * i;
-// 		while (++line.x <= line_w * (i + 1) && line.x < SCREENWIDTH)
-// 			put_pixel(data, &line, data->screen);
-// 	}
-// 	line.y = data->height / 2;
-// 	while (--line.y > (data->height / 2) - SCREENHEIGHT / dist / 2
-		&& line.y >= 0)
-// 	{
-// 		line.x = line_w * i;
-// 		while (++line.x <= line_w * (i + 1))
-// 			put_pixel(data, &line, data->screen);
-// 	}
-// 	return (0);
-// }
-*/

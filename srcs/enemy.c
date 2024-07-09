@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/08 21:39:13 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/09 16:55:37 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void draw_enemy_onto_canvas(t_data *data, t_enemy * enemy, int dest_x, int dest_
     while(++(pt.x) < (int32_t)src->width) 
     {
 		ray_index = (dest_x + pt.x) * (FOV * RESOLUTION) / data->width;
-		printf("ray_index: %d\n", ray_index);
+		//printf("ray_index: %d\n", ray_index);
 		if (ray_index >= 180)
 			ray_index = 179;
 		if (data->raydis[ray_index] > enemy->distance)
@@ -145,5 +145,4 @@ void	hook_enemies(t_data *data)
             draw_enemy(data, data->enemies[i], screen_x);
         }
     }
-    mlx_image_to_window(data->mlx, data->enemy_img, 0, 0); 
 }

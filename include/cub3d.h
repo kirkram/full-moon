@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/08 21:37:31 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/09 17:31:42 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ unsigned long	current_time(void);
 # define S_PATH "./textures/gradient.png"
 # define E_PATH "./textures/green.png"
 # define W_PATH "./textures/tiger.png"
-# define TEXTURES_AMOUNT 4
+# define DOOR_PATH "./textures/door.png"
+# define TEXTURES_AMOUNT 5
+
 # define MAPBACKG_PATH "./textures/mapbackg.png"
 
 //sprites
@@ -115,6 +117,8 @@ typedef struct s_ray
 	float		y_off;
 	float		x_off;
 	int16_t		dof;
+	int			is_doorv;
+	int			is_doorh;
 }				t_ray;
 
 typedef struct s_player
@@ -151,6 +155,7 @@ typedef struct s_data
 	mlx_image_t		*minimap_img;
 	mlx_image_t		*ceiling;
 	mlx_image_t		*floor;
+	//mlx_texture_t	*door;
 	unsigned int	ceilingcolor;
 	unsigned int 	floorcolor;
 	char			**nsew_path;
