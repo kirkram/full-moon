@@ -4,12 +4,12 @@ LIBMLX_PATH = ./lib/MLX42
 LIBFT = $(LIBFT_PATH)/libft.a
 LIBMLX42 = $(LIBMLX_PATH)/build/libmlx42.a
 CFLAGS = -Wall -Wextra -Werror -Wunreachable-code 
-HEADERS = -I ./include -I $(LIBMLX_PATH)/include/ -I /usr/local/Cellar/glfw/include
+HEADERS = -O2 -I ./include -I $(LIBMLX_PATH)/include/ -I /usr/local/Cellar/glfw/include
 DEBUGFLAGS = -g -fsanitize=address,undefined 
 LIBS = $(LIBMLX42) -lm -lglfw -L /Users/$(USER)/.brew/opt/glfw -L/Users/$(USER)/.brew/lib -L/opt/homebrew/lib #-framework Cocoa -framework OpenGL -framework IOKit
 SRC_DIR = 	./srcs
-SRCS = main.c helper.c drawing.c init.c keyhook.c minimap.c maploader.c maploader2.c	\
-mapvalidator.c maptools.c map_params.c exitfree.c
+SRCS = main.c helper.c drawing.c init.c init2.c keyhook.c minimap.c maploader.c maploader2.c	\
+mapvalidator.c maptools.c map_params.c exitfree.c enemy.c enemy_sort.c
 INC_DIRS = ./include $(LIBMLX_PATH)/include/ $(LIBFT_PATH)/libft $(LIBFT_PATH)/ft_printf/incs /usr/local/Cellar/glfw/include
 INCS = $(foreach dir, $(INC_DIRS), -I $(dir))
 OBJ_DIR = ./objs
@@ -29,8 +29,14 @@ $(NAME): $(LIBFT) $(LIBMLX42) $(OBJ_DIR) $(OBJS)
 
 $(LIBMLX42): .libmlx42
 
+$(LIBMLX42D): .libmlx42d
+
 .libmlx42:
 	@cmake $(LIBMLX_PATH) -B $(LIBMLX_PATH)/build && make -C $(LIBMLX_PATH)/build -j4
+	touch .libmlx42
+
+.libmlx42d:
+	@cmake $(LIBMLX_PATH) -DDEBUG=1 -B $(LIBMLX_PATH)/build && make -DDEBUG=1 -C $(LIBMLX_PATH)/build -j4
 	touch .libmlx42
 
 clone_mlx42:
@@ -46,7 +52,7 @@ $(OBJ_DIR):
 
 debug: .debug
 
-.debug: $(LIBFT) $(LIBMLX42) $(OBJ_DIR) $(OBJS) 
+.debug: $(LIBFT) $(LIBMLX42D) $(OBJ_DIR) $(OBJS) 
 	cc $(DEBUGFLAGS) $(HEADERS) $(OBJS) $(LIBFT) $(LIBS) -o debug.out
 	touch .debug
 

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 11:02:18 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/02 17:47:37 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:08:44 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	flood_fill(int pos_y, int pos_x, int **wmap, t_data *data)
 
 int	validate_mapsquare(int value)
 {
-	if (value == '0' || value == '1' || value == '4' || value == ' ')
+	if (value == '0' || value == '1' || value == '4' || value == ' ' || value == '5')
 		return (0);
 	else if (value == 'N' || value == 'E' || value == 'S' || value == 'W')
 		return (0);
@@ -59,6 +59,9 @@ int	validate_map(int **world_map, t_data *data)
 	int	**test_map;
 	int	i;
 
+	if (data->startpos_x == 0 || data->startpos_y == 0)
+		map_validation_error("Error: no player starting point",
+			data->map_height, NULL, data);
 	i = -1;
 	while (++i < TEXTURES_AMOUNT && data->nsew_path)
 	{

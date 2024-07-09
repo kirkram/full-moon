@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/02 17:17:20 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/08 21:35:04 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,7 @@ void	hook_animation(t_data *data)
 		mlx_image_to_window(data->mlx, data->swordarm, data->width * 0.45, 1);
 		last_update = mlx_get_time();
 	}
+	// Fix to use image array instead
 	else if (current_time - data->last_attack < ANIMATION_SPEED)
 	{
 		mlx_delete_image(data->mlx, data->swordarm);
@@ -222,8 +223,11 @@ void	ft_hook_hub(void *param)
 	hook_animation(data);
 	color_whole_image(data->player->img, FULL_TRANSPARENT,
 		data->player->imgwidth, data->player->imgheight);
-	draw_player(data);
-	draw_rays(data, data->ray);
+	draw_player_minimap(data);
+	draw_rays(data);
+	color_whole_image(data->enemy_img, FULL_TRANSPARENT,
+		data->player->imgwidth, data->player->imgheight);
+	hook_enemies(data);
 }
 
 void	hook_mouse_move(double x, double y, void *param)

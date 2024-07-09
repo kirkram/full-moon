@@ -6,20 +6,11 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/04 14:57:35 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:08:42 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-static void	fill_with_ones(t_data *data, int y, int x)
-{
-	while (x < data->map_width)
-	{
-		data->world_map[y][x] = 1;
-		x++;
-	}
-}
 
 static void	allocate_mapline(char *line, int y, t_data *data)
 {
@@ -40,8 +31,10 @@ static void	write_mapline(char *line, int y, int x, t_data *data)
 					data);
 			if (!get_player_startpos(x, y, data, line))
 			{
-				if (line[x] == 32)
+				if (line[x] == ' ')
 					data->world_map[y][x] = 1;
+				else if (line[x] == '5')
+					add_new_enemy(x, y, data, line);
 				else
 					data->world_map[y][x] = line[x] - 48;
 			}
@@ -55,24 +48,27 @@ static void	write_mapline(char *line, int y, int x, t_data *data)
 	}
 }
 
-void	load_map(t_data *data)
+static void	get_floor_and_ceiling_colors(t_data *data)
 {
-	int		fd;
+	if (data->ceilingcolor == 0x0)
+	{
+		printf("No ceiling color found, default SKYBLUE\n");
+		data->ceilingcolor = CEILING;
+	}
+	if (data->floorcolor == 0x0)
+	{
+		printf("No floor color found, default GRAY\n");
+		data->floorcolor = FLOOR;
+	}
+}
+
+static void	read_and_parse_lines(int fd, t_data *data)
+{
 	char	*line;
-	int		lno;
+	size_t	lno;
 	int		map_start;
 
 	map_start = 0;
-	count_mapdimensions(data);
-	if (data->map_height <= 0 || data->map_height > MAX_MAPHEIGHT
-		|| data->map_width <= 0 || data->map_width > MAX_MAPWIDTH)
-		map_validation_error("Error: invalid map dimensions", data->map_height,
-			NULL, data);
-	data->world_map = (int **)malloc((data->map_height + 1) * sizeof(int *));
-	fd = open(data->map_path, O_RDONLY);
-	if (fd == -1)
-		exit(ft_error("Error opening map file", 12));
-	data->world_map[data->map_height] = NULL;
 	lno = 0;
 	while (1)
 	{
@@ -91,19 +87,27 @@ void	load_map(t_data *data)
 			read_map_parameter(line, data);
 		free(line);
 	}
+}
+
+void	load_map(t_data *data)
+{
+	int	fd;
+
+	count_mapdimensions(data);
+	if (data->map_height <= 0 || data->map_height > MAX_MAPHEIGHT
+		|| data->map_width <= 0 || data->map_width > MAX_MAPWIDTH)
+		map_validation_error("Error: invalid map dimensions", data->map_height,
+			NULL, data);
+	data->world_map = (int **)malloc((data->map_height + 1) * sizeof(int *));
+	if (!data->world_map)
+		map_validation_error("Error: world map allocation", data->map_height,
+			NULL, data);
+	data->world_map[data->map_height] = NULL;
+	fd = open(data->map_path, O_RDONLY);
+	if (fd == -1)
+		exit(ft_error("Error opening map file", 12));
+	read_and_parse_lines(fd, data);
 	close(fd);
-	if (data->startpos_x == 0 || data->startpos_y == 0)
-		map_validation_error("Error: no player starting point",
-			data->map_height, NULL, data);
-	if (data->ceilingcolor == 0x0)
-	{
-		printf("No ceiling color found, default SKYBLUE\n");
-		data->ceilingcolor = CEILING;
-	}
-	if (data->floorcolor == 0x0)
-	{
-		printf("No floor color found, default GRAY\n");
-		data->floorcolor = FLOOR;
-	}
+	get_floor_and_ceiling_colors(data);
 	return ;
 }

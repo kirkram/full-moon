@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/02 17:09:12 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/08 21:38:32 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,12 +159,6 @@ void	horizontal_rays(t_data *data, t_ray *ray)
 	range = data->map_height;
 	if (data->map_width > data->map_height)
 		range = data->map_width;
-	/*
-	error: floating-point comparison is always false;
-	constant cannot be represented exactly in type 'float'
-	because how they are represented as bits.
-	this is why some maps failed to show EW textures.
-	*/
 	// unsigned long start = current_time();
 	if (is_equal(ray->ang, 0.0) || is_equal(ray->ang, PI))
 	{
@@ -241,44 +235,6 @@ uint32_t	index_color(t_txt *txt, t_ray *ray)
 	return (txt->red << 24 | txt->green << 16 | txt->blue << 8 | txt->alpha);
 }
 
-/*
-// Old drawinng
-// int	draw_column(t_data *data, t_ray *ray, int i)
-// {
-// 	t_point		line;
-// 	double		dist;
-// 	double		line_w;
-// 	dist = ray->hor_dist;
-// 	line.color = YEL_WHITE;
-// 	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist
-//			&& ray->vert_dist != 0))
-// 	{
-// 		dist = ray->vert_dist;
-// 		line.color = YEL_WHITE_SHADE;
-// 	}
-// 	//will this cast work in every compiler?
-// 	line_w = (double)SCREENWIDTH / (FOV * RESOLUTION);
-// 	line.y = data->height / 2 - 1;
-// 	while (++line.y < (data->height / 2) + SCREENHEIGHT / dist / 2
-		&& line.y < SCREENHEIGHT)
-// 	{
-// 		//error accumulates with the truncating of the line_w
-// 		line.x = line_w * i;
-// 		while (++line.x <= line_w * (i + 1) && line.x < SCREENWIDTH)
-// 			put_pixel(data, &line, data->screen);
-// 	}
-// 	line.y = data->height / 2;
-// 	while (--line.y > (data->height / 2) - SCREENHEIGHT / dist / 2
-		&& line.y >= 0)
-// 	{
-// 		line.x = line_w * i;
-// 		while (++line.x <= line_w * (i + 1))
-// 			put_pixel(data, &line, data->screen);
-// 	}
-// 	return (0);
-// }
-*/
-
 int	draw_column(t_data *data, t_ray *ray, int i, float line_w)
 {
 	t_point	line;
@@ -323,7 +279,6 @@ int	draw_column(t_data *data, t_ray *ray, int i, float line_w)
 		}
 	}
 	line_h = data->height / dist * 1.5;
-	// line.y = (data->height - line_h) / 2;
 	line.y = (data->height - line_h) / 2;
 	txt.y_step = txt.ptr->height / line_h;
 	// txt.x_step = txt.ptr->width / ((FOV * RESOLUTION)) / line_w;
@@ -361,14 +316,16 @@ int	draw_column(t_data *data, t_ray *ray, int i, float line_w)
 // 	return (0);
 // }
 
-int	draw_rays(t_data *data, t_ray *ray)
+int	draw_rays(t_data *data)
 {
 	t_player	*player;
+	t_ray 		*ray;
 	int			i;
 	float		line_w;
 
 	player = data->player;
-	ray->ang = player->angle - (DEGR * FOV) / 2;
+	ray = data->ray;
+	ray->ang = player->angle - rad(FOV / 2); //(DEGR * FOV) / 2;
 	if (ray->ang < 0)
 		ray->ang += PI2;
 	else if (ray->ang >= PI2)
@@ -381,9 +338,10 @@ int	draw_rays(t_data *data, t_ray *ray)
 		vertical_rays(data, ray);
 		calc_distance(data, ray);
 		fix_fisheye(data, ray);
-		// draw_minirays(data, ray);
+		draw_minirays(data, ray);
 		if (draw_column(data, ray, i, line_w))
 			return (1);
+		data->raydis[i] = ray->dist;
 		ray->ang += DEGR_RESO;
 		if (ray->ang < 0)
 			ray->ang += PI2;
@@ -393,7 +351,13 @@ int	draw_rays(t_data *data, t_ray *ray)
 	return (0);
 }
 
-int	draw_player(t_data *data)
+void	draw_sprites(t_data *data)
+{
+	(void)data;
+	return ;
+}
+
+int	draw_player_minimap(t_data *data)
 {
 	t_player	*player;
 	t_point		point;
@@ -429,3 +393,41 @@ void	put_pixel(t_data *data, t_point *point, mlx_image_t *img)
 		&& point->y >= 0)
 		mlx_put_pixel(img, point->x, point->y, point->color);
 }
+
+/*
+// Old drawinng
+// int	draw_column(t_data *data, t_ray *ray, int i)
+// {
+// 	t_point		line;
+// 	double		dist;
+// 	double		line_w;
+// 	dist = ray->hor_dist;
+// 	line.color = YEL_WHITE;
+// 	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist
+//			&& ray->vert_dist != 0))
+// 	{
+// 		dist = ray->vert_dist;
+// 		line.color = YEL_WHITE_SHADE;
+// 	}
+// 	//will this cast work in every compiler?
+// 	line_w = (double)SCREENWIDTH / (FOV * RESOLUTION);
+// 	line.y = data->height / 2 - 1;
+// 	while (++line.y < (data->height / 2) + SCREENHEIGHT / dist / 2
+		&& line.y < SCREENHEIGHT)
+// 	{
+// 		//error accumulates with the truncating of the line_w
+// 		line.x = line_w * i;
+// 		while (++line.x <= line_w * (i + 1) && line.x < SCREENWIDTH)
+// 			put_pixel(data, &line, data->screen);
+// 	}
+// 	line.y = data->height / 2;
+// 	while (--line.y > (data->height / 2) - SCREENHEIGHT / dist / 2
+		&& line.y >= 0)
+// 	{
+// 		line.x = line_w * i;
+// 		while (++line.x <= line_w * (i + 1))
+// 			put_pixel(data, &line, data->screen);
+// 	}
+// 	return (0);
+// }
+*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/02 19:56:45 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/08 21:37:31 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,11 @@ unsigned long	current_time(void);
 
 //sprites
 # define PL_FRAMECOUNT 11
+# define EN_FRAMECOUNT 64
+# define ESW 74	// enemy sprite width
+# define ESH 81	// enemy sprite height
+# define ESSW 592 // enemy spritesheet width
+# define ESSH 648 // enemy spritesheet height
 
 //maths
 # define PI 3.14159265359
@@ -124,6 +129,20 @@ typedef struct s_player
 	int32_t			imgheight;
 }					t_player;
 
+typedef struct s_enemy
+{
+	float			x_pos;
+	float			y_pos;
+	float			distance;
+	float			rel_angle;
+	float			start_ang;
+	float			end_ang;
+	float			start_posx;
+	float			end_posx;
+	int				current_frame;
+	int				visible;
+}					t_enemy;
+
 typedef struct s_data
 {
 	mlx_t			*mlx;
@@ -134,8 +153,7 @@ typedef struct s_data
 	mlx_image_t		*floor;
 	unsigned int	ceilingcolor;
 	unsigned int 	floorcolor;
-	char			**nsew_path; // n s e w
-	// mlx_texture_t	*txtrs[TEXTURES_AMOUNT]; // n s e w
+	char			**nsew_path;
 	mlx_texture_t	**swordarm_tx;
 	mlx_image_t		*swordarm;
 	double			last_update;
@@ -144,6 +162,8 @@ typedef struct s_data
 	mlx_texture_t	*txt_n;
 	t_player		*player;
 	t_ray			*ray;
+	float			raydis[FOV * RESOLUTION];
+    mlx_image_t*    drawframe;
 	mlx_key_data_t	keydata;
 	int32_t			width;
 	int32_t			height;
@@ -155,13 +175,19 @@ typedef struct s_data
 	int				map_width;
 	int				startpos_x;
 	int				startpos_y;
+	t_enemy			**enemies;
+	mlx_texture_t	*enemy_ssheet;
+	mlx_image_t		**enemy_frame;
+	mlx_image_t		*enemy_img;
+	int				ess_width;
+	int				ess_height;
 	float			line_error;
 }					t_data;
 
 typedef struct s_point
 {
-	int32_t				x;
-	int32_t				y;
+	int32_t			x;
+	int32_t			y;
 	uint32_t		color;
 	void			*content;
 }					t_point;
@@ -184,11 +210,14 @@ typedef struct s_textures
 
 //init
 void	init_map_data(t_data *data);
+int		create_fname(char *fname, int i);
 int		load_valid_map(t_data *data, int ac, char **av);
 void	load_map(t_data *data);
 int		validate_map(int **world_map, t_data *data);
 int		validate_mapsquare(int value);
 void	convert_tabs(char **line);
+void	add_new_enemy(int x, int y, t_data *data, char *line);
+void	fill_with_ones(t_data *data, int y, int x);
 void	count_mapdimensions(t_data *data);
 int		get_player_startpos(int x, int y, t_data *data, char *line);
 int		flood_fill(int pos_y, int pos_x, int **wmap, t_data *data);
@@ -200,11 +229,16 @@ void	free_all_and_quit(t_data *data, char *msg, int exitcode);
 //drawing
 int		draw_minimap(t_data *data);
 int		init_and_draw(t_data *data);
+int		put_background(t_data *data);
+int		redraw_background(t_data *data);
+int		init_player(t_data *data);
+int		init_enemy_frames(t_data *data);
 void	put_pixel(t_data *data, t_point *point, mlx_image_t *img);
-int		draw_player(t_data *data);
+int		draw_player_minimap(t_data *data);
+void	draw_sprites(t_data *data);
 void	apply_rotation(t_data *data, t_point *point, int x, int y);
 float	rad(float angle);
-int		draw_rays(t_data *data, t_ray *ray);
+int		draw_rays(t_data *data);
 void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img);
 
 //keyhook
@@ -213,6 +247,10 @@ void 	hook_mouse_move(double x, double y, void* param);
 void	hook_mouse_button(mouse_key_t button, action_t action, 
 			modifier_key_t mods, void *param);
 
+//enemy
+void	hook_enemies(t_data *data);
+void	sort_enemy_arr(t_data *data);
+
 //animation
 void	attack_animation(t_data *data);
 
@@ -220,6 +258,7 @@ void	attack_animation(t_data *data);
 int		ft_error(char *msg, int	error_code);
 int		ft_abs(int result);
 void	free_textures(t_data *data);
+void	free_enemies(t_data *data);
 int		is_valid_hex(const char *hex_str);
 char	*get_next_line(int fd);
 
