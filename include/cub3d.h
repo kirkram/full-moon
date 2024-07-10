@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/09 17:31:42 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/10 16:18:59 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,9 @@ typedef struct s_ray
 	float		y_off;
 	float		x_off;
 	int16_t		dof;
-	int			is_doorv;
-	int			is_doorh;
+	bool		is_doorv;
+	bool		is_doorh;
+	int32_t		range;
 }				t_ray;
 
 typedef struct s_player
@@ -170,8 +171,8 @@ typedef struct s_data
 	float			raydis[FOV * RESOLUTION];
     mlx_image_t*    drawframe;
 	mlx_key_data_t	keydata;
-	int32_t			width;
-	int32_t			height;
+	uint32_t		width;
+	uint32_t		height;
 	int32_t			zoom;
 	float			speed;
 	char			*map_path;
@@ -209,7 +210,7 @@ typedef struct s_textures
 	float			y_step;
 	float			x;
 	float			x_step;
-	float			save;
+	//float			save;
 	mlx_texture_t	*ptr;
 }					t_txt;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/08 21:35:04 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/10 16:33:07 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ static void	ft_hook_movement(t_data *data)
 		if ((map.y >= 0 && map.y < data->map_height && map.x >= 0
 				&& map.x < data->map_width))
 		{
-			if (data->world_map[(int)data->player->y_pos][map.x] != 1)
+			if (data->world_map[(int)data->player->y_pos][map.x] != 1 && data->world_map[(int)data->player->y_pos][map.x] != 4)
 			{
 				player->x_pos += data->speed * cosf(player->angle);
 				data->player->x_pos_mini = data->player->x_pos * data->zoom;
 			}
-			if (data->world_map[map.y][(int)data->player->x_pos] != 1)
+			if (data->world_map[map.y][(int)data->player->x_pos] != 1 && data->world_map[map.y][(int)data->player->x_pos] != 4)
 			{
 				player->y_pos += data->speed * sinf(player->angle);
 				data->player->y_pos_mini = data->player->y_pos * data->zoom;
@@ -69,12 +69,12 @@ static void	ft_hook_movement(t_data *data)
 		if ((map.y >= 0 && map.y < data->map_height && map.x >= 0
 				&& map.x < data->map_width))
 		{
-			if (data->world_map[(int)data->player->y_pos][map.x] != 1)
+			if (data->world_map[(int)data->player->y_pos][map.x] != 1 && data->world_map[(int)data->player->y_pos][map.x] != 4)
 			{
 				player->x_pos += -data->speed * cosf(player->angle);
 				data->player->x_pos_mini = data->player->x_pos * data->zoom;
 			}
-			if (data->world_map[map.y][(int)data->player->x_pos] != 1)
+			if (data->world_map[map.y][(int)data->player->x_pos] != 1 && data->world_map[map.y][(int)data->player->x_pos] != 4)
 			{
 				player->y_pos += -data->speed * sinf(player->angle);
 				data->player->y_pos_mini = data->player->y_pos * data->zoom;
@@ -96,12 +96,12 @@ static void	ft_hook_movement(t_data *data)
 		if ((map.y >= 0 && map.y < data->map_height && map.x >= 0
 				&& map.x < data->map_width))
 		{
-			if (data->world_map[(int)data->player->y_pos][map.x] != 1)
+			if (data->world_map[(int)data->player->y_pos][map.x] != 1 && data->world_map[(int)data->player->y_pos][map.x] != 4)
 			{
 				player->x_pos += -data->speed * cosf(player->angle + PI_S);
 				data->player->x_pos_mini = data->player->x_pos * data->zoom;
 			}
-			if (data->world_map[map.y][(int)data->player->x_pos] != 1)
+			if (data->world_map[map.y][(int)data->player->x_pos] != 1 && data->world_map[map.y][(int)data->player->x_pos] != 4)
 			{
 				player->y_pos += -data->speed * sinf(player->angle + PI_S);
 				data->player->y_pos_mini = data->player->y_pos * data->zoom;
@@ -123,12 +123,12 @@ static void	ft_hook_movement(t_data *data)
 		if ((map.y >= 0 && map.y < data->map_height && map.x >= 0
 				&& map.x < data->map_width))
 		{
-			if (data->world_map[(int)data->player->y_pos][map.x] != 1)
+			if (data->world_map[(int)data->player->y_pos][map.x] != 1 && data->world_map[(int)data->player->y_pos][map.x] != 4)
 			{
 				player->x_pos += data->speed * cosf(player->angle + PI_S);
 				data->player->x_pos_mini = data->player->x_pos * data->zoom;
 			}
-			if (data->world_map[map.y][(int)data->player->x_pos] != 1)
+			if (data->world_map[map.y][(int)data->player->x_pos] != 1 && data->world_map[map.y][(int)data->player->x_pos] != 4)
 			{
 				player->y_pos += data->speed * sinf(player->angle + PI_S);
 				data->player->y_pos_mini = data->player->y_pos * data->zoom;

@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/09 16:56:43 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/10 15:18:14 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,14 @@ int	init_minimap(t_data *data)
 		return (12);
 	minimap_txt->height = data->map_height * data->zoom;
 	minimap_txt->width = data->map_width * data->zoom;
-	data->minimap_img = mlx_texture_to_image(data->mlx, minimap_txt);
-	if (!data->minimap_img)
-		return (11);
-	if (mlx_image_to_window(data->mlx, data->minimap_img, 0, 0) < 0)
-		return (11);
+	if (minimap_txt->width < data->width && minimap_txt->height < data->height)
+	{
+		data->minimap_img = mlx_texture_to_image(data->mlx, minimap_txt);
+		if (!data->minimap_img)
+			return (11);
+		if (mlx_image_to_window(data->mlx, data->minimap_img, 0, 0) < 0)
+			return (11);
+	}
 	data->minimap = mlx_new_image(data->mlx, data->width, data->height);
 	if (!data->minimap)
 		ft_error("Error on mlx_new_image\n", 11);
