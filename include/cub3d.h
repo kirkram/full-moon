@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/10 16:18:59 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/11 16:47:20 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ unsigned long	current_time(void);
 # define TEXTURES_AMOUNT 5
 
 # define MAPBACKG_PATH "./textures/mapbackg.png"
+# define DRAWMINIRAYS 0
 
 //sprites
 # define PL_FRAMECOUNT 11
@@ -205,72 +206,77 @@ typedef struct s_textures
 	uint8_t			blue;
 	uint8_t			alpha;
 	uint32_t		index;
-	uint32_t		maxindex;
 	float			y;
 	float			y_step;
 	float			x;
 	float			x_step;
-	//float			save;
 	mlx_texture_t	*ptr;
 }					t_txt;
 
 //init
-void	init_map_data(t_data *data);
-int		create_fname(char *fname, int i);
-int		load_valid_map(t_data *data, int ac, char **av);
-void	load_map(t_data *data);
-int		validate_map(int **world_map, t_data *data);
-int		validate_mapsquare(int value);
-void	convert_tabs(char **line);
-void	add_new_enemy(int x, int y, t_data *data, char *line);
-void	fill_with_ones(t_data *data, int y, int x);
-void	count_mapdimensions(t_data *data);
-int		get_player_startpos(int x, int y, t_data *data, char *line);
-int		flood_fill(int pos_y, int pos_x, int **wmap, t_data *data);
-void	read_map_parameter(char *line, t_data *data);
-void	map_validation_error(char *msg, int rows, char *line, t_data *data);
-int		color_whole_image(mlx_image_t *img, int color, int width, int height);
-void	free_all_and_quit(t_data *data, char *msg, int exitcode);
+void		init_map_data(t_data *data);
+int			create_fname(char *fname, int i);
+int			load_valid_map(t_data *data, int ac, char **av);
+void		load_map(t_data *data);
+int			validate_map(int **world_map, t_data *data);
+int			validate_mapsquare(int value);
+void		convert_tabs(char **line);
+void		add_new_enemy(int x, int y, t_data *data, char *line);
+void		fill_with_ones(t_data *data, int y, int x);
+void		count_mapdimensions(t_data *data);
+int			get_player_startpos(int x, int y, t_data *data, char *line);
+int			flood_fill(int pos_y, int pos_x, int **wmap, t_data *data);
+void		read_map_parameter(char *line, t_data *data);
+void		map_validation_error(char *msg, int rows, char *line, t_data *data);
+int			color_whole_image(mlx_image_t *img, int color, int width, int height);
+void		free_all_and_quit(t_data *data, char *msg, int exitcode);
 
 //drawing
-int		draw_minimap(t_data *data);
-int		init_and_draw(t_data *data);
-int		put_background(t_data *data);
-int		redraw_background(t_data *data);
-int		init_player(t_data *data);
-int		init_enemy_frames(t_data *data);
-void	put_pixel(t_data *data, t_point *point, mlx_image_t *img);
-int		draw_player_minimap(t_data *data);
-void	draw_sprites(t_data *data);
-void	apply_rotation(t_data *data, t_point *point, int x, int y);
-float	rad(float angle);
-int		draw_rays(t_data *data);
-void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img);
+void		draw_minimap(t_data *data);
+int			init_and_draw(t_data *data);
+int			put_background(t_data *data);
+int			init_player(t_data *data);
+int			init_enemy_frames(t_data *data);
+void		put_pixel(t_data *data, t_point *point, mlx_image_t *img);
+int			draw_player_minimap(t_data *data);
+void		draw_sprites(t_data *data);
+void		assign_texture_to_ray(t_data *data, t_ray *ray, t_txt *txt);
+float		rad(float angle);
+void		draw_rays(t_data *data);
+void		drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img);
+uint32_t	index_color(t_txt *txt, t_ray *ray);
+void		horizontal_rays(t_data *data, t_ray *ray);
+void		vertical_rays(t_data *data, t_ray *ray);
+void		calc_distance(t_data *data, t_ray *ray);
+void		draw_minirays(t_data *data, t_ray *ray);
+void		fix_fisheye(t_data *data, t_ray *ray);
+int			is_equal(float a, float b);
+int			check_walls(t_data *data, t_ray *ray, t_map *map, bool is_vert);
+void		increment_offset(t_data *data, t_ray *ray, bool is_vert);
 
 //keyhook
-void	ft_hook_hub(void *param);
-void 	hook_mouse_move(double x, double y, void* param);
-void	hook_mouse_button(mouse_key_t button, action_t action, 
-			modifier_key_t mods, void *param);
+void		ft_hook_hub(void *param);
+void 		hook_mouse_move(double x, double y, void* param);
 
 //enemy
-void	hook_enemies(t_data *data);
-void	sort_enemy_arr(t_data *data);
+void		hook_enemies(t_data *data);
+void		sort_enemy_arr(t_data *data);
 
 //animation
-void	attack_animation(t_data *data);
+void		attack_animation(t_data *data);
 
 //helper
-int		ft_error(char *msg, int	error_code);
-int		ft_abs(int result);
-void	free_textures(t_data *data);
-void	free_enemies(t_data *data);
-int		is_valid_hex(const char *hex_str);
-char	*get_next_line(int fd);
+int			ft_error(char *msg, int	error_code);
+int			ft_abs(int result);
+void		free_textures(t_data *data);
+void		free_enemies(t_data *data);
+int			is_valid_hex(const char *hex_str);
+char		*get_next_line(int fd);
+void		angle_outofbounds_check(t_ray *ray);
 
 //maptools
-int		**copy_2d_int(int **int_arr, int rows, int cols);
-int		free_2d_int(int **int_arr, int rows);
-void	print_2d_int(int **int_arr, int rows, int cols);
+int			**copy_2d_int(int **int_arr, int rows, int cols);
+int			free_2d_int(int **int_arr, int rows);
+void		print_2d_int(int **int_arr, int rows, int cols);
 
 #endif

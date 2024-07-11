@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/10 15:18:14 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/11 14:48:34 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	init_minimap(t_data *data)
 			return (11);
 		if (mlx_image_to_window(data->mlx, data->minimap_img, 0, 0) < 0)
 			return (11);
+		mlx_delete_texture(minimap_txt);
 	}
 	data->minimap = mlx_new_image(data->mlx, data->width, data->height);
 	if (!data->minimap)
@@ -63,52 +64,47 @@ int	init_canvases(t_data *data)
 	return (0);
 }
 
-void	load_wall_texture(t_data *data, int i)
+void	load_textures(t_data *data)
 {
-	if (!data->nsew_path[i] || access(data->nsew_path[i], F_OK))
-		free_all_and_quit(data, "can't find texture file", 76);
-	data->txtrs[i] = mlx_load_png(data->nsew_path[i]);
-	if (!data->txtrs[i])
-		free_all_and_quit(data, "error on mlx_load_png", 77);
-	if (data->txtrs[i]->width > 4096 || data->txtrs[i]->height > 4096)
-		free_all_and_quit(data,
-			"image dimensions should be less than 4096 pixels", 78);
-}
+	int	i;
 
-void	load_door_texture(t_data *data)
-{
+	i = -1;
+	while (++i < 4)
+	{
+		if (!data->nsew_path[i] || access(data->nsew_path[i], F_OK))
+			free_all_and_quit(data, "can't find texture file", 76);
+		data->txtrs[i] = mlx_load_png(data->nsew_path[i]);
+		if (!data->txtrs[i])
+			free_all_and_quit(data, "error on mlx_load_png", 77);
+		if (data->txtrs[i]->width > 4096 || data->txtrs[i]->height > 4096)
+			free_all_and_quit(data,
+				"image dimensions should be less than 4096 pixels", 78);
+	}
 	data->txtrs[4] = mlx_load_png(DOOR_PATH);
 	if (!data->txtrs[4])
 		free_all_and_quit(data, "can't open door file", 75);
 	if (data->txtrs[4]->height > 4096 || data->txtrs[4]->width > 4096)
-		free_all_and_quit(data, "door dimensions should be less than 4096 pixels", 78);
+		free_all_and_quit(data, \
+		"door dimensions should be less than 4096 pixels", 78);
 }
 
 int	init_and_draw(t_data *data)
 {
-	int	i;
-
 	if (init_canvases(data))
 		free_all_and_quit(data, "image initialization", 11);
 	data->txtrs = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *)
 			* (TEXTURES_AMOUNT + 1));
 	if (!data->txtrs)
 		free_all_and_quit(data, "texture loading malloc", 11);
-	i = -1;
-	while (++i < 4)
-		load_wall_texture(data, i);
-	load_door_texture(data);
+	load_textures(data);
 	if (mlx_image_to_window(data->mlx, data->enemy_img, 0, 0) < 0)
 		free_all_and_quit(data, "Error on mlx_image_to_window", 11);
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
 	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
-	if (draw_minimap(data))
-		return (11);
+	draw_minimap(data);
 	draw_player_minimap(data);
-	if (draw_rays(data))
-		free_all_and_quit(data, "ray drawing error", 13);
+	draw_rays(data);
 	draw_sprites(data);
-	//print_2d_int(data->world_map, data->map_height, data->map_width);
 	mlx_cursor_hook(data->mlx, &hook_mouse_move, data);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	mlx_loop(data->mlx);
