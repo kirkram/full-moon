@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/08 21:38:32 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/11 12:30:05 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,12 +349,6 @@ int	draw_rays(t_data *data)
 			ray->ang = ray->ang - (PI2);
 	}
 	return (0);
-}
-
-void	draw_sprites(t_data *data)
-{
-	(void)data;
-	return ;
 }
 
 int	draw_player_minimap(t_data *data)
