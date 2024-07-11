@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:13:41 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/02 14:54:27 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/11 14:44:14 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	drw_line(t_point point, t_point dest, t_data *data, mlx_image_t *img)
 	}
 }
 
-int	draw_minimap(t_data *data)
+void	draw_minimap(t_data *data)
 {
 	int	x;
 	int	y;
@@ -99,5 +99,4 @@ int	draw_minimap(t_data *data)
 		}
 		y++;
 	}
-	return (0);
 }
