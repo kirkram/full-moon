@@ -93,13 +93,13 @@ int	init_player(t_data *data)
 	return (0);
 }
 
-mlx_image_t *create_enemy_sprite(t_data *data, int x, int y)
+mlx_image_t	*create_enemy_sprite(t_data *data, int x, int y)
 {
-	mlx_image_t *sprite;
+	mlx_image_t	*sprite;
 	int			cx;
-	int 		cy;
-	int 		sheet_index;
-	int 		sprite_index;
+	int			cy;
+	int			sheet_index;
+	int			sprite_index;
 
 	sprite = mlx_new_image(data->mlx, ESW, ESH);
 	cy = -1;
@@ -108,12 +108,16 @@ mlx_image_t *create_enemy_sprite(t_data *data, int x, int y)
 		cx = -1;
 		while (++cx < ESW)
 		{
-		    sheet_index = ((y + cy) * ESSW + (x + cx)) * 4;
-            sprite_index = (cy * ESW + cx) * 4;
-            sprite->pixels[sprite_index + 0] = data->enemy_ssheet->pixels[sheet_index + 0];
-            sprite->pixels[sprite_index + 1] = data->enemy_ssheet->pixels[sheet_index + 1];
-            sprite->pixels[sprite_index + 2] = data->enemy_ssheet->pixels[sheet_index + 2];
-            sprite->pixels[sprite_index + 3] = data->enemy_ssheet->pixels[sheet_index + 3];	
+			sheet_index = ((y + cy) * ESSW + (x + cx)) * 4;
+			sprite_index = (cy * ESW + cx) * 4;
+			sprite->pixels[sprite_index
+				+ 0] = data->enemy_ssheet->pixels[sheet_index + 0];
+			sprite->pixels[sprite_index
+				+ 1] = data->enemy_ssheet->pixels[sheet_index + 1];
+			sprite->pixels[sprite_index
+				+ 2] = data->enemy_ssheet->pixels[sheet_index + 2];
+			sprite->pixels[sprite_index
+				+ 3] = data->enemy_ssheet->pixels[sheet_index + 3];
 		}
 	}
 	return (sprite);
@@ -126,7 +130,8 @@ int	init_enemy_frames(t_data *data)
 	data->enemy_ssheet = mlx_load_png("./sprites/ratman_paletted_a.png");
 	if (data->enemy_ssheet == NULL)
 		free_all_and_quit(data, "enemy texture loading", 11);
-	data->enemy_frame = (mlx_image_t **)ft_calloc(EN_FRAMECOUNT + 1, sizeof(mlx_image_t *));
+	data->enemy_frame = (mlx_image_t **)ft_calloc(EN_FRAMECOUNT + 1,
+			sizeof(mlx_image_t *));
 	i = -1;
 	while (++i < 64)
 	{
@@ -135,8 +140,7 @@ int	init_enemy_frames(t_data *data)
 			free_all_and_quit(data, "enemy texture loading", 11);
 	}
 	data->enemy_frame[EN_FRAMECOUNT] = NULL;
-	data->enemy_img = mlx_new_image(data->mlx, data->width,
-			data->height);
+	data->enemy_img = mlx_new_image(data->mlx, data->width, data->height);
 	return (0);
 }
 
