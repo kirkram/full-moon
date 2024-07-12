@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/12 13:47:30 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/12 19:16:17 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	ft_hook_hub(void *param)
 		data->player->imgheight);
 	hook_enemies(data);
 	mlx_image_to_window(data->mlx, data->enemy_img, 0, 0);
+	printf("The fps is %f\n", 1 / data->mlx->delta_time);
 }
 
 void	hook_mouse_move(double x, double y, void *param)
