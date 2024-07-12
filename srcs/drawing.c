@@ -6,11 +6,28 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/11 16:46:09 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/12 15:12:24 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+static float	init_column_values(t_data *data, t_ray *ray, t_txt *txt,
+		t_point *line)
+{
+	float	line_h;
+
+	line_h = data->height / ray->dist * LINESCALE;
+	line->y = (data->height - line_h) / 2;
+	txt->y_step = txt->ptr->height / line_h;
+	txt->y = 0;
+	if (line->y < 0)
+	{
+		txt->y = fabs(txt->y_step * line->y);
+		line->y = 0;
+	}
+	return (line_h);
+}
 
 void	draw_column(t_data *data, t_ray *ray, int i, float line_w)
 {
@@ -19,26 +36,19 @@ void	draw_column(t_data *data, t_ray *ray, int i, float line_w)
 	t_txt	txt;
 
 	assign_texture_to_ray(data, ray, &txt);
-	line_h = data->height / ray->dist * 1.5;
-	line.y = (data->height - line_h) / 2;
-	txt.y_step = txt.ptr->height / line_h;
-	txt.y = 0;
-	if (line.y < 0)
-		txt.y = fabs(txt.y_step * line.y);
-	if (line.y < 0)
-		line.y = 0;
-	while (line.y < (data->height - line_h) / 2 + line_h && 
-	line.y < (int32_t)data->height)
+	line_h = init_column_values(data, ray, &txt, &line);
+	while (line.y < (data->height - line_h) / 2 + line_h
+		&& line.y < (int32_t)data->height)
 	{
 		line.x = line_w * i - 1;
 		txt.index = ((uint32_t)txt.y * txt.ptr->width + (uint32_t)txt.x)
 			* txt.ptr->bytes_per_pixel;
-		if (txt.index + 2 < 
-		txt.ptr->width * txt.ptr->height * txt.ptr->bytes_per_pixel)
+		if (txt.index + 2 < txt.ptr->width * txt.ptr->height
+			* txt.ptr->bytes_per_pixel)
 			line.color = index_color(&txt, ray);
 		while (++line.x <= line_w * (i + 1) && line.x < (int32_t)data->width)
 			put_pixel(data, &line, data->screen);
-		line.y ++;
+		line.y++;
 		txt.y += txt.y_step;
 	}
 }
@@ -66,7 +76,7 @@ void	draw_rays(t_data *data)
 			draw_minirays(data, ray);
 		draw_column(data, ray, i, data->width / ((float)(FOV * RESOLUTION)));
 		data->raydis[i] = ray->dist;
-		ray->ang += DEGR_RESO;
+		ray->ang += DEGR / RESOLUTION;
 		angle_outofbounds_check(ray);
 	}
 }
