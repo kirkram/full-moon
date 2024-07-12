@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exitfree.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 17:48:48 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/09 17:39:29 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/12 18:41:34 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,21 @@ void	free_textures(t_data *data)
 	// Do these do the seqfault?
 	if (data->enemy_ssheet != NULL)
 		mlx_delete_texture(data->enemy_ssheet);
+	printf("Deleted sheet\n");
+	/*
 	if (data->enemy_frame != NULL)
 	{
 		i = EN_FRAMECOUNT;
 		while (--i >= 0)
 		{
+			printf("Deleted enemy frame %d\n", i);
 			if (data->enemy_frame[i] != NULL)
 				mlx_delete_image(data->mlx, data->enemy_frame[i]);
 		}
 		if (data->enemy_frame)
 			free(data->enemy_frame);
 	}
+	*/
 }
 
 void	free_enemies(t_data *data)
