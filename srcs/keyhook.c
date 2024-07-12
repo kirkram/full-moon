@@ -52,6 +52,7 @@ void	hook_animation(t_data *data)
 		if (frame > 3)
 			frame = 0;
 		mlx_image_to_window(data->mlx, data->swordarm, data->width * 0.45, 1);
+		//mlx_set_instance_depth(data->swordarm, 100);
 		last_update = mlx_get_time();
 	}
 	else if (current_time - data->last_attack < ANIMATION_SPEED)
@@ -94,6 +95,7 @@ void	ft_hook_hub(void *param)
 	color_whole_image(data->enemy_img, FULL_TRANSPARENT, data->player->imgwidth,
 		data->player->imgheight);
 	hook_enemies(data);
+	mlx_image_to_window(data->mlx, data->enemy_img, 0, 0);
 }
 
 void	hook_mouse_move(double x, double y, void *param)
