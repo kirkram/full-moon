@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/12 14:46:21 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/12 23:22:23 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,12 @@ void	init_map_data(t_data *data)
 	data->map_width = 0;
 	data->txtrs = NULL;
 	data->swordarm_tx = NULL;
+	data->swordarm = NULL;
 	data->startpos_x = 0;
 	data->startpos_y = 0;
 	data->floorcolor = 0x0;
 	data->ceilingcolor = 0x0;
-	data->enemies = ft_calloc(1, sizeof(t_enemy *));
+	data->enemies = NULL;
 }
 
 int	create_fname(char *fname, int i)
@@ -73,6 +74,39 @@ int	init_player_sprites(t_data *data) // free these
 	mlx_image_to_window(data->mlx, data->swordarm, 1, 1);
 	return (0);
 }
+
+
+/* slower
+int	init_player_sprites(t_data *data) // free these
+{
+	int i;
+	char fname[1024];
+
+	data->swordarm_tx = (mlx_texture_t **)ft_calloc(PL_FRAMECOUNT + 1,
+			sizeof(mlx_texture_t *));
+	if (!data->swordarm_tx)
+		return (1);
+	data->swordarm_tx[PL_FRAMECOUNT] = NULL;
+	i = PL_FRAMECOUNT;
+	while (--i >= 0)
+	{
+		create_fname(fname, i);
+		data->swordarm_tx[i] = mlx_load_png(fname);
+		if (!data->swordarm_tx[i])
+			free_all_and_quit(data, "player texture load", 26);
+	}
+	data->swordarm = (mlx_image_t **)ft_calloc(PL_FRAMECOUNT + 1,
+		sizeof(mlx_image_t *));
+	i = PL_FRAMECOUNT;
+	while (--i >= 0)
+	{
+		data->swordarm[i] = mlx_texture_to_image(data->mlx, data->swordarm_tx[i]);
+		if (!data->swordarm_tx[i])
+			free_all_and_quit(data, "player sprite load", 27);
+	}
+	return (0);
+}
+*/
 
 int	init_player(t_data *data)
 {
@@ -140,7 +174,7 @@ int	init_enemy_frames(t_data *data)
 			free_all_and_quit(data, "enemy texture loading", 11);
 	}
 	data->enemy_frame[EN_FRAMECOUNT] = NULL;
-	data->enemy_img = mlx_new_image(data->mlx, data->width, data->height);
+	//data->enemy_img = mlx_new_image(data->mlx, data->width, data->height);
 	return (0);
 }
 

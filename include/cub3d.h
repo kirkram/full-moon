@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/12 15:12:54 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/12 23:20:33 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,6 @@ typedef struct s_data
 	t_enemy			**enemies;
 	mlx_texture_t	*enemy_ssheet;
 	mlx_image_t		**enemy_frame;
-	mlx_image_t		*enemy_img;
 	int				ess_width;
 	int				ess_height;
 	float			line_error;
@@ -229,6 +228,8 @@ int					put_background(t_data *data);
 int					init_player(t_data *data);
 int					init_enemy_frames(t_data *data);
 void				put_pixel(t_data *data, t_point *point, mlx_image_t *img);
+uint32_t			get_a(uint32_t rgba);
+uint32_t			get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
 int					draw_player_minimap(t_data *data);
 void				draw_sprites(t_data *data);
 void				assign_texture_to_ray(t_data *data, t_ray *ray, t_txt *txt);

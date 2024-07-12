@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/04 18:08:42 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/12 22:23:22 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ static void	read_and_parse_lines(int fd, t_data *data)
 	char	*line;
 	size_t	lno;
 	int		map_start;
+	int		i;
 
 	map_start = 0;
 	lno = 0;
@@ -86,6 +87,11 @@ static void	read_and_parse_lines(int fd, t_data *data)
 		if (map_start == 0)
 			read_map_parameter(line, data);
 		free(line);
+	}
+	i = -1;
+	while (data->enemies[++i] != NULL)
+	{
+		printf("Enemy %d: x:%.0f y:%.0f\n", i, data->enemies[i]->x_pos, data->enemies[i]->y_pos);
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/11 15:01:55 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/12 21:56:57 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	draw_enemy_onto_canvas(t_data *data, t_enemy *enemy, int dest_x,
 	mlx_image_t	*src;
 	int			ray_index;
 
-	dest = data->enemy_img;
+	dest = data->screen;
 	src = data->drawframe;
 	pt.y = -1;
 	pt.x = -1;
@@ -109,13 +109,11 @@ void	draw_enemy(t_data *data, t_enemy *enemy, uint32_t screen_x)
 
 void	hook_enemies(t_data *data)
 {
-	// relative position of enemy to player
 	int i;
 	float dx;
 	float dy;
 	float angle;
 	float rel_ang;
-	// float       enemy_angle_width;
 	uint32_t screen_x;
 
 	i = -1;
@@ -139,20 +137,8 @@ void	hook_enemies(t_data *data)
 	{
 		if (data->enemies[i]->visible)
 		{
-			// enemy_angle_width = atan2f((float)ESW / 2,
-					// data->enemies[i]->distance);
 			screen_x = (uint32_t)((data->enemies[i]->rel_angle + rad(FOV / 2))
 					/ rad(FOV) * data->width);
-			// Calculate the start and end angles
-			// data->enemies[i]->start_ang = data->enemies[i]->rel_angle
-				// - enemy_angle_width;
-			// data->enemies[i]->end_ang = data->enemies[i]->rel_angle
-				// + enemy_angle_width;
-			// Convert angles to corresponding rays
-			// data->enemies[i]->start_posx = (int)((data->enemies[i]->start_ang
-						// + rad(FOV / 2)) / rad(FOV) * data->width);
-			// data->enemies[i]->end_posx = (int)((data->enemies[i]->end_ang
-						// + rad(FOV / 2)) / rad(FOV) * data->width);
 			draw_enemy(data, data->enemies[i], screen_x);
 		}
 	}
