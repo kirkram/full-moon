@@ -29,11 +29,12 @@ void	init_map_data(t_data *data)
 	data->map_width = 0;
 	data->txtrs = NULL;
 	data->swordarm_tx = NULL;
+	data->swordarm = NULL;
 	data->startpos_x = 0;
 	data->startpos_y = 0;
 	data->floorcolor = 0x0;
 	data->ceilingcolor = 0x0;
-	data->enemies = ft_calloc(1, sizeof(t_enemy *));
+	data->enemies = NULL;
 }
 
 int	create_fname(char *fname, int i)

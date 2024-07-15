@@ -35,6 +35,41 @@ void	attack_animation(t_data *data)
 	data->last_attack = mlx_get_time();
 }
 
+void	draw_player_onto_canvas(t_data *data, mlx_image_t *frame, int dest_x,
+		int dest_y)
+{
+	t_point		pt;
+	mlx_image_t	*dest;
+	mlx_image_t	*src;
+
+	color_whole_image(data->player->img, FULL_TRANSPARENT,
+		data->player->imgwidth, data->player->imgheight);
+	dest = data->player->img;
+	src = frame;
+	pt.y = -1;
+	pt.x = -1;
+	pt.color = 0;
+	while (++(pt.x) < (int32_t)src->width)
+	{
+		while (++(pt.y) < (int32_t)src->height)
+		{
+			pt.color = get_pixel_color(src, (uint32_t)pt.x, (uint32_t)pt.y);
+			if (get_a(pt.color) > 0)
+			{
+				if ((dest_x + pt.x) >= 0 && (uint32_t)(dest_x
+						+ pt.x) < dest->width && (dest_y + pt.y) >= 0
+					&& (uint32_t)(dest_y + pt.y) < dest->height)
+				{
+					mlx_put_pixel(dest, dest_x + pt.x, dest_y + pt.y,
+						pt.color);
+				}
+			}
+		}
+		pt.y = -1;
+	}
+}
+
+
 void	hook_animation(t_data *data)
 {
 	static double	last_update = 0;
@@ -52,7 +87,6 @@ void	hook_animation(t_data *data)
 		if (frame > 3)
 			frame = 0;
 		mlx_image_to_window(data->mlx, data->swordarm, data->width * 0.45, 1);
-		//mlx_set_instance_depth(data->swordarm, 100);
 		last_update = mlx_get_time();
 	}
 	else if (current_time - data->last_attack < ANIMATION_SPEED)
@@ -78,6 +112,86 @@ void	hook_animation(t_data *data)
 			attack_animation(data);
 	}
 }
+
+/*
+void	hook_animation(t_data *data)
+{
+	static double	last_update = 0;
+	static int		frame = 0;
+	mlx_img
+	double			current_time;
+
+	current_time = mlx_get_time();
+	if ((current_time - last_update >= ANIMATION_SPEED / 4) && (current_time
+			- data->last_attack >= ANIMATION_SPEED))
+	{
+		mlx_delete_image(data->mlx, data->swordarm);
+
+		frame++;
+		if (frame > 3)
+			frame = 0;
+		mlx_image_to_window(data->mlx, data->swordarm, data->width * 0.45, 1);
+		last_update = mlx_get_time();
+	}
+	else if (current_time - data->last_attack < ANIMATION_SPEED)
+	{
+		mlx_delete_image(data->mlx, data->swordarm);
+		if (current_time - data->last_attack < (ANIMATION_SPEED) / 10)
+			frame = 7;
+		else if (current_time - data->last_attack < (ANIMATION_SPEED / 8))
+			frame = 8;
+		else if (current_time - data->last_attack < (ANIMATION_SPEED / 6))
+			frame = 9;
+		else
+			frame = 10;
+		mlx_image_to_window(data->mlx, data->swordarm[frame], data->width * 0.19, 1);
+	}
+	if (mlx_is_mouse_down(data->mlx, MLX_MOUSE_BUTTON_LEFT))
+	{
+		if (current_time - data->last_attack >= ANIMATION_SPEED)
+			attack_animation(data);
+	}
+}
+
+// Both are slower
+
+void	hook_animation(t_data *data)
+{
+	static double	last_update = 0;
+	static int		frame = 0;
+	double			current_time;
+
+	current_time = mlx_get_time();
+	if (current_time - data->last_attack < ANIMATION_SPEED)
+	{
+		if (current_time - data->last_attack < (ANIMATION_SPEED) / 10)
+			frame = 7;
+		else if (current_time - data->last_attack < (ANIMATION_SPEED / 8))
+			frame = 8;
+		else if (current_time - data->last_attack < (ANIMATION_SPEED / 6))
+			frame = 9;
+		else
+			frame = 10;
+		draw_player_onto_canvas(data, data->swordarm[frame], data->width * 0.19, 1);
+	}
+	else if (current_time - last_update >= ANIMATION_SPEED / 4)
+	{
+		if (frame > 4)
+			frame = 0;
+		frame++;
+		if (frame > 3)
+			frame = 0;
+		draw_player_onto_canvas(data, data->swordarm[frame], data->width * 0.45, 1);
+		last_update = mlx_get_time();
+	}
+	if (mlx_is_mouse_down(data->mlx, MLX_MOUSE_BUTTON_LEFT))
+	{
+		if (current_time - data->last_attack >= ANIMATION_SPEED)
+			attack_animation(data);
+	}
+	mlx_image_to_window(data->mlx, data->player->img, 1, 1);
+}
+*/
 
 void	ft_hook_hub(void *param)
 {
