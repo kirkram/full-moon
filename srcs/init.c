@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/12 14:54:13 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/15 19:09:40 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,6 @@ int	init_and_draw(t_data *data)
 	if (!data->txtrs)
 		free_all_and_quit(data, "texture loading malloc", 11);
 	load_textures(data);
-	if (mlx_image_to_window(data->mlx, data->enemy_img, 0, 0) < 0)
-		free_all_and_quit(data, "Error on mlx_image_to_window", 11);
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
 	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
 	draw_minimap(data);

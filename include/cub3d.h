@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/12 15:12:54 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/15 19:50:48 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ unsigned long		current_time(void);
 # define RESOLUTION 3
 # define ANIMATION_SPEED 1.2
 # define LINESCALE 1.7
+# define MOUSESPEED 0.8
 
 # define FOV 60
 # define COLL 0.3
@@ -137,6 +138,7 @@ typedef struct s_enemy
 	float			end_posx;
 	int				current_frame;
 	int				visible;
+	float			scale;
 }					t_enemy;
 
 typedef struct s_data
@@ -174,10 +176,11 @@ typedef struct s_data
 	t_enemy			**enemies;
 	mlx_texture_t	*enemy_ssheet;
 	mlx_image_t		**enemy_frame;
-	mlx_image_t		*enemy_img;
 	int				ess_width;
 	int				ess_height;
 	float			line_error;
+	struct timespec last_time;
+    double 			fps;
 }					t_data;
 
 typedef struct s_point

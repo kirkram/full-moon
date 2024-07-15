@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/12 14:46:21 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/15 20:10:22 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	init_player(t_data *data)
 		return (ft_error("Error on sprite initialization\n", 11));
 	data->player->x_pos = data->startpos_x;
 	data->player->y_pos = data->startpos_y;
-	data->player->imgwidth = data->width; // or MAPHEIGHT * data->zoom
+	data->player->imgwidth = data->width;
 	data->player->imgheight = data->height;
 	data->player->img = mlx_new_image(data->mlx, data->player->imgwidth,
 			data->player->imgheight);
@@ -140,7 +140,6 @@ int	init_enemy_frames(t_data *data)
 			free_all_and_quit(data, "enemy texture loading", 11);
 	}
 	data->enemy_frame[EN_FRAMECOUNT] = NULL;
-	data->enemy_img = mlx_new_image(data->mlx, data->width, data->height);
 	return (0);
 }
 
