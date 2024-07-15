@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/12 23:22:23 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/15 20:10:22 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,46 +75,13 @@ int	init_player_sprites(t_data *data) // free these
 	return (0);
 }
 
-
-/* slower
-int	init_player_sprites(t_data *data) // free these
-{
-	int i;
-	char fname[1024];
-
-	data->swordarm_tx = (mlx_texture_t **)ft_calloc(PL_FRAMECOUNT + 1,
-			sizeof(mlx_texture_t *));
-	if (!data->swordarm_tx)
-		return (1);
-	data->swordarm_tx[PL_FRAMECOUNT] = NULL;
-	i = PL_FRAMECOUNT;
-	while (--i >= 0)
-	{
-		create_fname(fname, i);
-		data->swordarm_tx[i] = mlx_load_png(fname);
-		if (!data->swordarm_tx[i])
-			free_all_and_quit(data, "player texture load", 26);
-	}
-	data->swordarm = (mlx_image_t **)ft_calloc(PL_FRAMECOUNT + 1,
-		sizeof(mlx_image_t *));
-	i = PL_FRAMECOUNT;
-	while (--i >= 0)
-	{
-		data->swordarm[i] = mlx_texture_to_image(data->mlx, data->swordarm_tx[i]);
-		if (!data->swordarm_tx[i])
-			free_all_and_quit(data, "player sprite load", 27);
-	}
-	return (0);
-}
-*/
-
 int	init_player(t_data *data)
 {
 	if (init_player_sprites(data))
 		return (ft_error("Error on sprite initialization\n", 11));
 	data->player->x_pos = data->startpos_x;
 	data->player->y_pos = data->startpos_y;
-	data->player->imgwidth = data->width; // or MAPHEIGHT * data->zoom
+	data->player->imgwidth = data->width;
 	data->player->imgheight = data->height;
 	data->player->img = mlx_new_image(data->mlx, data->player->imgwidth,
 			data->player->imgheight);
@@ -174,7 +141,6 @@ int	init_enemy_frames(t_data *data)
 			free_all_and_quit(data, "enemy texture loading", 11);
 	}
 	data->enemy_frame[EN_FRAMECOUNT] = NULL;
-	//data->enemy_img = mlx_new_image(data->mlx, data->width, data->height);
 	return (0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/12 23:19:54 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/15 20:10:09 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,15 +198,16 @@ void	ft_hook_hub(void *param)
 	t_data	*data;
 
 	data = param;
+	printf("fps: %.0f\n", 1 / data->mlx->delta_time);
 	ft_hook_keys(data);
 	color_whole_image(data->screen, FULL_TRANSPARENT, data->width,
 		data->height);
+	color_whole_image(data->player->img, FULL_TRANSPARENT,
+		data->player->imgwidth, data->player->imgheight);
 	draw_player_minimap(data);
 	draw_rays(data);
-	if (data->enemies)
-		hook_enemies(data);
+	hook_enemies(data);
 	hook_animation(data);
-	printf("The fps is %f\n", 1 / data->mlx->delta_time);
 }
 
 void	hook_mouse_move(double x, double y, void *param)
@@ -219,7 +220,7 @@ void	hook_mouse_move(double x, double y, void *param)
 	data = param;
 	player = data->player;
 	dx = x - data->width / 2;
-	player->angle += dx * DEGR * 1.5 * data->speed * 0.2;
+	player->angle += dx * DEGR * 1.5 * data->speed * MOUSESPEED;
 	if (player->angle < 0)
 		player->angle += PI2;
 	if (player->angle >= PI2)
