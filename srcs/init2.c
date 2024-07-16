@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/16 16:19:06 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/16 23:23:20 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,18 @@ void	init_map_data(t_data *data)
 	data->floorcolor = 0x0;
 	data->ceilingcolor = 0x0;
 	data->enemies = NULL;
+}
+
+void	init_player_data(t_player *player)
+{
+	player->img = NULL;
+	player->x_pos = 0;
+	player->y_pos = 0;
+	player->x_pos_mini = 0;
+	player->y_pos_mini = 0;
+	player->angle = 0;
+	player->imgwidth = 0;
+	player->imgheight = 0;
 }
 
 int	create_fname(char *fname, int i)
@@ -103,7 +115,7 @@ mlx_image_t	*create_enemy_sprite(t_data *data, int sx, int sy)
 	int			sprite_index;
 
 	sprite = mlx_new_image(data->mlx, ESW, ESH);
-	printf("creating enemy sprite y:%d x:%d\n", sy, sx);
+	//printf("creating enemy sprite y:%d x:%d\n", sy, sx);
 	cy = -1;
 	while (++cy < ESH)
 	{

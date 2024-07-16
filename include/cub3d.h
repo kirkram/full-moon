@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/16 15:23:10 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/16 23:01:56 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,7 @@ typedef struct s_textures
 
 // init
 void				init_map_data(t_data *data);
+void				init_player_data(t_player *player);
 int					create_fname(char *fname, int i);
 int					load_valid_map(t_data *data, int ac, char **av);
 void				load_map(t_data *data);
@@ -228,7 +229,7 @@ int					init_and_draw(t_data *data);
 int					put_background(t_data *data);
 int					init_player(t_data *data);
 int					init_enemy_frames(t_data *data);
-void				get_enemy_frame(t_enemy *enemy);
+void				get_enemy_frame(t_enemy *enemy, t_data *data);
 void				put_pixel(t_data *data, t_point *point, mlx_image_t *img);
 uint32_t			get_a(uint32_t rgba);
 uint32_t			get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);

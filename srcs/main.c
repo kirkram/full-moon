@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/08 17:51:20 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/16 22:56:58 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	main(int ac, char **av)
 	data.player = &player;
 	data.ray = &ray;
 	init_map_data(&data);
+	init_player_data(&player);
 	load_valid_map(&data, ac, av);
 	init_and_draw(&data);
 	free_all_and_quit(&data, "Bye!", 0);

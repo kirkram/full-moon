@@ -6,13 +6,13 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:05:11 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/16 16:27:17 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/16 23:35:10 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	init_enemy_state(t_enemy *enemy)
+static void	init_enemy_state(t_enemy *enemy, t_data *data)
 {
 	static int	facing = -1;
 
@@ -20,7 +20,7 @@ static void	init_enemy_state(t_enemy *enemy)
 	if (facing > 7)
 		facing = 0;
 	enemy->angle = rad(facing * 45);
-	get_enemy_frame(enemy);
+	get_enemy_frame(enemy, data);
 }
 
 void	add_new_enemy(int x, int y, t_data *data, char *line)
@@ -58,8 +58,8 @@ void	add_new_enemy(int x, int y, t_data *data, char *line)
 	if (data->enemies != NULL)
 		free(data->enemies);
 	data->enemies = enemies;
-	init_enemy_state(data->enemies[i]);
-	printf("enemy found at %.0f, %.0f : angle: %.4f\n", enemy->x_pos, enemy->y_pos, enemy->angle);
+	init_enemy_state(data->enemies[i], data);
+	printf("enemy found at %.0f, %.0f : angle: %.4f\n", enemy->x_pos, enemy->y_pos, degr(enemy->angle));
 }
 
 void	fill_with_ones(t_data *data, int y, int x)
@@ -111,13 +111,13 @@ int	get_player_startpos(int x, int y, t_data *data, char *line)
 		data->startpos_y = y;
 		data->startpos_x = x;
 		if (line[x] == 78)
-			data->player->angle = rad(NORTH);
+			data->player->angle = rad(NORTH); // north
 		if (line[x] == 69)
-			data->player->angle = rad(EAST);
+			data->player->angle = rad(EAST); // east
 		if (line[x] == 83)
-			data->player->angle = rad(SOUTH);
+			data->player->angle = rad(SOUTH); // south
 		if (line[x] == 87)
-			data->player->angle = rad(WEST);
+			data->player->angle = rad(WEST); // west
 		data->world_map[y][x] = 0;
 		return (1);
 	}

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/16 16:25:44 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/16 23:39:31 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	draw_enemy_onto_canvas(t_enemy *enemy, int dest_x,
 
 	dest = data->screen;
 	src = data->enemy_frame[enemy->current_frame];
-	printf("rendering frame %d\n", enemy->current_frame);
+	// printf("rendering frame %d\n", enemy->current_frame);
 	sc.y = -1;
 	sc.x = -1;
 	while (++(sc.x) < (int32_t)src->width)
@@ -85,18 +85,29 @@ void	draw_enemy_onto_canvas(t_enemy *enemy, int dest_x,
 	}
 }
 
-// more complicated when shoot and walk included
-void	get_enemy_frame(t_enemy *enemy)
+float normalize_angle(float angle) 
 {
-	// stationary
+    while (angle < 0)
+        angle += 360;
+    while (angle >= 360)
+        angle -= 360;
+    return angle;
+}
+
+// more complicated when shoot and walk included
+void	get_enemy_frame(t_enemy *enemy, t_data *data)
+{
 	float a;
+	float b;
 	int	  index;
 
-	a = enemy->angle / DEGR;
-	index = (int)((a + 22.5) / 45);
-	if (index > 7)
+	// make it relative to the player angle
+	a = normalize_angle(enemy->angle / DEGR);
+	b = normalize_angle(data->player->angle / DEGR);
+	a = normalize_angle(b - a);
+	index = (int)(a + 22.5) / 45;
+	if (index > 7 || index < 0)
 		index = 0;
-	printf("enemy angle: %.0f index %d\n", a, index);
 	enemy->current_frame = index;
 }
 
@@ -109,7 +120,7 @@ void	draw_enemy(t_data *data, t_enemy *enemy, uint32_t screen_x)
 	enemy->scale = 20.0 / enemy->distance;
 	screen_x = screen_x - (ESW * enemy->scale) / 2;
 	screen_y = data->mlx->height / 2 - (ESH * enemy->scale) / 2;
-	get_enemy_frame(enemy);
+	get_enemy_frame(enemy, data);
 	draw_enemy_onto_canvas(enemy, screen_x, screen_y, data);
 }
 
