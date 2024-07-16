@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/17 00:21:43 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/17 00:29:39 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,10 @@ void	get_enemy_frame(t_enemy *enemy, t_data *data)
 	// make it relative to the player angle
 	a = normalize_angle(enemy->angle / DEGR);
 	b = normalize_angle(data->player->angle / DEGR);
-	a = normalize_angle(b - a - 360);
-	index = ft_abs(7 - (int)((a - 22.5)  / 45));
-	if (index > 7)
-		index = 0;
+	a = normalize_angle(b - a);
+	//index = ft_abs(7 - (int)((a - 22.5)  / 45));
+	index = (int)((a + 22.5) / 45) % 8;
+	index = (8 - index) % 8;
 	//printf("player angle: %.0f enemy angle: %.0f\n", b, (enemy->angle / DEGR));
 	//printf("angle a: %.0f index: %d\n", a, index);
 	enemy->current_frame = index;
