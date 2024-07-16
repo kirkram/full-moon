@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:05:11 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/12 22:22:58 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/16 13:02:50 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ void	fill_with_ones(t_data *data, int y, int x)
 {
 	while (x < data->map_width)
 	{
-		data->world_map[y][x] = 1;
+		if (data->world_map[y][x] != '\0')
+			data->world_map[y][x] = 1;
 		x++;
 	}
 }

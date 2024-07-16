@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_sort.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 16:21:13 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/09 17:13:28 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:44:57 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static void	swap_ptrs(t_data *data, int i, int j)
 	data->enemies[j] = tmp;
 }
 
-// atm just a bubble sort
 void	sort_enemy_arr(t_data *data)
 {
 	int n;

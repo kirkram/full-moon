@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/12 22:23:22 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/16 13:26:47 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,14 @@ static void	read_and_parse_lines(int fd, t_data *data)
 	lno = 0;
 	while (1)
 	{
+		printf("L: $");
 		line = get_next_line(fd);
-		if (!line)
+		printf("%s", line);
+		if (line == NULL)
 			break ;
 		convert_tabs(&line);
-		if (map_start == 0 && (line[0] == 32 || line[0] == 48 || line[0] == 49))
+		if (map_start == 0 && (line[0] == 9 || line[0] == 32 || 
+				line[0] == 48 || line[0] == 49))
 			map_start = 1;
 		if (map_start == 1)
 		{
@@ -88,8 +91,11 @@ static void	read_and_parse_lines(int fd, t_data *data)
 			read_map_parameter(line, data);
 		free(line);
 	}
+	printf("All lines have been read\n");
+	// data->world_map[data->map_width][lno] = '\0';
+	// For debug:
 	i = -1;
-	while (data->enemies[++i] != NULL)
+	while (data->enemies && data->enemies[++i] != NULL)
 	{
 		printf("Enemy %d: x:%.0f y:%.0f\n", i, data->enemies[i]->x_pos, data->enemies[i]->y_pos);
 	}
