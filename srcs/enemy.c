@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/16 13:27:43 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/17 00:29:39 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ uint32_t	get_a(uint32_t rgba)
 	return (rgba & 0xFF);
 }
 
-void	draw_enemy_onto_canvas(t_data *data, t_enemy *enemy, int dest_x,
-		int dest_y)
+void	draw_enemy_onto_canvas(t_enemy *enemy, int dest_x,
+		int dest_y, t_data *data)
 {
 	t_point		sc;
 	t_point		ds;
@@ -49,6 +49,7 @@ void	draw_enemy_onto_canvas(t_data *data, t_enemy *enemy, int dest_x,
 
 	dest = data->screen;
 	src = data->enemy_frame[enemy->current_frame];
+	// printf("rendering frame %d\n", enemy->current_frame);
 	sc.y = -1;
 	sc.x = -1;
 	while (++(sc.x) < (int32_t)src->width)
@@ -84,6 +85,34 @@ void	draw_enemy_onto_canvas(t_data *data, t_enemy *enemy, int dest_x,
 	}
 }
 
+float normalize_angle(float angle) 
+{
+    while (angle < 0)
+        angle += 360;
+    while (angle >= 360)
+        angle -= 360;
+    return angle;
+}
+
+// more complicated when shoot and walk included
+void	get_enemy_frame(t_enemy *enemy, t_data *data)
+{
+	float a;
+	float b;
+	int	  index;
+
+	// make it relative to the player angle
+	a = normalize_angle(enemy->angle / DEGR);
+	b = normalize_angle(data->player->angle / DEGR);
+	a = normalize_angle(b - a);
+	//index = ft_abs(7 - (int)((a - 22.5)  / 45));
+	index = (int)((a + 22.5) / 45) % 8;
+	index = (8 - index) % 8;
+	//printf("player angle: %.0f enemy angle: %.0f\n", b, (enemy->angle / DEGR));
+	//printf("angle a: %.0f index: %d\n", a, index);
+	enemy->current_frame = index;
+}
+
 void	draw_enemy(t_data *data, t_enemy *enemy, uint32_t screen_x)
 {
 	uint32_t	screen_y;
@@ -93,7 +122,8 @@ void	draw_enemy(t_data *data, t_enemy *enemy, uint32_t screen_x)
 	enemy->scale = 20.0 / enemy->distance;
 	screen_x = screen_x - (ESW * enemy->scale) / 2;
 	screen_y = data->mlx->height / 2 - (ESH * enemy->scale) / 2;
-	draw_enemy_onto_canvas(data, enemy, screen_x, screen_y);
+	get_enemy_frame(enemy, data);
+	draw_enemy_onto_canvas(enemy, screen_x, screen_y, data);
 }
 
 void	hook_enemies(t_data *data)
@@ -101,7 +131,6 @@ void	hook_enemies(t_data *data)
 	int i;
 	float dx;
 	float dy;
-	float angle;
 	float rel_ang;
 	uint32_t screen_x;
 
@@ -111,8 +140,7 @@ void	hook_enemies(t_data *data)
 		dx = data->enemies[i]->x_pos - data->player->x_pos;
 		dy = data->enemies[i]->y_pos - data->player->y_pos;
 		data->enemies[i]->distance = sqrtf(dx * dx + dy * dy);
-		angle = atan2(dy, dx);
-		rel_ang = angle - data->player->angle;
+		rel_ang = atan2(dy, dx) - data->player->angle;
 		data->enemies[i]->rel_angle = atan2f(sinf(rel_ang), cosf(rel_ang));
 		if (data->enemies[i]->rel_angle >= -rad(FOV / 2)
 			&& data->enemies[i]->rel_angle <= rad(FOV / 2))

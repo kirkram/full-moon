@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 14:39:44 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/02 19:12:28 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:00:40 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ int	ft_abs(int result)
 float	rad(float angle)
 {
 	return (angle * PI / 180);
+}
+
+float	degr(float angle)
+{
+	return (angle / PI * 180);
 }
 
 int	is_valid_hex(const char *hex_str)

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/16 13:26:47 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/16 22:40:24 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ static void	read_and_parse_lines(int fd, t_data *data)
 	lno = 0;
 	while (1)
 	{
-		printf("L: $");
+		//printf("L: $");
 		line = get_next_line(fd);
-		printf("%s", line);
+		//printf("%s", line);
 		if (line == NULL)
 			break ;
 		convert_tabs(&line);

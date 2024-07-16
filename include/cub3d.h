@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/15 19:50:48 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/16 23:01:56 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ unsigned long		current_time(void);
 # define PI2 6.28318530718
 # define EPSILON 1e-6
 # define DEGR 0.0174533
+# define DEG16 22.5
 
 // direction angle
 # define EAST 0
@@ -130,15 +131,12 @@ typedef struct s_enemy
 {
 	float			x_pos;
 	float			y_pos;
-	float			distance;
-	float			rel_angle;
-	float			start_ang;
-	float			end_ang;
-	float			start_posx;
-	float			end_posx;
-	int				current_frame;
-	int				visible;
-	float			scale;
+	float			distance; // distance to the player
+	float			angle; // the direction enemy is facing
+	float			rel_angle; // angle relative to the player
+	int				current_frame; // current animation frame
+	int				visible; // in player FOV or not
+	float			scale; // dependent on distance
 }					t_enemy;
 
 typedef struct s_data
@@ -180,7 +178,6 @@ typedef struct s_data
 	int				ess_height;
 	float			line_error;
 	struct timespec last_time;
-    double 			fps;
 }					t_data;
 
 typedef struct s_point
@@ -207,6 +204,7 @@ typedef struct s_textures
 
 // init
 void				init_map_data(t_data *data);
+void				init_player_data(t_player *player);
 int					create_fname(char *fname, int i);
 int					load_valid_map(t_data *data, int ac, char **av);
 void				load_map(t_data *data);
@@ -231,6 +229,7 @@ int					init_and_draw(t_data *data);
 int					put_background(t_data *data);
 int					init_player(t_data *data);
 int					init_enemy_frames(t_data *data);
+void				get_enemy_frame(t_enemy *enemy, t_data *data);
 void				put_pixel(t_data *data, t_point *point, mlx_image_t *img);
 uint32_t			get_a(uint32_t rgba);
 uint32_t			get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
@@ -270,6 +269,7 @@ void				attack_animation(t_data *data);
 // helper
 int					ft_error(char *msg, int error_code);
 int					ft_abs(int result);
+float				degr(float angle);
 void				free_textures(t_data *data);
 void				free_enemies(t_data *data);
 int					is_valid_hex(const char *hex_str);
