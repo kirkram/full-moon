@@ -232,6 +232,8 @@ int					put_background(t_data *data);
 int					init_player(t_data *data);
 int					init_enemy_frames(t_data *data);
 void				put_pixel(t_data *data, t_point *point, mlx_image_t *img);
+uint32_t			get_a(uint32_t rgba);
+uint32_t			get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
 int					draw_player_minimap(t_data *data);
 void				draw_sprites(t_data *data);
 void				assign_texture_to_ray(t_data *data, t_ray *ray, t_txt *txt);

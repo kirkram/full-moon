@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:05:11 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/05 16:55:34 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/16 13:02:50 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,25 +34,29 @@ void	add_new_enemy(int x, int y, t_data *data, char *line)
 	enemies = ft_calloc((i + 2), sizeof(t_enemy *));
 	if (!enemies)
 		map_validation_error("Error: enemies malloc fail.\n", y, line, data);
-	i = -1;
+	i = 0;
 	if (data->enemies != NULL)
 	{
-		while (data->enemies[++i])
+		while (data->enemies[i])
+		{
 			enemies[i] = data->enemies[i];
+			i++;
+		}
 	}
 	enemies[i] = enemy;
 	enemies[i + 1] = NULL;
 	if (data->enemies != NULL)
 		free(data->enemies);
 	data->enemies = enemies;
-	printf("Total %lu enemies.\n", i + 1);
+	//printf("enemy found at %.0f, %.0f\n", enemy->x_pos, enemy->y_pos);
 }
 
 void	fill_with_ones(t_data *data, int y, int x)
 {
 	while (x < data->map_width)
 	{
-		data->world_map[y][x] = 1;
+		if (data->world_map[y][x] != '\0')
+			data->world_map[y][x] = 1;
 		x++;
 	}
 }
