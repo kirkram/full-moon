@@ -6,25 +6,35 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:05:11 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/16 13:02:50 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:27:17 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+static void	init_enemy_state(t_enemy *enemy)
+{
+	static int	facing = -1;
+
+	facing++;
+	if (facing > 7)
+		facing = 0;
+	enemy->angle = rad(facing * 45);
+	get_enemy_frame(enemy);
+}
+
 void	add_new_enemy(int x, int y, t_data *data, char *line)
 {
-	t_enemy	*enemy;
-	t_enemy	**enemies;
-	size_t	i;
+	t_enemy		*enemy;
+	t_enemy		**enemies;
+	size_t		i;
 
 	data->world_map[y][x] = 0;
 	enemy = malloc(sizeof(t_enemy));
 	if (!enemy)
 		map_validation_error("Error: enemy malloc fail.\n", y, line, data);
-	enemy->x_pos = (float)x;
-	enemy->y_pos = (float)y;
-	enemy->current_frame = 0;
+	enemy->x_pos = (float)x + 0.5;
+	enemy->y_pos = (float)y + 0.5;
 	i = 0;
 	if (data->enemies != NULL)
 	{
@@ -48,15 +58,15 @@ void	add_new_enemy(int x, int y, t_data *data, char *line)
 	if (data->enemies != NULL)
 		free(data->enemies);
 	data->enemies = enemies;
-	//printf("enemy found at %.0f, %.0f\n", enemy->x_pos, enemy->y_pos);
+	init_enemy_state(data->enemies[i]);
+	printf("enemy found at %.0f, %.0f : angle: %.4f\n", enemy->x_pos, enemy->y_pos, enemy->angle);
 }
 
 void	fill_with_ones(t_data *data, int y, int x)
 {
 	while (x < data->map_width)
 	{
-		if (data->world_map[y][x] != '\0')
-			data->world_map[y][x] = 1;
+		data->world_map[y][x] = 1;
 		x++;
 	}
 }

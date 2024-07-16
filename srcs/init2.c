@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/15 20:10:22 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:19:06 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	init_player(t_data *data)
 	return (0);
 }
 
-mlx_image_t	*create_enemy_sprite(t_data *data, int x, int y)
+mlx_image_t	*create_enemy_sprite(t_data *data, int sx, int sy)
 {
 	mlx_image_t	*sprite;
 	int			cx;
@@ -103,13 +103,14 @@ mlx_image_t	*create_enemy_sprite(t_data *data, int x, int y)
 	int			sprite_index;
 
 	sprite = mlx_new_image(data->mlx, ESW, ESH);
+	printf("creating enemy sprite y:%d x:%d\n", sy, sx);
 	cy = -1;
 	while (++cy < ESH)
 	{
 		cx = -1;
 		while (++cx < ESW)
 		{
-			sheet_index = ((y + cy) * ESSW + (x + cx)) * 4;
+			sheet_index = ((sy * ESW + cy) * ESSW + (sx * ESW + cx)) * 4;
 			sprite_index = (cy * ESW + cx) * 4;
 			sprite->pixels[sprite_index
 				+ 0] = data->enemy_ssheet->pixels[sheet_index + 0];
