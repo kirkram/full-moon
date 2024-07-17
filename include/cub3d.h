@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/16 23:01:56 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/18 00:18:39 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,10 @@ unsigned long		current_time(void);
 # define PL_FRAMECOUNT 11
 # define EN_FRAMECOUNT 64
 # define ESW 74 // enemy sprite width
-# define ESH 81 // enemy sprite height
+# define ESH 74 // enemy sprite height
 # define ESSW 592 // enemy spritesheet width
 # define ESSH 648 // enemy spritesheet height
+# define ESCALE 20.0 // enemy scale
 
 // maths
 # define PI 3.14159265359
@@ -88,6 +89,12 @@ unsigned long		current_time(void);
 # define FD_SIZE 1028
 
 # define TAB_WIDTH 4
+
+typedef enum s_enemystate
+{
+	IDLE,
+	WALKING
+}	t_enemystate;
 
 typedef struct s_map
 {
@@ -136,6 +143,8 @@ typedef struct s_enemy
 	float			rel_angle; // angle relative to the player
 	int				current_frame; // current animation frame
 	int				visible; // in player FOV or not
+	t_enemystate	state;
+	double			last_frame;
 	float			scale; // dependent on distance
 }					t_enemy;
 
@@ -173,6 +182,7 @@ typedef struct s_data
 	int				startpos_y;
 	t_enemy			**enemies;
 	mlx_texture_t	*enemy_ssheet;
+	t_map			enemysheet_correction[64]; // correct individual sprite positions
 	mlx_image_t		**enemy_frame;
 	int				ess_width;
 	int				ess_height;
@@ -229,12 +239,12 @@ int					init_and_draw(t_data *data);
 int					put_background(t_data *data);
 int					init_player(t_data *data);
 int					init_enemy_frames(t_data *data);
-void				get_enemy_frame(t_enemy *enemy, t_data *data);
+void				update_enemy_frame(t_enemy *enemy, t_data *data);
 void				put_pixel(t_data *data, t_point *point, mlx_image_t *img);
 uint32_t			get_a(uint32_t rgba);
 uint32_t			get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
 int					draw_player_minimap(t_data *data);
-void				draw_sprites(t_data *data);
+void				update_enemies(t_data *data);
 void				assign_texture_to_ray(t_data *data, t_ray *ray, t_txt *txt);
 float				rad(float angle);
 void				draw_rays(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/16 23:23:20 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:57:23 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int	init_enemy_frames(t_data *data)
 {
 	int	i;
 
-	data->enemy_ssheet = mlx_load_png("./sprites/ratman_paletted_a.png");
+	data->enemy_ssheet = mlx_load_png("./sprites/ratman_paletted_b.png");
 	if (data->enemy_ssheet == NULL)
 		free_all_and_quit(data, "enemy texture loading", 11);
 	data->enemy_frame = (mlx_image_t **)ft_calloc(EN_FRAMECOUNT + 1,

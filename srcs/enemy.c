@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/17 00:29:39 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/18 00:19:57 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,13 @@ float normalize_angle(float angle)
 }
 
 // more complicated when shoot and walk included
-void	get_enemy_frame(t_enemy *enemy, t_data *data)
+void	update_enemy_frame(t_enemy *enemy, t_data *data)
 {
-	float a;
-	float b;
-	int	  index;
+	float 			a;
+	float 			b;
+	double			prev;
+	double			now;
+	int	  			index;
 
 	// make it relative to the player angle
 	a = normalize_angle(enemy->angle / DEGR);
@@ -110,7 +112,35 @@ void	get_enemy_frame(t_enemy *enemy, t_data *data)
 	index = (8 - index) % 8;
 	//printf("player angle: %.0f enemy angle: %.0f\n", b, (enemy->angle / DEGR));
 	//printf("angle a: %.0f index: %d\n", a, index);
-	enemy->current_frame = index;
+	now = mlx_get_time();
+	if (enemy->last_frame == 0.0)
+	{
+		enemy->current_frame = index;
+		enemy->last_frame = now;
+		return ;
+	}
+	printf("init uef: %.10f\n", now);
+	prev = enemy->last_frame;
+	// move here: if (now - prev < smallest change do nothing)
+	if (enemy->state == IDLE && now - prev > 1.0)
+	{
+		printf("IDLE > 1s\n");
+		if (enemy->current_frame == index)
+		{
+			printf("frame: %d\n", index + 48);
+			enemy->current_frame = index + 48;
+			enemy->last_frame = now;
+			return ;
+		}
+		else
+		{
+			printf("frame: %d\n", index);
+			enemy->current_frame = index;
+			enemy->last_frame = now;
+			return ;
+		}
+	}
+	//else if (enemy->state == WALKING && now - prev > 1.0)
 }
 
 void	draw_enemy(t_data *data, t_enemy *enemy, uint32_t screen_x)
@@ -119,10 +149,10 @@ void	draw_enemy(t_data *data, t_enemy *enemy, uint32_t screen_x)
 
 	if (enemy->distance < 1.0)
 		enemy->distance = 1.0;
-	enemy->scale = 20.0 / enemy->distance;
+	enemy->scale = ESCALE / enemy->distance;
 	screen_x = screen_x - (ESW * enemy->scale) / 2;
-	screen_y = data->mlx->height / 2 - (ESH * enemy->scale) / 2;
-	get_enemy_frame(enemy, data);
+	screen_y = data->mlx->height / 2 - (ESH * enemy->scale) / 2.6;
+	update_enemy_frame(enemy, data);
 	draw_enemy_onto_canvas(enemy, screen_x, screen_y, data);
 }
 

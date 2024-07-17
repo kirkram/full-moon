@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing_helper.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 14:11:48 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/11 14:35:58 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/17 22:46:52 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	put_pixel(t_data *data, t_point *point, mlx_image_t *img)
 		mlx_put_pixel(img, point->x, point->y, point->color);
 }
 
-void	draw_sprites(t_data *data)
+void	update_enemies(t_data *data)
 {
 	(void)data;
 	return ;

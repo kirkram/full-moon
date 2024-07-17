@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:05:11 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/16 23:35:10 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/17 22:35:01 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,14 @@ static void	init_enemy_state(t_enemy *enemy, t_data *data)
 	facing++;
 	if (facing > 7)
 		facing = 0;
+	enemy->distance = 0.0;
 	enemy->angle = rad(facing * 45);
-	get_enemy_frame(enemy, data);
+	enemy->rel_angle = 0.0;
+	enemy->last_frame = 0.0;
+	enemy->state = IDLE;
+	enemy->visible = 0;
+	enemy->scale = 1.0;
+	update_enemy_frame(enemy, data);
 }
 
 void	add_new_enemy(int x, int y, t_data *data, char *line)
