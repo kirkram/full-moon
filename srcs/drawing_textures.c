@@ -6,20 +6,20 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 14:17:29 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/11 16:45:35 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/17 13:14:16 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-uint32_t	index_color(t_txt *txt, t_ray *ray)
+uint32_t	index_color(t_txt *txt, t_ray *ray, bool is_wall)
 {
 	txt->red = txt->ptr->pixels[txt->index];
 	txt->green = txt->ptr->pixels[txt->index + 1];
 	txt->blue = txt->ptr->pixels[txt->index + 2];
 	txt->alpha = 0x000000FF;
-	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist
-			&& ray->vert_dist != 0))
+	if (is_wall && (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist
+			&& ray->vert_dist != 0)))
 	{
 		txt->red *= 0.75;
 		txt->green *= 0.75;

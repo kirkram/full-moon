@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/15 19:09:40 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/17 13:10:03 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,12 @@ void	load_textures(t_data *data)
 	if (data->txtrs[4]->height > 4096 || data->txtrs[4]->width > 4096)
 		free_all_and_quit(data, \
 		"door dimensions should be less than 4096 pixels", 78);
+	data->txtrs[5] = mlx_load_png(FLOOR_PATH);
+	if (!data->txtrs[5])
+		free_all_and_quit(data, "can't open floor file", 75);
+	if (data->txtrs[5]->height > 4096 || data->txtrs[4]->width > 4096)
+		free_all_and_quit(data, \
+		"floor dimensions should be less than 4096 pixels", 78);
 }
 
 int	init_and_draw(t_data *data)

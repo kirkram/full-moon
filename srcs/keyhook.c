@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/16 16:00:45 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/17 13:47:32 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,7 @@ void	ft_hook_hub(void *param)
 	t_data	*data;
 
 	data = param;
-	// printf("fps: %.0f\n", 1 / data->mlx->delta_time);
+	printf("fps: %.0f\n", 1 / data->mlx->delta_time);
 	ft_hook_keys(data);
 	color_whole_image(data->screen, FULL_TRANSPARENT, data->width,
 		data->height);

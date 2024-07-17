@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/12 15:12:24 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/17 14:15:28 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@ static float	init_column_values(t_data *data, t_ray *ray, t_txt *txt,
 	return (line_h);
 }
 
+void	fix_angle(float *ang)
+{
+	if (*ang < 0)
+		*ang += PI2;
+	else if (*ang >= PI2)
+		*ang -= PI2;
+}
+
 void	draw_column(t_data *data, t_ray *ray, int i, float line_w)
 {
 	t_point	line;
@@ -45,12 +53,36 @@ void	draw_column(t_data *data, t_ray *ray, int i, float line_w)
 			* txt.ptr->bytes_per_pixel;
 		if (txt.index + 2 < txt.ptr->width * txt.ptr->height
 			* txt.ptr->bytes_per_pixel)
-			line.color = index_color(&txt, ray);
+			line.color = index_color(&txt, ray, true);
 		while (++line.x <= line_w * (i + 1) && line.x < (int32_t)data->width)
 			put_pixel(data, &line, data->screen);
 		line.y++;
 		txt.y += txt.y_step;
 	}
+	//draw floors
+	//without putting own floor textures it looks like water reflections 
+	txt.ptr = data->txtrs[5];
+	
+	while (line.y < (int32_t)data->height)
+	{
+		// Calculate the distance from the center of the screen to the current pixel
+		float dist_from_middle = data->height / (2.0 * line.y - data->height);
+		float weight = dist_from_middle / ray->dist * 1.7; // Adjust this according to your setup
+		//float floor_x = weight * ray->x + (1.0f - weight) * data->player->x_pos;
+		//float floor_y = weight * ray->y + (1.0f - weight) * data->player->y_pos;
+		// Calculate the texture coordinates
+		txt.x = ((int)((weight * ray->x + (1.0f - weight) * data->player->x_pos) * txt.ptr->width) % txt.ptr->width);
+		txt.y = ((int)((weight * ray->y + (1.0f - weight) * data->player->y_pos) * txt.ptr->height) % txt.ptr->height);
+		// Get the color from the texture
+		txt.index = ((uint32_t)txt.y * txt.ptr->width + (uint32_t)txt.x) * txt.ptr->bytes_per_pixel;
+		if (txt.index + 2 < txt.ptr->width * txt.ptr->height * txt.ptr->bytes_per_pixel)
+			line.color = index_color(&txt, ray, false);
+		// Draw the pixel
+		line.x = line_w * i - 1;
+		while (++line.x <= line_w * (i + 1) && line.x < (int32_t)data->width)
+			put_pixel(data, &line, data->screen);
+		line.y++;
+	}	
 }
 
 void	draw_rays(t_data *data)

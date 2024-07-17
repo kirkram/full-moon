@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/16 23:01:56 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/17 14:14:41 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ unsigned long		current_time(void);
 # define COLL 0.3
 
 # define DOOR_PATH "./textures/door.png"
-# define TEXTURES_AMOUNT 5
+# define FLOOR_PATH "./textures/floor.png"
+# define TEXTURES_AMOUNT 6
 
 # define MAPBACKG_PATH "./textures/mapbackg.png"
 # define DRAWMINIRAYS 0
@@ -240,7 +241,7 @@ float				rad(float angle);
 void				draw_rays(t_data *data);
 void				drw_line(t_point point, t_point dest, t_data *data,
 						mlx_image_t *img);
-uint32_t			index_color(t_txt *txt, t_ray *ray);
+uint32_t			index_color(t_txt *txt, t_ray *ray, bool is_wall);
 void				horizontal_rays(t_data *data, t_ray *ray);
 void				vertical_rays(t_data *data, t_ray *ray);
 void				calc_distance(t_data *data, t_ray *ray);
