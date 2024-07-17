@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 14:17:29 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/17 13:14:16 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/17 15:32:59 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ uint32_t	index_color(t_txt *txt, t_ray *ray, bool is_wall)
 	txt->alpha = 0x000000FF;
 	if (is_wall && (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist
 			&& ray->vert_dist != 0)))
+	{
+		txt->red *= 0.65;
+		txt->green *= 0.65;
+		txt->blue *= 0.65;
+	}
+	if (!is_wall)
 	{
 		txt->red *= 0.75;
 		txt->green *= 0.75;
