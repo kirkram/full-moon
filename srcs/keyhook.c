@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/17 22:50:35 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/18 12:05:40 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,11 @@ static void	ft_hook_keys(t_data *data)
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ENTER))
 	{
 		current_time = mlx_get_time();
-		if (current_time - data->last_attack >= ANIMATION_SPEED)
+		if (current_time - data->last_attack >= ATTACK_SPEED)
 			attack_animation(data);
 	}
 }
 
-// here logic for attack
 void	attack_animation(t_data *data)
 {
 	data->last_attack = mlx_get_time();
@@ -77,8 +76,8 @@ void	hook_animation(t_data *data)
 	double			current_time;
 
 	current_time = mlx_get_time();
-	if ((current_time - last_update >= ANIMATION_SPEED / 4) && (current_time
-			- data->last_attack >= ANIMATION_SPEED))
+	if ((current_time - last_update >= ATTACK_SPEED / 4) && (current_time
+			- data->last_attack >= ATTACK_SPEED))
 	{
 		mlx_delete_image(data->mlx, data->swordarm);
 		data->swordarm = mlx_texture_to_image(data->mlx,
@@ -89,16 +88,16 @@ void	hook_animation(t_data *data)
 		mlx_image_to_window(data->mlx, data->swordarm, data->width * 0.45, 1);
 		last_update = mlx_get_time();
 	}
-	else if (current_time - data->last_attack < ANIMATION_SPEED)
+	else if (current_time - data->last_attack < ATTACK_SPEED)
 	{
 		mlx_delete_image(data->mlx, data->swordarm);
-		if (current_time - data->last_attack < (ANIMATION_SPEED) / 10)
+		if (current_time - data->last_attack < (ATTACK_SPEED) / 10)
 			data->swordarm = mlx_texture_to_image(data->mlx,
 					data->swordarm_tx[7]);
-		else if (current_time - data->last_attack < (ANIMATION_SPEED / 8))
+		else if (current_time - data->last_attack < (ATTACK_SPEED / 8))
 			data->swordarm = mlx_texture_to_image(data->mlx,
 					data->swordarm_tx[8]);
-		else if (current_time - data->last_attack < (ANIMATION_SPEED / 6))
+		else if (current_time - data->last_attack < (ATTACK_SPEED / 6))
 			data->swordarm = mlx_texture_to_image(data->mlx,
 					data->swordarm_tx[9]);
 		else
@@ -108,7 +107,7 @@ void	hook_animation(t_data *data)
 	}
 	if (mlx_is_mouse_down(data->mlx, MLX_MOUSE_BUTTON_LEFT))
 	{
-		if (current_time - data->last_attack >= ANIMATION_SPEED)
+		if (current_time - data->last_attack >= ATTACK_SPEED)
 			attack_animation(data);
 	}
 }

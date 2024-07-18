@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/18 00:18:39 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/18 12:54:45 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ unsigned long		current_time(void);
 # define MINIZOOM 150
 # define PLAYERSIZE 4
 # define RESOLUTION 3
-# define ANIMATION_SPEED 1.2
+# define ATTACK_SPEED 1.2
 # define LINESCALE 1.7
 # define MOUSESPEED 0.8
 
@@ -93,7 +93,10 @@ unsigned long		current_time(void);
 typedef enum s_enemystate
 {
 	IDLE,
-	WALKING
+	WALKING,
+	SHOOTING,
+	DYING,
+	DEAD
 }	t_enemystate;
 
 typedef struct s_map
@@ -145,6 +148,7 @@ typedef struct s_enemy
 	int				visible; // in player FOV or not
 	t_enemystate	state;
 	double			last_frame;
+	float			last_rel_angle; // rel angle at time of last frmae update
 	float			scale; // dependent on distance
 }					t_enemy;
 
