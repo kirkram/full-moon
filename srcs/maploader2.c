@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:05:11 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/17 22:35:01 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/18 22:17:29 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	add_new_enemy(int x, int y, t_data *data, char *line)
 		free(data->enemies);
 	data->enemies = enemies;
 	init_enemy_state(data->enemies[i], data);
-	printf("enemy found at %.0f, %.0f : angle: %.4f\n", enemy->x_pos, enemy->y_pos, degr(enemy->angle));
+	// printf("enemy found at %.0f, %.0f : angle: %.4f\n", enemy->x_pos, enemy->y_pos, degr(enemy->angle));
 }
 
 void	fill_with_ones(t_data *data, int y, int x)

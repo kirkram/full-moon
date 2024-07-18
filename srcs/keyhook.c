@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/18 14:36:23 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/18 16:44:37 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,24 +89,17 @@ void	hit_enemy_if_in_range(t_data *data)
 
     i = -1;
     // printf("Determining hit.\n");
-    while (data->enemies[++i] != NULL) {
-        if (data->enemies[i]->distance < 2.0) {
+    while (data->enemies[++i] != NULL) 
+	{
+        if (data->enemies[i]->distance < 2.0) 
+		{
             dx = data->enemies[i]->x_pos - data->player->x_pos;
             dy = data->enemies[i]->y_pos - data->player->y_pos;
-
-            // Calculate the angle to the enemy and normalize it
             angle_to_enemy = atan2(dy, dx);
             angle_to_enemy = normalize_rad(angle_to_enemy);
-
-            // Calculate the player's angle and normalize it
             float player_angle = normalize_rad(data->player->angle);
-
-            // Calculate the angle difference
             angle_diff = angle_difference_rad(angle_to_enemy, player_angle);
-
             //printf("Angle %.10f Distance %.10f\n", angle_diff, data->enemies[i]->distance);
-
-            // Check if the enemy is within the angle threshold
             if (angle_diff < 0.6) {
                 //printf("Hit scored!\n");
                 data->enemies[i]->state = DYING;

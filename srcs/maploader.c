@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/16 22:40:24 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/18 22:17:15 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,12 @@ static void	read_and_parse_lines(int fd, t_data *data)
 	char	*line;
 	size_t	lno;
 	int		map_start;
-	int		i;
 
 	map_start = 0;
 	lno = 0;
 	while (1)
 	{
-		//printf("L: $");
 		line = get_next_line(fd);
-		//printf("%s", line);
 		if (line == NULL)
 			break ;
 		convert_tabs(&line);
@@ -90,14 +87,6 @@ static void	read_and_parse_lines(int fd, t_data *data)
 		if (map_start == 0)
 			read_map_parameter(line, data);
 		free(line);
-	}
-	printf("All lines have been read\n");
-	// data->world_map[data->map_width][lno] = '\0';
-	// For debug:
-	i = -1;
-	while (data->enemies && data->enemies[++i] != NULL)
-	{
-		printf("Enemy %d: x:%.0f y:%.0f\n", i, data->enemies[i]->x_pos, data->enemies[i]->y_pos);
 	}
 }
 
