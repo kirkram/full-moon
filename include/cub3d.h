@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/18 12:54:45 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/18 14:19:54 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,6 +284,9 @@ void				attack_animation(t_data *data);
 int					ft_error(char *msg, int error_code);
 int					ft_abs(int result);
 float				degr(float angle);
+float				rad(float angle);
+float 				normalize_degr(float angle);
+float 				normalize_rad(float angle) ;
 void				free_textures(t_data *data);
 void				free_enemies(t_data *data);
 int					is_valid_hex(const char *hex_str);

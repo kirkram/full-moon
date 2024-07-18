@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/18 12:05:40 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/18 14:36:23 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,52 @@ void	draw_player_onto_canvas(t_data *data, mlx_image_t *frame, int dest_x,
 	}
 }
 
+// Calculate the smallest difference between two angles
+float angle_difference_rad(float angle1, float angle2) 
+{
+    float diff; 
+	
+	diff = fabs(angle1 - angle2);
+    if (diff > PI)
+        diff = 2 * PI - diff;
+    return (diff);
+}
+
+void	hit_enemy_if_in_range(t_data *data)
+{
+	int	i;
+	float dx;
+    float dy;
+	float angle_to_enemy;
+    float angle_diff;
+
+    i = -1;
+    // printf("Determining hit.\n");
+    while (data->enemies[++i] != NULL) {
+        if (data->enemies[i]->distance < 2.0) {
+            dx = data->enemies[i]->x_pos - data->player->x_pos;
+            dy = data->enemies[i]->y_pos - data->player->y_pos;
+
+            // Calculate the angle to the enemy and normalize it
+            angle_to_enemy = atan2(dy, dx);
+            angle_to_enemy = normalize_rad(angle_to_enemy);
+
+            // Calculate the player's angle and normalize it
+            float player_angle = normalize_rad(data->player->angle);
+
+            // Calculate the angle difference
+            angle_diff = angle_difference_rad(angle_to_enemy, player_angle);
+
+            //printf("Angle %.10f Distance %.10f\n", angle_diff, data->enemies[i]->distance);
+
+            // Check if the enemy is within the angle threshold
+            if (angle_diff < 0.6) {
+                //printf("Hit scored!\n");
+                data->enemies[i]->state = DYING;
+            }
+        }
+	}
+}
 
 void	hook_animation(t_data *data)
 {
@@ -98,8 +144,11 @@ void	hook_animation(t_data *data)
 			data->swordarm = mlx_texture_to_image(data->mlx,
 					data->swordarm_tx[8]);
 		else if (current_time - data->last_attack < (ATTACK_SPEED / 6))
+		{
 			data->swordarm = mlx_texture_to_image(data->mlx,
 					data->swordarm_tx[9]);
+			hit_enemy_if_in_range(data);
+		}
 		else
 			data->swordarm = mlx_texture_to_image(data->mlx,
 					data->swordarm_tx[10]);
@@ -197,7 +246,7 @@ void	ft_hook_hub(void *param)
 	t_data	*data;
 
 	data = param;
-	printf("fps: %.0f\n", 1 / data->mlx->delta_time);
+	//printf("fps: %.0f\n", 1 / data->mlx->delta_time);
 	ft_hook_keys(data);
 	color_whole_image(data->screen, FULL_TRANSPARENT, data->width,
 		data->height);

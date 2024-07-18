@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 14:39:44 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/16 16:00:40 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/18 14:17:39 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,24 @@ float	rad(float angle)
 float	degr(float angle)
 {
 	return (angle / PI * 180);
+}
+
+float normalize_rad(float angle) 
+{
+    while (angle < 0)
+        angle += 2 * PI;
+    while (angle >= 2 * PI)
+        angle -= 2 * PI;
+    return angle;
+}
+
+float normalize_degr(float angle) 
+{
+    while (angle < 0)
+        angle += 360;
+    while (angle >= 360)
+        angle -= 360;
+    return angle;
 }
 
 int	is_valid_hex(const char *hex_str)

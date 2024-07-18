@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/18 13:01:22 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/18 14:35:31 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,15 +85,6 @@ void	draw_enemy_onto_canvas(t_enemy *enemy, int dest_x,
 	}
 }
 
-float normalize_angle(float angle) 
-{
-    while (angle < 0)
-        angle += 360;
-    while (angle >= 360)
-        angle -= 360;
-    return angle;
-}
-
 // more complicated when shoot and walk included
 void	update_enemy_frame(t_enemy *enemy, t_data *data)
 {
@@ -103,10 +94,15 @@ void	update_enemy_frame(t_enemy *enemy, t_data *data)
 	double			now;
 	int	  			index;
 
+	if (enemy->state == DEAD)
+	{
+		enemy->current_frame = 61;
+		return ;
+	}
 	// make it relative to the player angle
-	a = normalize_angle(enemy->angle / DEGR);
-	b = normalize_angle(data->player->angle / DEGR);
-	a = normalize_angle(b - a);
+	a = normalize_degr(enemy->angle / DEGR);
+	b = normalize_degr(data->player->angle / DEGR);
+	a = normalize_degr(b - a);
 	//index = ft_abs(7 - (int)((a - 22.5)  / 45));
 	index = (int)((a + 22.5) / 45) % 8;
 	index = (8 - index) % 8;
@@ -123,13 +119,15 @@ void	update_enemy_frame(t_enemy *enemy, t_data *data)
 	prev = enemy->last_frame;
 	// move here: if (now - prev < smallest change do nothing)
 	// or if angle changed enough update frame
-	if (enemy->state == IDLE && (now - prev > 1.0 ||
-		fabsf(enemy->last_rel_angle - enemy->rel_angle) > 0.36))
+	if (enemy->state == DEAD)
+		return ;
+	if (enemy->state == IDLE && (now - prev > 0.7)) // ||
+		// fabsf(enemy->last_rel_angle - enemy->rel_angle) > 0.2))
 	{
-		printf("Angle diff: %.2f\n", fabsf(enemy->last_rel_angle - enemy->rel_angle));
+		//printf("Angle diff: %.2f\n", fabsf(enemy->last_rel_angle - enemy->rel_angle));
 		if (enemy->current_frame == index)
 		{
-			printf("frame: %d\n", index + 48);
+			//printf("frame: %d\n", index + 48);
 			enemy->current_frame = index + 48;
 			enemy->last_frame = now;
 			enemy->last_rel_angle = enemy->rel_angle;
@@ -137,7 +135,7 @@ void	update_enemy_frame(t_enemy *enemy, t_data *data)
 		}
 		else
 		{
-			printf("frame: %d\n", index);
+			//printf("frame: %d\n", index);
 			enemy->current_frame = index;
 			enemy->last_frame = now;
 			enemy->last_rel_angle = enemy->rel_angle;
@@ -145,6 +143,26 @@ void	update_enemy_frame(t_enemy *enemy, t_data *data)
 		}
 	}
 	//else if (enemy->state == WALKING && now - prev > 1.0)
+	else if (enemy->state == DYING && now - prev > 0.3)
+	{
+		if (enemy->current_frame >= 56 && enemy->last_frame < 61)
+		{
+			enemy->current_frame++;
+			if (enemy->current_frame == 61)
+			{
+				//printf("Enemy dies.\n");
+				enemy->state = DEAD;
+			}
+			enemy->last_frame = now;
+			return ;
+		}
+		else
+		{
+			enemy->current_frame = 56;
+			enemy->last_frame = now;
+			return ;
+		}
+	}
 }
 
 void	draw_enemy(t_data *data, t_enemy *enemy, uint32_t screen_x)
@@ -156,7 +174,6 @@ void	draw_enemy(t_data *data, t_enemy *enemy, uint32_t screen_x)
 	enemy->scale = ESCALE / enemy->distance;
 	screen_x = screen_x - (ESW * enemy->scale) / 2;
 	screen_y = data->mlx->height / 2 - (ESH * enemy->scale) / 2.6;
-	update_enemy_frame(enemy, data);
 	draw_enemy_onto_canvas(enemy, screen_x, screen_y, data);
 }
 
@@ -186,17 +203,16 @@ void	hook_enemies(t_data *data)
 
 	i = -1;
 	while (data->enemies[++i] != NULL)
-	{
 		get_rel_angle_and_pos(data->enemies[i], data);
-	}
 	sort_enemy_arr(data);
 	i = -1;
 	while (data->enemies[++i] != NULL)
 	{
+		update_enemy_frame(data->enemies[i], data);
 		if (data->enemies[i]->visible)
 		{
 			screen_x = (uint32_t)((data->enemies[i]->rel_angle + rad(FOV / 2))
-					/ rad(FOV) * data->width);
+				/ rad(FOV) * data->width);
 			draw_enemy(data, data->enemies[i], screen_x);
 		}
 	}
