@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/18 14:19:54 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/19 18:44:20 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,8 +294,12 @@ char				*get_next_line(int fd);
 void				angle_outofbounds_check(t_ray *ray);
 
 // maptools
+int					**alloc_2d_int(int rows, int cols);
 int					**copy_2d_int(int **int_arr, int rows, int cols);
 int					free_2d_int(int **int_arr, int rows);
 void				print_2d_int(int **int_arr, int rows, int cols);
+
+// pathfinding
+void				a_star(int start_x, int start_y, int end_x, int end_y, t_data *data);
 
 #endif

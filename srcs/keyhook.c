@@ -108,7 +108,7 @@ void	hit_enemy_if_in_range(t_data *data)
 	}
 }
 
-void	hook_animation(t_data *data)
+void	hook_player_animation(t_data *data)
 {
 	static double	last_update = 0;
 	static int		frame = 0;
@@ -249,7 +249,7 @@ void	ft_hook_hub(void *param)
 	draw_rays(data);
 	if (data->enemies)
 		hook_enemies(data);
-	hook_animation(data);
+	hook_player_animation(data);
 }
 
 void	hook_mouse_move(double x, double y, void *param)

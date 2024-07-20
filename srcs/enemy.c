@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/18 14:35:31 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/19 19:50:46 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ void	update_enemy_frame(t_enemy *enemy, t_data *data)
 	a = normalize_degr(enemy->angle / DEGR);
 	b = normalize_degr(data->player->angle / DEGR);
 	a = normalize_degr(b - a);
-	//index = ft_abs(7 - (int)((a - 22.5)  / 45));
 	index = (int)((a + 22.5) / 45) % 8;
 	index = (8 - index) % 8;
 	//printf("player angle: %.0f enemy angle: %.0f\n", b, (enemy->angle / DEGR));
@@ -149,10 +148,7 @@ void	update_enemy_frame(t_enemy *enemy, t_data *data)
 		{
 			enemy->current_frame++;
 			if (enemy->current_frame == 61)
-			{
-				//printf("Enemy dies.\n");
 				enemy->state = DEAD;
-			}
 			enemy->last_frame = now;
 			return ;
 		}
