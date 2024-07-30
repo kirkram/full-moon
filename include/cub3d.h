@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/17 15:26:53 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/30 19:37:26 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,9 @@ typedef struct s_enemy
 	int				current_frame; // current animation frame
 	int				visible; // in player FOV or not
 	float			scale; // dependent on distance
+	t_ray			ray;
+	int				dof; //how many squares will check 
+	bool			attack;
 }					t_enemy;
 
 typedef struct s_data
