@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/30 19:37:26 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/31 15:07:31 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ unsigned long		current_time(void);
 # define MAX_MAPHEIGHT 256
 # define SCREENWIDTH 1280
 # define SCREENHEIGHT 860
-# define MINIZOOM 150
+# define MINIZOOM 5
 # define PLAYERSIZE 4
 # define RESOLUTION 3
 # define ANIMATION_SPEED 1.2
@@ -140,7 +140,7 @@ typedef struct s_enemy
 	float			scale; // dependent on distance
 	t_ray			ray;
 	int				dof; //how many squares will check 
-	bool			attack;
+	bool			attack; //if sees player
 }					t_enemy;
 
 typedef struct s_data
@@ -266,6 +266,7 @@ void				calc_collision_ws(t_data *data, t_map *map, bool forward);
 // enemy
 void				hook_enemies(t_data *data);
 void				sort_enemy_arr(t_data *data);
+void				find_enemy_rays(t_data *data, t_enemy *enemy);
 
 // animation
 void				attack_animation(t_data *data);

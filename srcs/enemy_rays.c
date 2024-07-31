@@ -6,13 +6,115 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 19:21:15 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/30 19:45:30 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/31 15:09:48 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	horizontal_rays_offset_enemy(t_data *data, t_ray *ray, int range, t_enemy *enemy)
+void	draw_minirays_enemy(t_data *data, t_ray *ray, t_enemy *enemy)
+{
+	t_point		point;
+	t_point		dest;
+	
+	// point.y = enemy->y_pos_mini;
+	// point.x = enemy->x_pos_mini;
+	point.y = enemy->y_pos * data->zoom;
+	point.x = enemy->x_pos * data->zoom;
+	if (ray->hor_dist < ray->vert_dist && ray->hor_dist != 0)
+	{
+		dest.x = ray->x * data->zoom;
+		dest.y = ray->y * data->zoom;
+		point.color = RED;
+	}
+	else
+	{
+		dest.x = ray->x_v * data->zoom;
+		dest.y = ray->y_v * data->zoom;
+		point.color = GREEN;
+	}
+	//Should it be on antoher image? (third argument)
+	drw_line(point, dest, data, data->player->img);
+}
+
+int	check_player(t_ray *ray, t_map *map, t_enemy *enemy)
+{
+	// if (data->world_map[map->y][map->x] == 1)
+	// 	return (1);
+	// if (data->world_map[map->y][map->x] == 4)
+	// {
+	// 	return (1);
+	// }
+
+	(void)ray;
+
+	
+	if (map->x == (int)enemy->x_pos && map->y == (int)enemy->y_pos)
+		return (1);
+	return (0);
+}
+
+static void	vertical_rays_offset_enemy(t_ray *ray, int range, t_enemy *enemy)
+{
+	ray->ntan = -tan(ray->ang);
+	ray->dof = 0;
+	if (is_equal(ray->ang, PI_N) || is_equal(ray->ang, PI_S))
+	{
+		ray->x_v = enemy->x_pos;
+		ray->y_v = enemy->y_pos;
+		ray->dof = range;
+	}
+	else if (ray->ang < PI_N && ray->ang > PI_S)
+	{
+		ray->x_v = (int)enemy->x_pos;
+		ray->y_v = (enemy->x_pos - ray->x_v) * ray->ntan + enemy->y_pos;
+		ray->x_off = -1;
+		ray->y_off = -ray->x_off * ray->ntan;
+	}
+	else if (ray->ang > PI_N || ray->ang < PI_S)
+	{
+		ray->x_v = (int)enemy->x_pos + 1;
+		ray->y_v = (enemy->x_pos - ray->x_v) * ray->ntan + enemy->y_pos;
+		ray->x_off = 1;
+		ray->y_off = -ray->x_off * ray->ntan;
+	}
+}
+
+void	vertical_rays_enemy(t_data *data, t_ray *ray, t_enemy *enemy)
+{	
+	int		range;
+	t_map	map;
+
+	if (data->map_width > data->map_height)
+		range = data->map_width;
+	else
+		range = data->map_height;
+	vertical_rays_offset_enemy(ray, range, enemy);
+	while (ray->dof < range)
+	{
+		map.y = (int)ray->y_v;
+		map.x = (int)ray->x_v;
+		if (ray->ang > PI_S && ray->ang < PI_N)
+			map.x -= 1;
+		if (map.x < 0)
+			break ;
+		if (map.y < data->map_height && map.y >= 0 && map.x < data->map_width
+			&& map.x >= 0)
+		{
+			if (check_player(ray, &map, enemy))
+			{
+				enemy->attack = true;
+				printf("I see the player\n");
+				break ;
+			}
+			if (check_walls(data, ray, &map, true))
+				break ;
+		}
+		increment_offset(data, ray, true);
+	}
+}
+
+static void	horizontal_rays_offset_enemy(t_ray *ray, int range, t_enemy *enemy)
 {
 	ray->atan = -1 / tanf(ray->ang);
 	if (is_equal(ray->ang, 0.0) || is_equal(ray->ang, PI))
@@ -44,7 +146,7 @@ void	horizontal_rays_enemy(t_data *data, t_ray *ray, t_enemy* enemy)
 
 	ray->dof = 0;
 	range = enemy->dof;
-	horizontal_rays_offset_enemy(data, ray, range, enemy);
+	horizontal_rays_offset_enemy(ray, range, enemy);
 	while (ray->dof < range)
 	{
 		map.y = (int)ray->y;
@@ -56,27 +158,26 @@ void	horizontal_rays_enemy(t_data *data, t_ray *ray, t_enemy* enemy)
 		if (map.y < data->map_height && map.y >= 0 && map.x < data->map_width
 			&& map.x >= 0)
 		{
-			if (check_walls(data, ray, &map, false))
-				break ;
-			else if (check_player(data, ray, &map))
+			if (check_player(ray, &map, enemy))
 			{
 				enemy->attack = true;
+				printf("I see the player\n");
+				break ;
 			}
+			if (check_walls(data, ray, &map, false))
+				break ;
 		}
 		increment_offset(data, ray, false);
 	}
 }
 
-void	calc_distance_enemy(t_data *data, t_ray *ray)
+void	calc_distance_enemy(t_ray *ray, t_enemy *enemy)
 {
-	t_player	*player;
-
-	player = data->player;
-	ray->hor_dist = sqrtf((ray->x - player->x_pos) * (ray->x - player->x_pos)
-			+ (ray->y - player->y_pos) * (ray->y - player->y_pos));
-	ray->vert_dist = sqrtf((ray->x_v - player->x_pos) * (ray->x_v
-				- player->x_pos) + (ray->y_v - player->y_pos) * (ray->y_v
-				- player->y_pos));
+	ray->hor_dist = sqrtf((ray->x - enemy->x_pos) * (ray->x - enemy->x_pos)
+			+ (ray->y - enemy->y_pos) * (ray->y - enemy->y_pos));
+	ray->vert_dist = sqrtf((ray->x_v - enemy->x_pos) * (ray->x_v
+				- enemy->x_pos) + (ray->y_v - enemy->y_pos) * (ray->y_v
+				- enemy->y_pos));
 	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist
 			&& ray->vert_dist != 0))
 	{
@@ -94,23 +195,22 @@ void	find_enemy_rays(t_data *data, t_enemy *enemy)
 	int			i;
 
 	enemy_ray = &enemy->ray;
-	enemy_ray->ang = enemy->angle - rad(FOV / 2);
+	enemy_ray->ang = enemy->angle - rad(FOV / 2 / 2);
 	//enemy->attack = true //should be in the attack state  for some time or until death
 	angle_outofbounds_check(enemy_ray);
 	i = -1;
-	while (++i < FOV * RESOLUTION)
+	//while (++i < FOV * RESOLUTION)
+	while (++i < FOV / 2)
 	{
-		enemy_ray->is_doorh = 0;
-		enemy_ray->is_doorv = 0;
 		horizontal_rays_enemy(data, enemy_ray, enemy);
-		vertical_rays_enemy(data, enemy_ray);
-		calc_distance(data, enemy_ray);
+		vertical_rays_enemy(data, enemy_ray, enemy);
+		calc_distance_enemy(enemy_ray, enemy);
 		// fix_fisheye(data, enemy_ray);
-		if (DRAWMINIRAYS == 1)
-			draw_minirays(data, enemy_ray);
-		draw_column(data, enemy_ray, i, data->width / ((float)(FOV * RESOLUTION)));
-		data->raydis[i] = enemy_ray->dist;
-		enemy_ray->ang += DEGR / RESOLUTION;
+		//if (DRAWMINIRAYS == 1)
+			draw_minirays_enemy(data, enemy_ray, enemy);
+		//data->raydis[i] = enemy_ray->dist;
+		//enemy_ray->ang += DEGR / RESOLUTION;
+		enemy_ray->ang += DEGR * 2;
 		angle_outofbounds_check(enemy_ray);
 	}
 }

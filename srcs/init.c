@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/17 13:10:03 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/07/31 15:07:11 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	init_canvases(t_data *data)
 	data->height = SCREENHEIGHT;
 	data->ceiling = NULL;
 	data->minimap = NULL;
-	data->zoom = SCREENWIDTH / 150;
+	data->zoom = SCREENWIDTH / 150 + MINIZOOM;
 	printf("%d\n", PLAYERSIZE);
 	data->mlx = mlx_init(data->width, data->height, "CUB3D", false);
 	if (!data->mlx)
