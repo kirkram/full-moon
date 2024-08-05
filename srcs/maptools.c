@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maptools.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 17:21:32 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/19 19:48:36 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/05 12:29:06 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int** alloc_2d_int(int rows, int cols)
     int	i;
 
     array = (int **)ft_calloc(rows, sizeof(int *));
-    if (array == NULL) 
-        exit(ft_error("Malloc error on int**", 22));
+    if (array == NULL)
+		exit(ft_error("Malloc error on int**", 22));
 	i = 0;
 	while (i < rows)
     {
