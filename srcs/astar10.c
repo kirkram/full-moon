@@ -304,7 +304,7 @@ void a_star(int start_x, int start_y, int end_x, int end_y, t_data *data)
             }
         }
 		// important
-        free(current);
+        // free(current);
     }
 	if (!found)
 	{
