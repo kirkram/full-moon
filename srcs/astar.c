@@ -1,42 +1,17 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <math.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   astar.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/07 19:15:56 by mburakow          #+#    #+#             */
+/*   Updated: 2024/08/07 19:19:12 by mburakow         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#define COST_STRAIGHT 10
-#define COST_DIAGONAL 14
-
-typedef struct s_node 
-{
-    int x; // square x coord
-	int y;  // square y coord
-	int g; // cost to move here
-	int h; // heuristic: estimated cost to move to target
-	int f; // g + h : total cost
-    struct s_node* parent; // fom here we got to this square
-} t_node;
-
-typedef struct s_priorityqueue
-{
-    t_node* nodes;
-    int size;
-	int capacity;
-} t_priorityqueue;
-
-typedef struct s_data
-{
-    int **world_map;
-    int map_width;
-	int map_height;
-} t_data;
-
-typedef struct s_coord
-{
-    int x;
-    int y;
-} t_coord;
+#include "cub3d.h"
+#include "pathfinding.h"
 
 t_priorityqueue* pq_create(int capacity) {
     t_priorityqueue* pq = (t_priorityqueue*)malloc(sizeof(t_priorityqueue));
@@ -230,26 +205,6 @@ void    print_map(t_data *data)
     }
 }
 
-void	print_2d_int(int **int_arr, int rows, int cols)
-{
-	int	y;
-	int	x;
-
-	y = 0;
-	while (y < rows)
-	{
-		x = 0;
-		while (x < cols)
-		{
-			dprintf(2, "%d", int_arr[y][x]);
-			x++;
-		}
-		dprintf(2, "\n");
-		y++;
-	}
-	dprintf(2, "\n");
-}
-
 t_coord *a_star(int start_x, int start_y, int end_x, int end_y, t_data *data) 
 {
     t_priorityqueue	*open_set;
@@ -319,7 +274,7 @@ t_coord *a_star(int start_x, int start_y, int end_x, int end_y, t_data *data)
     return (route);
 }
 
-// extra stuff:
+/* extra stuff:
 void invert_2d_array(int **array, int rows, int cols) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
@@ -370,3 +325,24 @@ int main()
     free(data.world_map);
     return (0);
 }
+
+void	print_2d_int(int **int_arr, int rows, int cols)
+{
+	int	y;
+	int	x;
+
+	y = 0;
+	while (y < rows)
+	{
+		x = 0;
+		while (x < cols)
+		{
+			dprintf(2, "%d", int_arr[y][x]);
+			x++;
+		}
+		dprintf(2, "\n");
+		y++;
+	}
+	dprintf(2, "\n");
+}
+*/
