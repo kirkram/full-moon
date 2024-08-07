@@ -10,14 +10,12 @@
 
 typedef struct s_node 
 {
-    int x;
-	int y;
-	int g; 
-	int h;
-	int f;
-	int px;
-	int py;
-    struct s_node* parent;
+    int x; // square x coord
+	int y;  // square y coord
+	int g; // cost to move here
+	int h; // heuristic: estimated cost to move to target
+	int f; // g + h : total cost
+    struct s_node* parent; // fom here we got to this square
 } t_node;
 
 typedef struct s_priorityqueue
@@ -33,6 +31,12 @@ typedef struct s_data
     int map_width;
 	int map_height;
 } t_data;
+
+typedef struct s_coord
+{
+    int x;
+    int y;
+} t_coord;
 
 t_priorityqueue* pq_create(int capacity) {
     t_priorityqueue* pq = (t_priorityqueue*)malloc(sizeof(t_priorityqueue));
@@ -64,15 +68,10 @@ void print_priority_queue(t_priorityqueue *pq)
 void pq_swap(t_node *a, t_node *b)
 {
     t_node temp;
-	printf("before swap:\n");
-	print_node(a);
-	print_node(b);
+
 	temp = *a;
 	*a = *b;
 	*b = temp;
-	printf("after swap:\n");
-	print_node(a);
-	print_node(b);
 }
 
 void	heapify_up(t_priorityqueue *pq, int i)
@@ -143,15 +142,16 @@ t_node	*peek(t_priorityqueue *pq)
 	return (&pq->nodes[0]);
 }
 
-t_node* create_node(int x, int y, int g, int h, t_node *parent) {
-    t_node* node = (t_node*)malloc(sizeof(t_node));
+t_node* create_node(int x, int y, int g, int h, t_node *parent) 
+{
+    t_node* node; 
+    
+    node = (t_node*)malloc(sizeof(t_node));
     node->x = x;
     node->y = y;
     node->g = g;
     node->h = h;
     node->f = g + h;
-	node->px = 0;
-	node->py = 0;
 	node->parent = parent;
     return node;
 }
@@ -184,41 +184,47 @@ bool is_walkable(int x, int y, t_data *data)
     return (is_in_bounds(x, y, data) && data->world_map[y][x] == 0);
 }
 
-t_node *find_by_coordinates(int x, int y, t_priorityqueue *pq)
+t_coord *reconstruct_path(t_node* end_node, t_data *data)
 {
-	int	i;
+    t_node  *current;
+    t_coord *route;
+    int     count;
 
-	i = -1;
-	while (++i < pq->size)
-	{
-		if (x == pq->nodes[i].x && y == pq->nodes[i].y)
-			return (&pq->nodes[i]);
-	}
-	printf("Node x%d y%d not found!!!", x, y);
-	return (NULL);
-}
-
-void reconstruct_path(t_node* end_node, t_priorityqueue *pq, t_data *data) 
-{
-    t_node* current;
-
-	(void)pq;
-	printf("Reconstructing path\n");
-	current = end_node;
+    (void)data;
+    current = end_node;
+    count = 0;
     while (current) 
 	{
-        data->world_map[current->y][current->x] = 8;
-		printf("PQ:\tx:%d\ty:%d\tg:%d\th:%d\tf:%d\n", current->x, current->y, current->g, current->h, current->f);
-        //current = find_by_coordinates(current->x, current->y, pq);
-		current = current->parent;
+        count++;
+        current = current->parent;
     }
+    route = (t_coord *)malloc(sizeof(t_coord) * (count + 1));
+    route[count].x = -1;
+    route[count].y = -1;
+	current = end_node;
+    while (current && count >= 0) 
+	{
+        count--;
+        route[count].x = current->x;
+        route[count].y = current->y;
+        printf("C: %d x: %d y: %d\n", count, route[count].x, route[count].y);
+        //data->world_map[current->y][current->x] = 8;
+		//printf("PQ:\tx:%d\ty:%d\tg:%d\th:%d\tf:%d\n", current->x, current->y, current->g, current->h, current->f);
+        current = current->parent;
+    }
+    return (route);
 }
 
-void print_map(t_data *data) 
+void    print_map(t_data *data) 
 {
-    for (int y = 0; y < data->map_height; y++) 
+    int y;
+    int x;
+
+    y = -1;
+    while (++y < data->map_height) 
 	{
-        for (int x = 0; x < data->map_width; x++) 
+        x = -1;
+        while (++x < data->map_width) 
             printf("%d ", data->world_map[y][x]);
         printf("\n");
     }
@@ -244,23 +250,28 @@ void	print_2d_int(int **int_arr, int rows, int cols)
 	dprintf(2, "\n");
 }
 
-void a_star(int start_x, int start_y, int end_x, int end_y, t_data *data) 
+t_coord *a_star(int start_x, int start_y, int end_x, int end_y, t_data *data) 
 {
     t_priorityqueue	*open_set;
 	int 			**closed_set;
 	t_node			*start_node;
 	t_node			*current;
 	t_node			*neighbor;
+    t_coord         *route;
 	int				found;
+    int             i;
+    int             new_x;
+    int             new_y;
+    int             new_g;
+    int             new_h;
 	
 	found = 0;
-	open_set = pq_create(200); // should be dynamic size
+	open_set = pq_create(200); // should be dynamic size, except resizes?
 	// change forbidden functions
     closed_set = (int **)calloc(data->map_height, sizeof(int *));
-    for (int i = 0; i < data->map_height; i++) 
+    i = -1;
+    while (++i < data->map_height)
 		closed_set[i] = (int *)calloc(data->map_width, sizeof(int));
-	//printf("Closed set:\n");
-	//print_2d_int(closed_set, 9, 10);
     start_node = create_node(start_x, start_y, 0, 0, NULL);
     pq_push(open_set, start_node);
 	// edit this:
@@ -268,58 +279,47 @@ void a_star(int start_x, int start_y, int end_x, int end_y, t_data *data)
     while (open_set->size > 0) 
 	{
         current = pq_pop(open_set);
-		//printf("current: x%d y%d\n", current->x, current->y);
         if (current->x == end_x && current->y == end_y) 
 		{
 			printf("Path found!!!\n");
-			//printf("Closed set:\n");
-			//print_2d_int(closed_set, 9, 10);
-			//printf("Priority queue:\n");
-			//print_priority_queue(open_set);
-            reconstruct_path(current, open_set, data);
-            print_map(data);
+            route = reconstruct_path(current, data); // open_set
+            //print_map(data);
             free(current);
 			found = 1;
             break ;
         }
         closed_set[current->y][current->x] = 1;
-        for (int i = 0; i < 8; i++) {
-            int new_x = current->x + directions[i][0], new_y = current->y + directions[i][1];
+        i = -1;
+        while (++i < 8) 
+        {
+            new_x = current->x + directions[i][0];
+            new_y = current->y + directions[i][1];
             if (is_in_bounds(new_x, new_y, data) && !closed_set[new_y][new_x] && is_walkable(new_x, new_y, data)) 
 			{
-				/*
-				if (i >= 4) {
-                    int adj1_x = current->x + directions[i][0], adj1_y = current->y;
-                    int adj2_x = current->x, adj2_y = current->y + directions[i][1];
-                    if (!is_walkable(adj1_x, adj1_y, data) || !is_walkable(adj2_x, adj2_y, data)) continue;
-                }
-				*/
-                int new_g = current->g + (i < 4 ? COST_STRAIGHT : COST_DIAGONAL);
-                int new_h = heuristic(new_x, new_y, end_x, end_y);
+                if (i < 4)
+                    new_g = current->g + COST_STRAIGHT;
+                else
+                    new_g = current->g + COST_DIAGONAL;
+                new_h = heuristic(new_x, new_y, end_x, end_y);
                 neighbor = create_node(new_x, new_y, new_g, new_h, current);
-				neighbor->px = current->x;
-				neighbor->py = current->y;
-				//printf("Pushed to open set: x%d, y%d, g%d, h%d, px%d, py%d\n", new_x, new_y, new_g, new_h, current->x, current->y);
 				pq_push(open_set, neighbor);
             }
         }
-		// important
-        // free(current);
     }
 	if (!found)
 	{
 		printf("No path found!\n");
-		//printf("Closed set:\n");
-		//print_2d_int(closed_set, 9, 10);
-		//printf("Map:\n");
-		//print_2d_int(data->world_map, 9, 10);
 	}
-    for (int i = 0; i < data->map_height; i++) free(closed_set[i]);
+    i = -1;
+    while (++i < data->map_height) 
+        free(closed_set[i]);
     free(closed_set);
     free(open_set->nodes);
     free(open_set);
+    return (route);
 }
 
+// extra stuff:
 void invert_2d_array(int **array, int rows, int cols) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
@@ -341,25 +341,32 @@ int main()
         {1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
         {1, 1, 1, 0, 0, 0, 1, 0, 0, 1}
     };
+    t_data  data;
+    t_coord *route;
+    int     i;
+    int     j;
 
-    t_data data;
     data.map_height = 9;
     data.map_width = 10;
     data.world_map = (int**)malloc(data.map_height * sizeof(int*));
-    for (int i = 0; i < data.map_height; i++) {
+    i = -1;
+    while (++i < data.map_height) 
+    {
+        j = -1;
         data.world_map[i] = (int*)malloc(data.map_width * sizeof(int));
-        for (int j = 0; j < data.map_width; j++) {
+        while (++j < data.map_width)
             data.world_map[i][j] = map[i][j];
-        }
     }
 	invert_2d_array(data.world_map, 9, 10);
-	//printf("Starting map:\n");
-	//print_map(&data);
-	//printf("Value at 8,7: %d\n", data.world_map[8][7]);
-    a_star(0, 0, 8, 7, &data);
-    for (int i = 0; i < data.map_height; i++) {
+    print_map(&data);
+    route = a_star(0, 0, 8, 7, &data);
+    i = -1;
+    printf("result: \n");
+    while (route[++i].x != -1)
+        printf("C: %d x: %d y: %d\n", i, route[i].x, route[i].y);
+    i = -1;
+    while (++i < data.map_height)
         free(data.world_map[i]);
-    }
     free(data.world_map);
     return (0);
 }

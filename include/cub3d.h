@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/19 18:44:20 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/07 19:10:34 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,6 @@ unsigned long		current_time(void);
 
 # define TAB_WIDTH 4
 
-typedef enum s_enemystate
-{
-	IDLE,
-	WALKING,
-	SHOOTING,
-	DYING,
-	DEAD
-}	t_enemystate;
-
 typedef struct s_map
 {
 	int16_t			x;
@@ -124,6 +115,21 @@ typedef struct s_ray
 	bool			is_doorh;
 	int32_t			range;
 }					t_ray;
+
+typedef struct s_coord
+{
+    int x;
+    int y;
+} t_coord;
+
+typedef enum s_enemystate
+{
+	IDLE,
+	WALKING,
+	SHOOTING,
+	DYING,
+	DEAD
+}	t_enemystate;
 
 typedef struct s_player
 {
