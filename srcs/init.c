@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/31 15:07:11 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/07 18:41:41 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,16 @@ void	load_textures(t_data *data)
 		"floor dimensions should be less than 4096 pixels", 78);
 }
 
+void	keyhook_loop(mlx_key_data_t keydata, void *param)
+{
+	t_data *data;
+
+	data = param;
+	if (mlx_is_key_down(data->mlx, MLX_KEY_E) && keydata.action == MLX_PRESS)
+		open_door(data);
+}
+
+
 int	init_and_draw(t_data *data)
 {
 	if (init_canvases(data))
@@ -112,6 +122,7 @@ int	init_and_draw(t_data *data)
 	draw_sprites(data);
 	mlx_cursor_hook(data->mlx, &hook_mouse_move, data);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
+	mlx_key_hook(data->mlx, &keyhook_loop, data);
 	mlx_loop(data->mlx);
 	return (0);
 }

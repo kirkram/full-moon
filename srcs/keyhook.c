@@ -6,21 +6,20 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/31 15:04:33 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/07 18:27:45 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	ft_hook_keys(t_data *data)
+void	ft_hook_keys(t_data *data)
 {
-	t_map	map;
 	double	current_time;
 
 	data->speed = 0.003 / (1 / data->mlx->delta_time / 1000);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		free_all_and_quit(data, "Bye!", 0);
-	movement_loop(data, &map);
+	movement_loop(data);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ENTER))
 	{
 		current_time = mlx_get_time();

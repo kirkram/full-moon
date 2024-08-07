@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/31 15:27:56 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/07 18:28:35 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,7 @@ typedef struct s_data
 	int				ess_height;
 	float			line_error;
 	struct timespec last_time;
+	t_map			keyhook_map;
 }					t_data;
 
 typedef struct s_point
@@ -258,8 +259,8 @@ void				increment_offset(t_data *data, t_ray *ray, bool is_vert);
 // keyhook
 void				ft_hook_hub(void *param);
 void				hook_mouse_move(double x, double y, void *param);
-void				movement_loop(t_data *data, t_map *map);
-void				open_door(t_data *data, t_map *map);
+void				movement_loop(t_data *data);
+void				open_door(t_data *data);
 void				calc_collision_ad(t_data *data, t_map *map, bool left);
 void				calc_collision_ws(t_data *data, t_map *map, bool forward);
 
