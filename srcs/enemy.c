@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/17 00:29:39 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/07/31 15:03:53 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,5 +158,10 @@ void	hook_enemies(t_data *data)
 					/ rad(FOV) * data->width);
 			draw_enemy(data, data->enemies[i], screen_x);
 		}
+	}
+	i = -1;
+	while (data->enemies[++i] != NULL)
+	{
+		find_enemy_rays(data, data->enemies[i]);
 	}
 }

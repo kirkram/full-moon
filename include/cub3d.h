@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/16 23:01:56 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/07 18:28:35 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ unsigned long		current_time(void);
 # define MAX_MAPHEIGHT 256
 # define SCREENWIDTH 1280
 # define SCREENHEIGHT 860
-# define MINIZOOM 150
+# define MINIZOOM 10
 # define PLAYERSIZE 4
 # define RESOLUTION 3
 # define ANIMATION_SPEED 1.2
@@ -42,7 +42,8 @@ unsigned long		current_time(void);
 # define COLL 0.3
 
 # define DOOR_PATH "./textures/door.png"
-# define TEXTURES_AMOUNT 5
+# define FLOOR_PATH "./textures/floor.png"
+# define TEXTURES_AMOUNT 6
 
 # define MAPBACKG_PATH "./textures/mapbackg.png"
 # define DRAWMINIRAYS 0
@@ -137,6 +138,9 @@ typedef struct s_enemy
 	int				current_frame; // current animation frame
 	int				visible; // in player FOV or not
 	float			scale; // dependent on distance
+	t_ray			ray;
+	int				dof; //how many squares will check 
+	bool			attack; //if sees player
 }					t_enemy;
 
 typedef struct s_data
@@ -178,6 +182,7 @@ typedef struct s_data
 	int				ess_height;
 	float			line_error;
 	struct timespec last_time;
+	t_map			keyhook_map;
 }					t_data;
 
 typedef struct s_point
@@ -240,7 +245,7 @@ float				rad(float angle);
 void				draw_rays(t_data *data);
 void				drw_line(t_point point, t_point dest, t_data *data,
 						mlx_image_t *img);
-uint32_t			index_color(t_txt *txt, t_ray *ray);
+uint32_t			index_color(t_txt *txt, t_ray *ray, bool is_wall);
 void				horizontal_rays(t_data *data, t_ray *ray);
 void				vertical_rays(t_data *data, t_ray *ray);
 void				calc_distance(t_data *data, t_ray *ray);
@@ -254,14 +259,15 @@ void				increment_offset(t_data *data, t_ray *ray, bool is_vert);
 // keyhook
 void				ft_hook_hub(void *param);
 void				hook_mouse_move(double x, double y, void *param);
-void				movement_loop(t_data *data, t_map *map);
-void				open_door(t_data *data, t_map *map);
+void				movement_loop(t_data *data);
+void				open_door(t_data *data);
 void				calc_collision_ad(t_data *data, t_map *map, bool left);
 void				calc_collision_ws(t_data *data, t_map *map, bool forward);
 
 // enemy
 void				hook_enemies(t_data *data);
 void				sort_enemy_arr(t_data *data);
+void				find_enemy_rays(t_data *data, t_enemy *enemy);
 
 // animation
 void				attack_animation(t_data *data);
