@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/16 22:40:24 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/12 11:56:51 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	write_mapline(char *line, int y, int x, t_data *data)
 			if (!get_player_startpos(x, y, data, line))
 			{
 				if (line[x] == ' ')
-					data->world_map[y][x] = 1;
+					data->world_map[y][x] = 9;
 				else if (line[x] == '5')
 					add_new_enemy(x, y, data, line);
 				else
@@ -41,7 +41,7 @@ static void	write_mapline(char *line, int y, int x, t_data *data)
 		}
 		else
 		{
-			fill_with_ones(data, y, x);
+			fill_with_nines(data, y, x);
 			break ;
 		}
 		x++;
@@ -67,37 +67,26 @@ static void	read_and_parse_lines(int fd, t_data *data)
 	char	*line;
 	size_t	lno;
 	int		map_start;
-	int		i;
 
 	map_start = 0;
 	lno = 0;
 	while (1)
 	{
-		//printf("L: $");
 		line = get_next_line(fd);
-		//printf("%s", line);
 		if (line == NULL)
 			break ;
 		convert_tabs(&line);
 		if (map_start == 0 && (line[0] == 9 || line[0] == 32 || 
 				line[0] == 48 || line[0] == 49))
 			map_start = 1;
+		if (map_start == 0)
+			read_map_parameter(line, data);
 		if (map_start == 1)
 		{
 			write_mapline(line, lno, 0, data);
 			lno++;
 		}
-		if (map_start == 0)
-			read_map_parameter(line, data);
 		free(line);
-	}
-	printf("All lines have been read\n");
-	// data->world_map[data->map_width][lno] = '\0';
-	// For debug:
-	i = -1;
-	while (data->enemies && data->enemies[++i] != NULL)
-	{
-		printf("Enemy %d: x:%.0f y:%.0f\n", i, data->enemies[i]->x_pos, data->enemies[i]->y_pos);
 	}
 }
 

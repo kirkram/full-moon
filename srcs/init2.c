@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/30 19:43:51 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/12 11:35:03 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	init_map_data(t_data *data)
 	data->txtrs = NULL;
 	data->swordarm_tx = NULL;
 	data->swordarm = NULL;
+	data->enemy_ssheet = NULL;
 	data->startpos_x = 0;
 	data->startpos_y = 0;
 	data->floorcolor = 0x0;
@@ -141,7 +142,7 @@ int	init_enemy_frames(t_data *data)
 {
 	int	i;
 
-	data->enemy_ssheet = mlx_load_png("./sprites/ratman_paletted_a.png");
+	data->enemy_ssheet = mlx_load_png("./sprites/ratman_paletted_b.png");
 	if (data->enemy_ssheet == NULL)
 		free_all_and_quit(data, "enemy texture loading", 11);
 	data->enemy_frame = (mlx_image_t **)ft_calloc(EN_FRAMECOUNT + 1,

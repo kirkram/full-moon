@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:05:11 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/16 23:35:10 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/12 11:50:45 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,14 @@ static void	init_enemy_state(t_enemy *enemy, t_data *data)
 	facing++;
 	if (facing > 7)
 		facing = 0;
+	enemy->distance = 0.0;
 	enemy->angle = rad(facing * 45);
-	get_enemy_frame(enemy, data);
+	enemy->rel_angle = 0.0;
+	enemy->last_frame = 0.0;
+	enemy->state = IDLE;
+	enemy->visible = 0;
+	enemy->scale = 1.0;
+	update_enemy_frame(enemy, data);
 }
 
 void	add_new_enemy(int x, int y, t_data *data, char *line)
@@ -59,14 +65,14 @@ void	add_new_enemy(int x, int y, t_data *data, char *line)
 		free(data->enemies);
 	data->enemies = enemies;
 	init_enemy_state(data->enemies[i], data);
-	printf("enemy found at %.0f, %.0f : angle: %.4f\n", enemy->x_pos, enemy->y_pos, degr(enemy->angle));
+	// printf("enemy found at %.0f, %.0f : angle: %.4f\n", enemy->x_pos, enemy->y_pos, degr(enemy->angle));
 }
 
-void	fill_with_ones(t_data *data, int y, int x)
+void	fill_with_nines(t_data *data, int y, int x)
 {
 	while (x < data->map_width)
 	{
-		data->world_map[y][x] = 1;
+		data->world_map[y][x] = 9;
 		x++;
 	}
 }

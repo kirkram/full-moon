@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/07 18:28:35 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/12 11:53:44 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ unsigned long		current_time(void);
 # define MINIZOOM 10
 # define PLAYERSIZE 4
 # define RESOLUTION 3
-# define ANIMATION_SPEED 1.2
+# define ATTACK_SPEED 1.2
 # define LINESCALE 1.7
 # define MOUSESPEED 0.8
 
@@ -52,9 +52,10 @@ unsigned long		current_time(void);
 # define PL_FRAMECOUNT 11
 # define EN_FRAMECOUNT 64
 # define ESW 74 // enemy sprite width
-# define ESH 81 // enemy sprite height
+# define ESH 74 // enemy sprite height
 # define ESSW 592 // enemy spritesheet width
 # define ESSH 648 // enemy spritesheet height
+# define ESCALE 20.0 // enemy scale
 
 // maths
 # define PI 3.14159265359
@@ -116,6 +117,21 @@ typedef struct s_ray
 	int32_t			range;
 }					t_ray;
 
+typedef struct s_coord
+{
+    int x;
+    int y;
+} t_coord;
+
+typedef enum s_enemystate
+{
+	IDLE,
+	WALKING,
+	SHOOTING,
+	DYING,
+	DEAD
+}	t_enemystate;
+
 typedef struct s_player
 {
 	mlx_image_t		*img;
@@ -137,6 +153,9 @@ typedef struct s_enemy
 	float			rel_angle; // angle relative to the player
 	int				current_frame; // current animation frame
 	int				visible; // in player FOV or not
+	t_enemystate	state;
+	double			last_frame;
+	float			last_rel_angle; // rel angle at time of last frmae update
 	float			scale; // dependent on distance
 	t_ray			ray;
 	int				dof; //how many squares will check 
@@ -177,6 +196,7 @@ typedef struct s_data
 	int				startpos_y;
 	t_enemy			**enemies;
 	mlx_texture_t	*enemy_ssheet;
+	t_map			enemysheet_correction[64]; // correct individual sprite positions
 	mlx_image_t		**enemy_frame;
 	int				ess_width;
 	int				ess_height;
@@ -217,7 +237,7 @@ int					validate_map(int **world_map, t_data *data);
 int					validate_mapsquare(int value);
 void				convert_tabs(char **line);
 void				add_new_enemy(int x, int y, t_data *data, char *line);
-void				fill_with_ones(t_data *data, int y, int x);
+void				fill_with_nines(t_data *data, int y, int x);
 void				count_mapdimensions(t_data *data);
 int					get_player_startpos(int x, int y, t_data *data, char *line);
 int					flood_fill(int pos_y, int pos_x, int **wmap, t_data *data);
@@ -234,12 +254,12 @@ int					init_and_draw(t_data *data);
 int					put_background(t_data *data);
 int					init_player(t_data *data);
 int					init_enemy_frames(t_data *data);
-void				get_enemy_frame(t_enemy *enemy, t_data *data);
+void				update_enemy_frame(t_enemy *enemy, t_data *data);
 void				put_pixel(t_data *data, t_point *point, mlx_image_t *img);
 uint32_t			get_a(uint32_t rgba);
 uint32_t			get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
 int					draw_player_minimap(t_data *data);
-void				draw_sprites(t_data *data);
+void				update_enemies(t_data *data);
 void				assign_texture_to_ray(t_data *data, t_ray *ray, t_txt *txt);
 float				rad(float angle);
 void				draw_rays(t_data *data);
@@ -276,6 +296,9 @@ void				attack_animation(t_data *data);
 int					ft_error(char *msg, int error_code);
 int					ft_abs(int result);
 float				degr(float angle);
+float				rad(float angle);
+float 				normalize_degr(float angle);
+float 				normalize_rad(float angle) ;
 void				free_textures(t_data *data);
 void				free_enemies(t_data *data);
 int					is_valid_hex(const char *hex_str);
@@ -283,8 +306,12 @@ char				*get_next_line(int fd);
 void				angle_outofbounds_check(t_ray *ray);
 
 // maptools
+int					**alloc_2d_int(int rows, int cols);
 int					**copy_2d_int(int **int_arr, int rows, int cols);
 int					free_2d_int(int **int_arr, int rows);
 void				print_2d_int(int **int_arr, int rows, int cols);
+
+// pathfinding
+t_coord				*a_star(int start_x, int start_y, int end_x, int end_y, t_data *data);
 
 #endif

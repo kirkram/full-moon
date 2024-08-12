@@ -119,7 +119,6 @@ int	init_and_draw(t_data *data)
 	draw_minimap(data);
 	draw_player_minimap(data);
 	draw_rays(data);
-	draw_sprites(data);
 	mlx_cursor_hook(data->mlx, &hook_mouse_move, data);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	mlx_key_hook(data->mlx, &keyhook_loop, data);

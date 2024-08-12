@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/31 15:03:53 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/12 15:44:45 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,32 +85,80 @@ void	draw_enemy_onto_canvas(t_enemy *enemy, int dest_x,
 	}
 }
 
-float normalize_angle(float angle) 
-{
-    while (angle < 0)
-        angle += 360;
-    while (angle >= 360)
-        angle -= 360;
-    return angle;
-}
-
 // more complicated when shoot and walk included
-void	get_enemy_frame(t_enemy *enemy, t_data *data)
+void	update_enemy_frame(t_enemy *enemy, t_data *data)
 {
-	float a;
-	float b;
-	int	  index;
+	float 			a;
+	float 			b;
+	double			prev;
+	double			now;
+	int	  			index;
 
+	if (enemy->state == DEAD)
+	{
+		enemy->current_frame = 61;
+		return ;
+	}
 	// make it relative to the player angle
-	a = normalize_angle(enemy->angle / DEGR);
-	b = normalize_angle(data->player->angle / DEGR);
-	a = normalize_angle(b - a);
-	//index = ft_abs(7 - (int)((a - 22.5)  / 45));
+	a = normalize_degr(enemy->angle / DEGR);
+	b = normalize_degr(data->player->angle / DEGR);
+	a = normalize_degr(b - a);
 	index = (int)((a + 22.5) / 45) % 8;
 	index = (8 - index) % 8;
 	//printf("player angle: %.0f enemy angle: %.0f\n", b, (enemy->angle / DEGR));
 	//printf("angle a: %.0f index: %d\n", a, index);
-	enemy->current_frame = index;
+	now = mlx_get_time();
+	if (enemy->last_frame == 0.0)
+	{
+		enemy->current_frame = index;
+		enemy->last_frame = now;
+		return ;
+	}
+	//printf("init uef: %.10f\n", now);
+	prev = enemy->last_frame;
+	// move here: if (now - prev < smallest change do nothing)
+	// or if angle changed enough update frame
+	if (enemy->state == DEAD)
+		return ;
+	if (enemy->state == IDLE && (now - prev > 0.7)) // ||
+		// fabsf(enemy->last_rel_angle - enemy->rel_angle) > 0.2))
+	{
+		//printf("Angle diff: %.2f\n", fabsf(enemy->last_rel_angle - enemy->rel_angle));
+		if (enemy->current_frame == index)
+		{
+			//printf("frame: %d\n", index + 48);
+			enemy->current_frame = index + 48;
+			enemy->last_frame = now;
+			enemy->last_rel_angle = enemy->rel_angle;
+			return ;
+		}
+		else
+		{
+			//printf("frame: %d\n", index);
+			enemy->current_frame = index;
+			enemy->last_frame = now;
+			enemy->last_rel_angle = enemy->rel_angle;
+			return ;
+		}
+	}
+	//else if (enemy->state == WALKING && now - prev > 1.0)
+	else if (enemy->state == DYING && now - prev > 0.3)
+	{
+		if (enemy->current_frame >= 56 && enemy->last_frame < 61)
+		{
+			enemy->current_frame++;
+			if (enemy->current_frame == 61)
+				enemy->state = DEAD;
+			enemy->last_frame = now;
+			return ;
+		}
+		else
+		{
+			enemy->current_frame = 56;
+			enemy->last_frame = now;
+			return ;
+		}
+	}
 }
 
 void	draw_enemy(t_data *data, t_enemy *enemy, uint32_t screen_x)
@@ -119,43 +167,48 @@ void	draw_enemy(t_data *data, t_enemy *enemy, uint32_t screen_x)
 
 	if (enemy->distance < 1.0)
 		enemy->distance = 1.0;
-	enemy->scale = 20.0 / enemy->distance;
+	enemy->scale = ESCALE / enemy->distance;
 	screen_x = screen_x - (ESW * enemy->scale) / 2;
-	screen_y = data->mlx->height / 2 - (ESH * enemy->scale) / 2;
-	get_enemy_frame(enemy, data);
+	screen_y = data->mlx->height / 2 - (ESH * enemy->scale) / 2.6;
 	draw_enemy_onto_canvas(enemy, screen_x, screen_y, data);
+}
+
+// update enemy relative angle, distance, visibility 
+void	get_rel_angle_and_pos(t_enemy *enemy, t_data *data)
+{
+	float dx;
+	float dy;
+	float rel_ang;
+
+	dx = enemy->x_pos - data->player->x_pos;
+	dy = enemy->y_pos - data->player->y_pos;
+	enemy->distance = sqrtf(dx * dx + dy * dy);
+	rel_ang = atan2(dy, dx) - data->player->angle;
+	enemy->rel_angle = atan2f(sinf(rel_ang), cosf(rel_ang));
+	if (enemy->rel_angle >= -rad(FOV / 2)
+		&& enemy->rel_angle <= rad(FOV / 2))
+		enemy->visible = 1;
+	else
+		enemy->visible = 0;	
 }
 
 void	hook_enemies(t_data *data)
 {
-	int i;
-	float dx;
-	float dy;
-	float rel_ang;
-	uint32_t screen_x;
+	int			i;
+	uint32_t	screen_x;
 
 	i = -1;
 	while (data->enemies[++i] != NULL)
-	{
-		dx = data->enemies[i]->x_pos - data->player->x_pos;
-		dy = data->enemies[i]->y_pos - data->player->y_pos;
-		data->enemies[i]->distance = sqrtf(dx * dx + dy * dy);
-		rel_ang = atan2(dy, dx) - data->player->angle;
-		data->enemies[i]->rel_angle = atan2f(sinf(rel_ang), cosf(rel_ang));
-		if (data->enemies[i]->rel_angle >= -rad(FOV / 2)
-			&& data->enemies[i]->rel_angle <= rad(FOV / 2))
-			data->enemies[i]->visible = 1;
-		else
-			data->enemies[i]->visible = 0;
-	}
+		get_rel_angle_and_pos(data->enemies[i], data);
 	sort_enemy_arr(data);
 	i = -1;
 	while (data->enemies[++i] != NULL)
 	{
+		update_enemy_frame(data->enemies[i], data);
 		if (data->enemies[i]->visible)
 		{
 			screen_x = (uint32_t)((data->enemies[i]->rel_angle + rad(FOV / 2))
-					/ rad(FOV) * data->width);
+				/ rad(FOV) * data->width);
 			draw_enemy(data, data->enemies[i], screen_x);
 		}
 	}
