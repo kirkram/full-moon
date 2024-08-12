@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/05 12:28:19 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/12 11:35:03 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	init_map_data(t_data *data)
 	data->txtrs = NULL;
 	data->swordarm_tx = NULL;
 	data->swordarm = NULL;
+	data->enemy_ssheet = NULL;
 	data->startpos_x = 0;
 	data->startpos_y = 0;
 	data->floorcolor = 0x0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:05:11 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/18 22:17:29 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/12 11:50:45 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@ void	add_new_enemy(int x, int y, t_data *data, char *line)
 	// printf("enemy found at %.0f, %.0f : angle: %.4f\n", enemy->x_pos, enemy->y_pos, degr(enemy->angle));
 }
 
-void	fill_with_ones(t_data *data, int y, int x)
+void	fill_with_nines(t_data *data, int y, int x)
 {
 	while (x < data->map_width)
 	{
-		data->world_map[y][x] = 1;
+		data->world_map[y][x] = 9;
 		x++;
 	}
 }

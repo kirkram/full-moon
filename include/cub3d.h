@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/07 19:18:42 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/12 11:53:44 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,7 +232,7 @@ int					validate_map(int **world_map, t_data *data);
 int					validate_mapsquare(int value);
 void				convert_tabs(char **line);
 void				add_new_enemy(int x, int y, t_data *data, char *line);
-void				fill_with_ones(t_data *data, int y, int x);
+void				fill_with_nines(t_data *data, int y, int x);
 void				count_mapdimensions(t_data *data);
 int					get_player_startpos(int x, int y, t_data *data, char *line);
 int					flood_fill(int pos_y, int pos_x, int **wmap, t_data *data);
