@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/12 15:44:45 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/12 17:40:39 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,15 +118,10 @@ void	update_enemy_frame(t_enemy *enemy, t_data *data)
 	prev = enemy->last_frame;
 	// move here: if (now - prev < smallest change do nothing)
 	// or if angle changed enough update frame
-	if (enemy->state == DEAD)
-		return ;
-	if (enemy->state == IDLE && (now - prev > 0.7)) // ||
-		// fabsf(enemy->last_rel_angle - enemy->rel_angle) > 0.2))
+	if (enemy->state == IDLE && (now - prev > 0.7))
 	{
-		//printf("Angle diff: %.2f\n", fabsf(enemy->last_rel_angle - enemy->rel_angle));
 		if (enemy->current_frame == index)
 		{
-			//printf("frame: %d\n", index + 48);
 			enemy->current_frame = index + 48;
 			enemy->last_frame = now;
 			enemy->last_rel_angle = enemy->rel_angle;
@@ -134,14 +129,17 @@ void	update_enemy_frame(t_enemy *enemy, t_data *data)
 		}
 		else
 		{
-			//printf("frame: %d\n", index);
 			enemy->current_frame = index;
 			enemy->last_frame = now;
 			enemy->last_rel_angle = enemy->rel_angle;
 			return ;
 		}
 	}
-	//else if (enemy->state == WALKING && now - prev > 1.0)
+	//else if (enemy->state == WALKING && now - prev > 0.2)
+	//{
+	//	;
+		//if (enemy->current_frame )	
+	//}
 	else if (enemy->state == DYING && now - prev > 0.3)
 	{
 		if (enemy->current_frame >= 56 && enemy->last_frame < 61)
@@ -158,6 +156,14 @@ void	update_enemy_frame(t_enemy *enemy, t_data *data)
 			enemy->last_frame = now;
 			return ;
 		}
+	}
+}
+
+void	update_enemy(t_enemy *enemy, t_data *data)
+{
+	if (enemy->attack)
+	{
+		enemy->route = a_star(enemy->x_pos, enemy->y_pos, data->player->x_pos, data->player->y_pos, data);
 	}
 }
 
@@ -204,6 +210,7 @@ void	hook_enemies(t_data *data)
 	i = -1;
 	while (data->enemies[++i] != NULL)
 	{
+		update_enemy(data->enemies[i], data);
 		update_enemy_frame(data->enemies[i], data);
 		if (data->enemies[i]->visible)
 		{

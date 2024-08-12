@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/12 11:53:44 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/12 17:15:26 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ typedef struct s_enemy
 	t_ray			ray;
 	int				dof; //how many squares will check 
 	bool			attack; //if sees player
+	t_coord			*route;
 }					t_enemy;
 
 typedef struct s_data
@@ -196,7 +197,6 @@ typedef struct s_data
 	int				startpos_y;
 	t_enemy			**enemies;
 	mlx_texture_t	*enemy_ssheet;
-	t_map			enemysheet_correction[64]; // correct individual sprite positions
 	mlx_image_t		**enemy_frame;
 	int				ess_width;
 	int				ess_height;
