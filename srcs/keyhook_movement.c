@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:46:24 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/12 13:49:11 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/07 18:24:34 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ static void	movement_w(t_data *data, t_map *map)
 	}
 }
 
-void	movement_loop(t_data *data, t_map *map)
+void	movement_loop(t_data *data)
 {
 	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
 	{
@@ -123,13 +123,13 @@ void	movement_loop(t_data *data, t_map *map)
 			data->player->angle = data->player->angle - PI2;
 	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
-		movement_w(data, map);
+		movement_w(data, &data->keyhook_map);
 	else if (mlx_is_key_down(data->mlx, MLX_KEY_S))
-		movement_s(data, map);
+		movement_s(data, &data->keyhook_map);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_A))
-		movement_a(data, map);
+		movement_a(data, &data->keyhook_map);
 	else if (mlx_is_key_down(data->mlx, MLX_KEY_D))
-		movement_d(data, map);
-	if (mlx_is_key_down(data->mlx, MLX_KEY_E))
-		open_door(data, map);
+		movement_d(data, &data->keyhook_map);
+	// if (mlx_is_key_down(data->mlx, MLX_KEY_E))
+	// 	open_door(data, map);
 }

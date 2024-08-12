@@ -212,4 +212,9 @@ void	hook_enemies(t_data *data)
 			draw_enemy(data, data->enemies[i], screen_x);
 		}
 	}
+	i = -1;
+	while (data->enemies[++i] != NULL)
+	{
+		find_enemy_rays(data, data->enemies[i]);
+	}
 }
