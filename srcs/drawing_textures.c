@@ -6,11 +6,37 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 14:17:29 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/17 15:32:59 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/12 17:17:52 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+
+uint32_t	index_color_floor(t_txt *txt, t_ray *ray, float dist_from_middle, t_data *data)
+{
+	txt->red = txt->ptr->pixels[txt->index];
+	txt->green = txt->ptr->pixels[txt->index + 1];
+	txt->blue = txt->ptr->pixels[txt->index + 2];
+	txt->alpha = 0x000000FF;
+
+	(void) data;
+	float darken_factor = 1.0f / (dist_from_middle * 1.9f);
+	(void) ray;
+	// if (darken_factor > 1.0f) 
+	// 	darken_factor = 1.0f;
+
+	if (darken_factor > 0.6f) 
+		darken_factor = 0.6f;
+    // if (darken_factor < 0.1f) 
+	// 	darken_factor = 0.1f; // Prevents it from getting too dark
+
+    txt->red *= darken_factor;
+    txt->green *= darken_factor;
+    txt->blue *= darken_factor;
+	
+	return (txt->red << 24 | txt->green << 16 | txt->blue << 8 | txt->alpha);
+}
 
 uint32_t	index_color(t_txt *txt, t_ray *ray, bool is_wall)
 {
@@ -18,19 +44,47 @@ uint32_t	index_color(t_txt *txt, t_ray *ray, bool is_wall)
 	txt->green = txt->ptr->pixels[txt->index + 1];
 	txt->blue = txt->ptr->pixels[txt->index + 2];
 	txt->alpha = 0x000000FF;
-	if (is_wall && (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist
-			&& ray->vert_dist != 0)))
-	{
-		txt->red *= 0.65;
-		txt->green *= 0.65;
-		txt->blue *= 0.65;
-	}
-	if (!is_wall)
-	{
-		txt->red *= 0.75;
-		txt->green *= 0.75;
-		txt->blue *= 0.75;
-	}
+
+	float darken_factor = 1.0f / (ray->dist * 0.5f);
+	// if (darken_factor > 1.0f) 
+	// 	darken_factor = 1.0f;
+
+	if (darken_factor > 0.6f) 
+		darken_factor = 0.6f;
+    // if (darken_factor < 0.1f) 
+	// 	darken_factor = 0.1f; // Prevents it from getting too dark
+
+	// if (is_wall && (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist
+	// 		&& ray->vert_dist != 0)))
+	// {
+	// if (is_wall)
+	// {
+	// 	txt->red *= darken_factor;
+	// 	txt->green *= darken_factor;
+	// 	txt->blue *= darken_factor;
+	// }
+	// if (!is_wall)
+	// {
+	// 	txt->red *= 0.75;
+	// 	txt->green *= 0.75;
+	// 	txt->blue *= 0.75;
+	// }
+
+	// Apply darkening based on wall or not
+    if (is_wall && (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist && ray->vert_dist != 0)))
+    {
+        darken_factor *= 0.65f;
+    }
+    else if (!is_wall)
+    {
+        darken_factor *= 0.75f;
+    }
+
+    // Apply the darkening factor to the color components
+    txt->red *= darken_factor;
+    txt->green *= darken_factor;
+    txt->blue *= darken_factor;
+	
 	return (txt->red << 24 | txt->green << 16 | txt->blue << 8 | txt->alpha);
 }
 
