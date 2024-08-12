@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/19 19:50:46 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/12 15:44:45 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,8 +194,8 @@ void	get_rel_angle_and_pos(t_enemy *enemy, t_data *data)
 
 void	hook_enemies(t_data *data)
 {
-	int i;
-	uint32_t screen_x;
+	int			i;
+	uint32_t	screen_x;
 
 	i = -1;
 	while (data->enemies[++i] != NULL)
