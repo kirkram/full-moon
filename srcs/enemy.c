@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   enemy.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
 /*   Updated: 2024/08/13 17:03:44 by mburakow         ###   ########.fr       */
@@ -27,6 +27,13 @@ uint32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y)
 	green = img->pixels[pixel_index + 1];
 	blue = img->pixels[pixel_index + 2];
 	alpha = img->pixels[pixel_index + 3];
+	
+	//temporarily darken them with a static variable;
+	float darken = 0.6;
+	red *= darken;
+	green *= darken;
+	blue *= darken;
+
 	return (red << 24 | green << 16 | blue << 8 | alpha);
 }
 
