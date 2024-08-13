@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 14:13:22 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/11 14:41:22 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/13 10:58:47 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ void	increment_offset(t_data *data, t_ray *ray, bool is_vert)
 
 int	check_walls(t_data *data, t_ray *ray, t_map *map, bool is_vert)
 {
+	// if (data->world_map[map->y][map->x] == 5)
+	// {
+	// 	printf("i see the enemy\n");
+	// 	return (1);
+	// }
 	if (data->world_map[map->y][map->x] == 1)
 		return (1);
 	if (data->world_map[map->y][map->x] == 4)

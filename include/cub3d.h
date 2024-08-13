@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/12 11:53:44 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/13 16:45:21 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ unsigned long		current_time(void);
 # define TEXTURES_AMOUNT 6
 
 # define MAPBACKG_PATH "./textures/mapbackg.png"
-# define DRAWMINIRAYS 0
+# define DRAWMINIRAYS 1
 
 // sprites
 # define PL_FRAMECOUNT 11
@@ -155,11 +155,12 @@ typedef struct s_enemy
 	int				visible; // in player FOV or not
 	t_enemystate	state;
 	double			last_frame;
-	float			last_rel_angle; // rel angle at time of last frmae update
+	//float			last_rel_angle; // rel angle at time of last frmae update
 	float			scale; // dependent on distance
 	t_ray			ray;
 	int				dof; //how many squares will check 
 	bool			attack; //if sees player
+	t_coord			*route;
 }					t_enemy;
 
 typedef struct s_data
@@ -196,7 +197,6 @@ typedef struct s_data
 	int				startpos_y;
 	t_enemy			**enemies;
 	mlx_texture_t	*enemy_ssheet;
-	t_map			enemysheet_correction[64]; // correct individual sprite positions
 	mlx_image_t		**enemy_frame;
 	int				ess_width;
 	int				ess_height;
@@ -266,6 +266,7 @@ void				draw_rays(t_data *data);
 void				drw_line(t_point point, t_point dest, t_data *data,
 						mlx_image_t *img);
 uint32_t			index_color(t_txt *txt, t_ray *ray, bool is_wall);
+uint32_t			index_color_floor(t_txt *txt, t_ray *ray, float dist_from_middle, t_data *data);
 void				horizontal_rays(t_data *data, t_ray *ray);
 void				vertical_rays(t_data *data, t_ray *ray);
 void				calc_distance(t_data *data, t_ray *ray);
@@ -288,6 +289,7 @@ void				calc_collision_ws(t_data *data, t_map *map, bool forward);
 void				hook_enemies(t_data *data);
 void				sort_enemy_arr(t_data *data);
 void				find_enemy_rays(t_data *data, t_enemy *enemy);
+bool				enemy_is_alive(t_enemy *enemy);
 
 // animation
 void				attack_animation(t_data *data);

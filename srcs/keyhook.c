@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/07 18:27:45 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/13 16:45:01 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,22 +87,20 @@ void	hit_enemy_if_in_range(t_data *data)
     float angle_diff;
 
     i = -1;
-    // printf("Determining hit.\n");
+    printf("Determining hit.\n");
 	if (data->enemies)
 	{
 		while (data->enemies[++i] != NULL) 
 		{
-			if (data->enemies[i]->distance < 2.0) 
+			if (data->enemies[i]->distance < 2.0 && enemy_is_alive(data->enemies[i])) 
 			{
 				dx = data->enemies[i]->x_pos - data->player->x_pos;
 				dy = data->enemies[i]->y_pos - data->player->y_pos;
-				angle_to_enemy = atan2(dy, dx);
-				angle_to_enemy = normalize_rad(angle_to_enemy);
-				float player_angle = normalize_rad(data->player->angle);
-				angle_diff = angle_difference_rad(angle_to_enemy, player_angle);
-				//printf("Angle %.10f Distance %.10f\n", angle_diff, data->enemies[i]->distance);
+				angle_to_enemy = normalize_rad(atan2(dy, dx));
+				angle_diff = angle_difference_rad(angle_to_enemy, normalize_rad(data->player->angle));
+				printf("Angle %.10f Distance %.10f\n", angle_diff, data->enemies[i]->distance);
 				if (angle_diff < 0.6) {
-					//printf("Hit scored!\n");
+					printf("Hit scored!\n");
 					data->enemies[i]->state = DYING;
 				}
 			}
