@@ -6,12 +6,13 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:05:11 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/12 11:50:45 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/13 17:05:51 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+// Some of the code is just for fun like enemy facing determined by order of appearance
 static void	init_enemy_state(t_enemy *enemy, t_data *data)
 {
 	static int	facing = -1;
@@ -26,6 +27,7 @@ static void	init_enemy_state(t_enemy *enemy, t_data *data)
 	enemy->state = IDLE;
 	enemy->visible = 0;
 	enemy->scale = 1.0;
+	enemy->attack = false;
 	update_enemy_frame(enemy, data);
 }
 
