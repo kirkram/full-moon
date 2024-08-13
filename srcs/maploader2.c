@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:05:11 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/12 17:40:41 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/13 16:50:14 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void	init_enemy_state(t_enemy *enemy, t_data *data)
 	enemy->state = IDLE;
 	enemy->visible = 0;
 	enemy->scale = 1.0;
+	enemy->attack = false;
 	update_enemy_frame(enemy, data);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/12 17:15:26 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/13 16:45:21 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ typedef struct s_enemy
 	int				visible; // in player FOV or not
 	t_enemystate	state;
 	double			last_frame;
-	float			last_rel_angle; // rel angle at time of last frmae update
+	//float			last_rel_angle; // rel angle at time of last frmae update
 	float			scale; // dependent on distance
 	t_ray			ray;
 	int				dof; //how many squares will check 
@@ -288,6 +288,7 @@ void				calc_collision_ws(t_data *data, t_map *map, bool forward);
 void				hook_enemies(t_data *data);
 void				sort_enemy_arr(t_data *data);
 void				find_enemy_rays(t_data *data, t_enemy *enemy);
+bool				enemy_is_alive(t_enemy *enemy);
 
 // animation
 void				attack_animation(t_data *data);

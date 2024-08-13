@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/12 17:40:39 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/13 16:51:01 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,25 +121,27 @@ void	update_enemy_frame(t_enemy *enemy, t_data *data)
 	if (enemy->state == IDLE && (now - prev > 0.7))
 	{
 		if (enemy->current_frame == index)
-		{
 			enemy->current_frame = index + 48;
-			enemy->last_frame = now;
-			enemy->last_rel_angle = enemy->rel_angle;
-			return ;
-		}
 		else
-		{
 			enemy->current_frame = index;
-			enemy->last_frame = now;
-			enemy->last_rel_angle = enemy->rel_angle;
-			return ;
-		}
+		enemy->last_frame = now;
+		//enemy->last_rel_angle = enemy->rel_angle;
+		return ;
 	}
-	//else if (enemy->state == WALKING && now - prev > 0.2)
-	//{
-	//	;
-		//if (enemy->current_frame )	
-	//}
+	else if (enemy->state == WALKING && now - prev > 0.2)
+	{
+		if (enemy->current_frame == index)
+			enemy->current_frame = index + 8;
+		else if (enemy->current_frame == index + 8)
+			enemy->current_frame = index + 16;
+		else if (enemy->current_frame == index + 16)
+			enemy->current_frame = index + 32;
+		else
+			enemy->current_frame = index;
+		enemy->last_frame = now;
+		//enemy->last_rel_angle = enemy->rel_angle;
+		return ;		
+	}
 	else if (enemy->state == DYING && now - prev > 0.3)
 	{
 		if (enemy->current_frame >= 56 && enemy->last_frame < 61)
@@ -147,23 +149,29 @@ void	update_enemy_frame(t_enemy *enemy, t_data *data)
 			enemy->current_frame++;
 			if (enemy->current_frame == 61)
 				enemy->state = DEAD;
-			enemy->last_frame = now;
-			return ;
 		}
 		else
-		{
 			enemy->current_frame = 56;
-			enemy->last_frame = now;
-			return ;
-		}
+		enemy->last_frame = now;
+		return ; 
 	}
+}
+
+bool	enemy_is_alive(t_enemy *enemy)
+{
+	if (enemy->state == DEAD || enemy->state == DYING)
+		return false;
+	else
+		return true;
 }
 
 void	update_enemy(t_enemy *enemy, t_data *data)
 {
-	if (enemy->attack)
+	if (enemy->attack && enemy_is_alive(enemy))
 	{
+		printf("I saw the player!\n");
 		enemy->route = a_star(enemy->x_pos, enemy->y_pos, data->player->x_pos, data->player->y_pos, data);
+		enemy->state = WALKING;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:15:56 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/07 19:19:12 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/13 16:37:55 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ t_coord *reconstruct_path(t_node* end_node, t_data *data)
         count--;
         route[count].x = current->x;
         route[count].y = current->y;
-        printf("C: %d x: %d y: %d\n", count, route[count].x, route[count].y);
+        //printf("C: %d x: %d y: %d\n", count, route[count].x, route[count].y);
         //data->world_map[current->y][current->x] = 8;
 		//printf("PQ:\tx:%d\ty:%d\tg:%d\th:%d\tf:%d\n", current->x, current->y, current->g, current->h, current->f);
         current = current->parent;
@@ -236,7 +236,7 @@ t_coord *a_star(int start_x, int start_y, int end_x, int end_y, t_data *data)
         current = pq_pop(open_set);
         if (current->x == end_x && current->y == end_y) 
 		{
-			printf("Path found!!!\n");
+			//printf("Path found!!!\n");
             route = reconstruct_path(current, data); // open_set
             //print_map(data);
             free(current);
@@ -261,10 +261,12 @@ t_coord *a_star(int start_x, int start_y, int end_x, int end_y, t_data *data)
             }
         }
     }
+    /*
 	if (!found)
 	{
 		printf("No path found!\n");
 	}
+    */
     i = -1;
     while (++i < data->map_height) 
         free(closed_set[i]);
@@ -301,7 +303,7 @@ int main()
     int     i;
     int     j;
 
-    data.map_height = 9;
+    data.map_height = 9;q
     data.map_width = 10;
     data.world_map = (int**)malloc(data.map_height * sizeof(int*));
     i = -1;
