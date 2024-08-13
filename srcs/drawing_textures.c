@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 14:17:29 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/12 17:17:52 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/13 11:50:04 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,26 @@ uint32_t	index_color_floor(t_txt *txt, t_ray *ray, float dist_from_middle, t_dat
 	(void) data;
 	float darken_factor = 1.0f / (dist_from_middle * 1.9f);
 	(void) ray;
+
 	// if (darken_factor > 1.0f) 
 	// 	darken_factor = 1.0f;
 
 	if (darken_factor > 0.6f) 
 		darken_factor = 0.6f;
-    // if (darken_factor < 0.1f) 
-	// 	darken_factor = 0.1f; // Prevents it from getting too dark
+  
 
     txt->red *= darken_factor;
     txt->green *= darken_factor;
     txt->blue *= darken_factor;
+
+	// float darken_factor_ice = 1.0f / (ray->dist * 0.5f);
+
+	//  if (darken_factor_ice > 0.6f) 
+	// 	darken_factor_ice = 0.6f;
+
+	// txt->red *= darken_factor_ice;
+    // txt->green *= darken_factor_ice;
+    // txt->blue *= darken_factor_ice;
 	
 	return (txt->red << 24 | txt->green << 16 | txt->blue << 8 | txt->alpha);
 }
