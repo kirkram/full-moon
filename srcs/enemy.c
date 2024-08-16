@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/16 17:42:55 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/16 18:08:02 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,6 +220,18 @@ static void	step_route(t_enemy *enemy)
 	}
 }
 
+static void calculate_enemy_angle(t_enemy *enemy)
+{
+    float dx;
+    float dy;
+	float angle_rad;
+
+    dx = enemy->x_pos - enemy->x_target;
+    dy = enemy->y_pos - enemy->y_target;
+    angle_rad = atan2f(-dy, dx);
+	enemy->angle = normalize_rad(angle_rad);
+}
+
 void	update_enemy(t_enemy *enemy, t_data *data)
 {
 	int	i;
@@ -252,6 +264,7 @@ void	update_enemy(t_enemy *enemy, t_data *data)
 			{
 				enemy->x_target = enemy->route[0].x + 0.5;
 				enemy->y_target = enemy->route[0].y + 0.5;
+				calculate_enemy_angle(enemy);
 				printf("New waypoint: x %f y %f\n", enemy->x_target, enemy->y_target);
 				printf("Position: x %f y %f\n", enemy->x_pos, enemy->y_pos);
 				step_route(enemy);
