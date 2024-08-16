@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:05:11 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/13 17:05:51 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/16 17:27:45 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ static void	init_enemy_state(t_enemy *enemy, t_data *data)
 	enemy->visible = 0;
 	enemy->scale = 1.0;
 	enemy->attack = false;
+	enemy->route = NULL;
+	enemy->speed = 3.0;
+	enemy->x_target = enemy->x_pos;
+	enemy->y_target = enemy->y_pos;
 	update_enemy_frame(enemy, data);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   astar.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:15:56 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/13 16:37:55 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/16 16:24:56 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ t_coord *reconstruct_path(t_node* end_node, t_data *data)
 
     (void)data;
     current = end_node;
-    count = 0;
+    count = -1;
     while (current) 
 	{
         count++;
@@ -186,6 +186,8 @@ t_coord *reconstruct_path(t_node* end_node, t_data *data)
         //data->world_map[current->y][current->x] = 8;
 		//printf("PQ:\tx:%d\ty:%d\tg:%d\th:%d\tf:%d\n", current->x, current->y, current->g, current->h, current->f);
         current = current->parent;
+		if (current->parent == NULL)
+			break ;
     }
     return (route);
 }
@@ -213,14 +215,14 @@ t_coord *a_star(int start_x, int start_y, int end_x, int end_y, t_data *data)
 	t_node			*current;
 	t_node			*neighbor;
     t_coord         *route;
-	int				found;
+	//int				found;
     int             i;
     int             new_x;
     int             new_y;
     int             new_g;
     int             new_h;
 	
-	found = 0;
+	//found = 0;
 	open_set = pq_create(200); // should be dynamic size, except resizes?
 	// change forbidden functions
     closed_set = (int **)calloc(data->map_height, sizeof(int *));
@@ -240,7 +242,7 @@ t_coord *a_star(int start_x, int start_y, int end_x, int end_y, t_data *data)
             route = reconstruct_path(current, data); // open_set
             //print_map(data);
             free(current);
-			found = 1;
+			//found = 1;
             break ;
         }
         closed_set[current->y][current->x] = 1;
@@ -303,7 +305,7 @@ int main()
     int     i;
     int     j;
 
-    data.map_height = 9;q
+    data.map_height = 9;
     data.map_width = 10;
     data.world_map = (int**)malloc(data.map_height * sizeof(int*));
     i = -1;

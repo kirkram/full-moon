@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/13 16:45:21 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/16 17:26:11 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,8 @@ typedef struct s_enemy
 {
 	float			x_pos;
 	float			y_pos;
+	float			x_target; // current moving target x
+	float			y_target; // current moving target y
 	float			distance; // distance to the player
 	float			angle; // the direction enemy is facing
 	float			rel_angle; // angle relative to the player
@@ -155,12 +157,12 @@ typedef struct s_enemy
 	int				visible; // in player FOV or not
 	t_enemystate	state;
 	double			last_frame;
-	//float			last_rel_angle; // rel angle at time of last frmae update
 	float			scale; // dependent on distance
 	t_ray			ray;
 	int				dof; //how many squares will check 
 	bool			attack; //if sees player
-	t_coord			*route;
+	float			speed; // speed of movement
+	t_coord			*route; // a star route
 }					t_enemy;
 
 typedef struct s_data

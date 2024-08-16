@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/13 16:45:01 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/16 15:57:15 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,9 @@ void	hit_enemy_if_in_range(t_data *data)
 				angle_to_enemy = normalize_rad(atan2(dy, dx));
 				angle_diff = angle_difference_rad(angle_to_enemy, normalize_rad(data->player->angle));
 				printf("Angle %.10f Distance %.10f\n", angle_diff, data->enemies[i]->distance);
-				if (angle_diff < 0.6) {
-					printf("Hit scored!\n");
+				if (angle_diff < 0.6) 
+				{
+					//printf("Hit scored!\n");
 					data->enemies[i]->state = DYING;
 				}
 			}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/13 17:03:44 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/16 17:42:55 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,43 @@ void	draw_enemy_onto_canvas(t_enemy *enemy, int dest_x,
 	}
 }
 
+// Initial version
+static void move_enemy(t_data *data, t_enemy *enemy) 
+{
+	float move_x;
+	float move_y;
+	float direction_x;
+    float direction_y;
+    float distance;
+
+    direction_x = enemy->x_target - enemy->x_pos;
+    direction_y = enemy->y_target - enemy->y_pos;
+    distance = sqrtf(direction_x * direction_x + direction_y * direction_y);
+    printf("distance: %f\n", distance);
+	if (distance > 0) 
+	{
+        direction_x /= distance;
+        direction_y /= distance;
+        move_x = direction_x * enemy->speed * data->mlx->delta_time + enemy->x_pos;
+        move_y = direction_y * enemy->speed * data->mlx->delta_time + enemy->y_pos;
+		if (move_x > enemy->x_target)
+			move_x = enemy->x_target;
+		if (move_y > enemy->y_target)
+			move_y = enemy->y_target;
+		printf("Moving from x %f y %f to x %f y %f\n", enemy->x_pos, enemy->y_pos, move_x, move_y);
+        if (move_x >= 0 && move_x < data->map_width 
+			&& move_y >= 0 && move_y < data->map_height) 
+		{
+            if (data->world_map[(int)enemy->y_pos][(int)move_x] != 1
+                	&& data->world_map[(int)enemy->y_pos][(int)move_x] != 4)
+                enemy->x_pos = move_x;
+            if (data->world_map[(int)move_y][(int)enemy->x_pos] != 1
+                	&& data->world_map[(int)move_y][(int)enemy->x_pos] != 4)
+                enemy->y_pos = move_y;
+        }
+    }
+}
+
 // more complicated when shoot and walk included
 void	update_enemy_frame(t_enemy *enemy, t_data *data)
 {
@@ -132,7 +169,6 @@ void	update_enemy_frame(t_enemy *enemy, t_data *data)
 		else
 			enemy->current_frame = index;
 		enemy->last_frame = now;
-		//enemy->last_rel_angle = enemy->rel_angle;
 		return ;
 	}
 	else if (enemy->state == WALKING && now - prev > 0.2)
@@ -146,7 +182,6 @@ void	update_enemy_frame(t_enemy *enemy, t_data *data)
 		else
 			enemy->current_frame = index;
 		enemy->last_frame = now;
-		//enemy->last_rel_angle = enemy->rel_angle;
 		return ;		
 	}
 	else if (enemy->state == DYING && now - prev > 0.3)
@@ -172,13 +207,58 @@ bool	enemy_is_alive(t_enemy *enemy)
 		return true;
 }
 
+static void	step_route(t_enemy *enemy)
+{
+	int	i;
+
+	i = 0;
+	while (enemy->route[i].x != -1)
+	{
+		enemy->route[i].x = enemy->route[i + 1].x;
+		enemy->route[i].y = enemy->route[i + 1].y;
+		i++;
+	}
+}
+
 void	update_enemy(t_enemy *enemy, t_data *data)
 {
+	int	i;
+
 	if (enemy->attack && enemy_is_alive(enemy))
 	{
-		printf("I saw the player!\n");
-		enemy->route = a_star(enemy->x_pos, enemy->y_pos, data->player->x_pos, data->player->y_pos, data);
-		enemy->state = WALKING;
+		if (enemy->route == NULL)
+		{
+			printf("I saw the player!\n");
+			enemy->state = WALKING;
+			enemy->route = a_star(enemy->x_pos, enemy->y_pos, data->player->x_pos, data->player->y_pos, data);
+			i = 0;
+			while (enemy->route[i].x != -1)
+			{
+				printf("route point %d: x %d y %d\n", i, enemy->route[i].x, enemy->route[i].y);
+				++i;
+			}
+		}
+		if (is_equal(enemy->x_pos, enemy->x_target)
+			&& is_equal(enemy->y_pos, enemy->y_target))
+		{
+			printf("Getting new route point.\n");
+			if (enemy->route[0].x == -1)
+			{
+				printf("Route finished.\n");
+				free (enemy->route);
+				enemy->route = NULL;
+			}
+			else
+			{
+				enemy->x_target = enemy->route[0].x + 0.5;
+				enemy->y_target = enemy->route[0].y + 0.5;
+				printf("New waypoint: x %f y %f\n", enemy->x_target, enemy->y_target);
+				printf("Position: x %f y %f\n", enemy->x_pos, enemy->y_pos);
+				step_route(enemy);
+			}
+		}
+		printf("Moving enemy.\n");
+		move_enemy(data, enemy);
 	}
 }
 
