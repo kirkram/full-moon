@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/17 14:39:27 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/17 15:14:59 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ void	update_enemy_frame(t_enemy *enemy, t_data *data)
 	}
 	else if (enemy->state == DYING && now - prev > 0.3)
 	{
-		if (enemy->current_frame >= 56 && enemy->last_frame < 61)
+		if (enemy->current_frame >= 56 && enemy->current_frame < 61)
 		{
 			enemy->current_frame++;
 			if (enemy->current_frame == 61)

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/16 15:57:15 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/17 15:26:13 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	attack_animation(t_data *data)
 	data->last_attack = mlx_get_time();
 }
 
+/*
 void	draw_player_onto_canvas(t_data *data, mlx_image_t *frame, int dest_x,
 		int dest_y)
 {
@@ -66,6 +67,7 @@ void	draw_player_onto_canvas(t_data *data, mlx_image_t *frame, int dest_x,
 		pt.y = -1;
 	}
 }
+*/
 
 // Calculate the smallest difference between two angles
 float angle_difference_rad(float angle1, float angle2) 
@@ -155,6 +157,42 @@ void	hook_player_animation(t_data *data)
 	}
 }
 
+void	ft_hook_hub(void *param)
+{
+	t_data	*data;
+
+	data = param;
+	printf("fps: %.0f\n", 1 / data->mlx->delta_time);
+	ft_hook_keys(data);
+	color_whole_image(data->screen, FULL_TRANSPARENT, data->width,
+		data->height);
+	color_whole_image(data->player->img, FULL_TRANSPARENT,
+		data->player->imgwidth, data->player->imgheight);
+	draw_player_minimap(data);
+	draw_rays(data);
+	if (data->enemies)
+		hook_enemies(data);
+	hook_player_animation(data);
+}
+
+void	hook_mouse_move(double x, double y, void *param)
+{
+	t_data		*data;
+	t_player	*player;
+	double		dx;
+
+	(void)y;
+	data = param;
+	player = data->player;
+	dx = x - data->width / 2;
+	player->angle += dx * DEGR * 1.5 * data->speed * MOUSESPEED;
+	if (player->angle < 0)
+		player->angle += PI2;
+	if (player->angle >= PI2)
+		player->angle -= PI2;
+	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
+}
+
 /*
 void	hook_animation(t_data *data)
 {
@@ -234,39 +272,3 @@ void	hook_animation(t_data *data)
 	mlx_image_to_window(data->mlx, data->player->img, 1, 1);
 }
 */
-
-void	ft_hook_hub(void *param)
-{
-	t_data	*data;
-
-	data = param;
-	//printf("fps: %.0f\n", 1 / data->mlx->delta_time);
-	ft_hook_keys(data);
-	color_whole_image(data->screen, FULL_TRANSPARENT, data->width,
-		data->height);
-	color_whole_image(data->player->img, FULL_TRANSPARENT,
-		data->player->imgwidth, data->player->imgheight);
-	draw_player_minimap(data);
-	draw_rays(data);
-	if (data->enemies)
-		hook_enemies(data);
-	hook_player_animation(data);
-}
-
-void	hook_mouse_move(double x, double y, void *param)
-{
-	t_data		*data;
-	t_player	*player;
-	double		dx;
-
-	(void)y;
-	data = param;
-	player = data->player;
-	dx = x - data->width / 2;
-	player->angle += dx * DEGR * 1.5 * data->speed * MOUSESPEED;
-	if (player->angle < 0)
-		player->angle += PI2;
-	if (player->angle >= PI2)
-		player->angle -= PI2;
-	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
-}
