@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/16 18:08:02 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/17 14:39:27 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	draw_enemy_onto_canvas(t_enemy *enemy, int dest_x,
 
 	dest = data->screen;
 	src = data->enemy_frame[enemy->current_frame];
-	// printf("rendering frame %d\n", enemy->current_frame);
 	sc.y = -1;
 	sc.x = -1;
 	while (++(sc.x) < (int32_t)src->width)
@@ -100,7 +99,11 @@ static void move_enemy(t_data *data, t_enemy *enemy)
 	float direction_x;
     float direction_y;
     float distance;
+	float delta_time;
 
+	delta_time = data->mlx->delta_time;
+	if (delta_time > MAX_DELTA)
+    	delta_time = MAX_DELTA;
     direction_x = enemy->x_target - enemy->x_pos;
     direction_y = enemy->y_target - enemy->y_pos;
     distance = sqrtf(direction_x * direction_x + direction_y * direction_y);
@@ -109,12 +112,12 @@ static void move_enemy(t_data *data, t_enemy *enemy)
 	{
         direction_x /= distance;
         direction_y /= distance;
-        move_x = direction_x * enemy->speed * data->mlx->delta_time + enemy->x_pos;
-        move_y = direction_y * enemy->speed * data->mlx->delta_time + enemy->y_pos;
-		if (move_x > enemy->x_target)
-			move_x = enemy->x_target;
-		if (move_y > enemy->y_target)
-			move_y = enemy->y_target;
+        move_x = direction_x * ENEMYSPEED * delta_time + enemy->x_pos;
+        move_y = direction_y * ENEMYSPEED * delta_time + enemy->y_pos;
+        if ((direction_x > 0 && move_x > enemy->x_target) || (direction_x < 0 && move_x < enemy->x_target))
+            move_x = enemy->x_target;
+        if ((direction_y > 0 && move_y > enemy->y_target) || (direction_y < 0 && move_y < enemy->y_target))
+            move_y = enemy->y_target;
 		printf("Moving from x %f y %f to x %f y %f\n", enemy->x_pos, enemy->y_pos, move_x, move_y);
         if (move_x >= 0 && move_x < data->map_width 
 			&& move_y >= 0 && move_y < data->map_height) 
@@ -129,7 +132,6 @@ static void move_enemy(t_data *data, t_enemy *enemy)
     }
 }
 
-// more complicated when shoot and walk included
 void	update_enemy_frame(t_enemy *enemy, t_data *data)
 {
 	float 			a;
@@ -143,14 +145,11 @@ void	update_enemy_frame(t_enemy *enemy, t_data *data)
 		enemy->current_frame = 61;
 		return ;
 	}
-	// make it relative to the player angle
 	a = normalize_degr(enemy->angle / DEGR);
 	b = normalize_degr(data->player->angle / DEGR);
 	a = normalize_degr(b - a);
 	index = (int)((a + 22.5) / 45) % 8;
 	index = (8 - index) % 8;
-	//printf("player angle: %.0f enemy angle: %.0f\n", b, (enemy->angle / DEGR));
-	//printf("angle a: %.0f index: %d\n", a, index);
 	now = mlx_get_time();
 	if (enemy->last_frame == 0.0)
 	{
@@ -158,10 +157,7 @@ void	update_enemy_frame(t_enemy *enemy, t_data *data)
 		enemy->last_frame = now;
 		return ;
 	}
-	//printf("init uef: %.10f\n", now);
 	prev = enemy->last_frame;
-	// move here: if (now - prev < smallest change do nothing)
-	// or if angle changed enough update frame
 	if (enemy->state == IDLE && (now - prev > 0.7))
 	{
 		if (enemy->current_frame == index)
@@ -212,10 +208,10 @@ static void	step_route(t_enemy *enemy)
 	int	i;
 
 	i = 0;
-	while (enemy->route[i].x != -1)
+	while (enemy->route->coords[i].x != -1)
 	{
-		enemy->route[i].x = enemy->route[i + 1].x;
-		enemy->route[i].y = enemy->route[i + 1].y;
+		enemy->route->coords[i].x = enemy->route->coords[i + 1].x;
+		enemy->route->coords[i].y = enemy->route->coords[i + 1].y;
 		i++;
 	}
 }
@@ -228,7 +224,7 @@ static void calculate_enemy_angle(t_enemy *enemy)
 
     dx = enemy->x_pos - enemy->x_target;
     dy = enemy->y_pos - enemy->y_target;
-    angle_rad = atan2f(-dy, dx);
+    angle_rad = atan2f(dy, dx);
 	enemy->angle = normalize_rad(angle_rad);
 }
 
@@ -244,29 +240,39 @@ void	update_enemy(t_enemy *enemy, t_data *data)
 			enemy->state = WALKING;
 			enemy->route = a_star(enemy->x_pos, enemy->y_pos, data->player->x_pos, data->player->y_pos, data);
 			i = 0;
-			while (enemy->route[i].x != -1)
+			while (enemy->route->coords[i].x != -1)
 			{
-				printf("route point %d: x %d y %d\n", i, enemy->route[i].x, enemy->route[i].y);
+				printf("route point %d: x %d y %d\n", i, enemy->route->coords[i].x, enemy->route->coords[i].y);
 				++i;
 			}
+			return ;
 		}
 		if (is_equal(enemy->x_pos, enemy->x_target)
 			&& is_equal(enemy->y_pos, enemy->y_target))
 		{
 			printf("Getting new route point.\n");
-			if (enemy->route[0].x == -1)
+			if (enemy->route->coords[0].x == -1)
 			{
 				printf("Route finished.\n");
-				free (enemy->route);
+				free(enemy->route);
 				enemy->route = NULL;
+				if (enemy->distance > 1.0)
+					enemy->route = a_star(enemy->x_pos, enemy->y_pos, data->player->x_pos, data->player->y_pos, data);
+				return ;
 			}
 			else
 			{
-				enemy->x_target = enemy->route[0].x + 0.5;
-				enemy->y_target = enemy->route[0].y + 0.5;
+				enemy->x_target = enemy->route->coords[0].x + 0.5;
+				enemy->y_target = enemy->route->coords[0].y + 0.5;
 				calculate_enemy_angle(enemy);
 				printf("New waypoint: x %f y %f\n", enemy->x_target, enemy->y_target);
 				printf("Position: x %f y %f\n", enemy->x_pos, enemy->y_pos);
+				i = 0;
+				while (enemy->route->coords[i].x != -1)
+				{
+					printf("route point %d: x %d y %d\n", i, enemy->route->coords[i].x, enemy->route->coords[i].y);
+					++i;
+				}
 				step_route(enemy);
 			}
 		}

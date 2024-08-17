@@ -6,15 +6,22 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:15:56 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/16 16:24:56 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/17 14:15:26 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "pathfinding.h"
 
-t_priorityqueue* pq_create(int capacity) {
-    t_priorityqueue* pq = (t_priorityqueue*)malloc(sizeof(t_priorityqueue));
+t_priorityqueue* pq_create(int capacity) 
+{
+    t_priorityqueue* pq;
+
+	pq = (t_priorityqueue*)malloc(sizeof(t_priorityqueue));
+	/*
+	if (!pq)
+		free_all_and_quit(data);
+	*/
     pq->nodes = (t_node*)malloc(capacity * sizeof(t_node));
     pq->size = 0;
     pq->capacity = capacity;
@@ -159,32 +166,31 @@ bool is_walkable(int x, int y, t_data *data)
     return (is_in_bounds(x, y, data) && data->world_map[y][x] == 0);
 }
 
-t_coord *reconstruct_path(t_node* end_node, t_data *data)
+t_route *reconstruct_path(t_node* end_node)
 {
     t_node  *current;
-    t_coord *route;
+	t_route	*route;
     int     count;
 
-    (void)data;
     current = end_node;
-    count = -1;
+	route = (t_route *)malloc(sizeof(t_route));
+    route->size = -1;
     while (current) 
 	{
-        count++;
+        route->size++;
         current = current->parent;
     }
-    route = (t_coord *)malloc(sizeof(t_coord) * (count + 1));
-    route[count].x = -1;
-    route[count].y = -1;
+    route->coords = (t_coord *)malloc(sizeof(t_coord) * (route->size + 1));
+    route->coords[route->size].x = -1;
+    route->coords[route->size].y = -1;
 	current = end_node;
-    while (current && count >= 0) 
+	count = route->size;
+    while (current && count >= 1) 
 	{
         count--;
-        route[count].x = current->x;
-        route[count].y = current->y;
-        //printf("C: %d x: %d y: %d\n", count, route[count].x, route[count].y);
-        //data->world_map[current->y][current->x] = 8;
-		//printf("PQ:\tx:%d\ty:%d\tg:%d\th:%d\tf:%d\n", current->x, current->y, current->g, current->h, current->f);
+        route->coords[count].x = current->x;
+        route->coords[count].y = current->y;
+        printf("C: %d x: %d y: %d\n", count, route->coords[count].x, route->coords[count].y);
         current = current->parent;
 		if (current->parent == NULL)
 			break ;
@@ -207,42 +213,60 @@ void    print_map(t_data *data)
     }
 }
 
-t_coord *a_star(int start_x, int start_y, int end_x, int end_y, t_data *data) 
+static void	set_directions(int directions[8][2])
+{
+	directions[0][0] = 0; directions[0][1] = 1;
+	directions[1][0] = 1; directions[1][1] = 0;
+	directions[2][0] = 0; directions[2][1] = -1;
+	directions[3][0] = -1; directions[3][1] = 0;
+	directions[4][0] = 1; directions[4][1] = 1;
+	directions[5][0] = 1; directions[5][1] = -1;
+	directions[6][0] = -1; directions[6][1] = -1;
+	directions[7][0] = -1; directions[7][1] = 1;
+}
+
+static int	**initialize_closed_set(t_data *data)
+{
+	int	i;
+	int	**closed_set;
+
+	// change forbidden functions
+	closed_set = (int **)calloc(data->map_height, sizeof(int *));
+	// malloc protect
+    i = -1;
+    while (++i < data->map_height)
+		closed_set[i] = (int *)calloc(data->map_width, sizeof(int));
+		// malloc protect
+	return (closed_set);
+}
+
+t_route *a_star(int start_x, int start_y, int end_x, int end_y, t_data *data) 
 {
     t_priorityqueue	*open_set;
 	int 			**closed_set;
 	t_node			*start_node;
 	t_node			*current;
 	t_node			*neighbor;
-    t_coord         *route;
-	//int				found;
+    t_route         *route;
     int             i;
     int             new_x;
     int             new_y;
     int             new_g;
     int             new_h;
+	int				directions[8][2];
 	
-	//found = 0;
-	open_set = pq_create(200); // should be dynamic size, except resizes?
-	// change forbidden functions
-    closed_set = (int **)calloc(data->map_height, sizeof(int *));
-    i = -1;
-    while (++i < data->map_height)
-		closed_set[i] = (int *)calloc(data->map_width, sizeof(int));
+	set_directions(directions);
+	open_set = pq_create(200);
+	closed_set = initialize_closed_set(data);
     start_node = create_node(start_x, start_y, 0, 0, NULL);
     pq_push(open_set, start_node);
-	// edit this:
-    int directions[8][2] = { {0, 1}, {1, 0}, {0, -1}, {-1, 0}, {1, 1}, {1, -1}, {-1, -1}, {-1, 1} };
     while (open_set->size > 0) 
 	{
         current = pq_pop(open_set);
         if (current->x == end_x && current->y == end_y) 
 		{
-			//printf("Path found!!!\n");
-            route = reconstruct_path(current, data); // open_set
-            //print_map(data);
+            route = reconstruct_path(current);
             free(current);
-			//found = 1;
             break ;
         }
         closed_set[current->y][current->x] = 1;
@@ -263,12 +287,6 @@ t_coord *a_star(int start_x, int start_y, int end_x, int end_y, t_data *data)
             }
         }
     }
-    /*
-	if (!found)
-	{
-		printf("No path found!\n");
-	}
-    */
     i = -1;
     while (++i < data->map_height) 
         free(closed_set[i]);
