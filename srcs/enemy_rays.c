@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 19:21:15 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/16 17:20:59 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/17 15:58:29 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,7 @@ void	find_enemy_rays(t_data *data, t_enemy *enemy)
 
 	enemy_ray = &enemy->ray;
 	enemy_ray->ang = enemy->angle - rad(FOV / 2 / 2);
+	enemy_ray->ang -= PI;
 	enemy->dof = 5;
 	//enemy->attack = true //should be in the attack state  for some time or until death
 	angle_outofbounds_check(enemy_ray);
