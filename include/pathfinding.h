@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pathfinding.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 17:15:50 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/07 19:18:16 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 13:41:53 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,22 @@ typedef struct s_priorityqueue
 	int capacity;
 } t_priorityqueue;
 
-/*
-typedef struct s_data
-{
-    int **world_map;
-    int map_width;
-	int map_height;
-} t_data;
-*/
+// pathfinding internal functions
+int				**initialize_closed_set(t_data *data);
+t_priorityqueue	*pq_create(int capacity);
+t_node			*create_node(int x, int y, int g, int h, t_node *parent);
+void			set_directions(int directions[8][2]);
+void			pq_push(t_priorityqueue *pq, t_node *node);
+t_node*			pq_pop(t_priorityqueue *pq);
+t_node			*peek(t_priorityqueue *pq);
+int				min(int a, int b);
+int				heuristic(int x1, int y1, int x2, int y2);
+bool			is_in_bounds(int x, int y, t_data *data);
+bool			is_walkable(int x, int y, t_data *data);
+t_route			*reconstruct_path(t_node *end_node);
+
+// pathfinding (debug) tools
+void			print_map(t_data *data);
+void			print_node(t_node *node);
+void			print_priority_queue(t_priorityqueue *pq);
+
