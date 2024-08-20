@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_sort.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 16:21:13 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/12 18:22:33 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:22:31 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static void	swap_ptrs(t_data *data, int i, int j)
 
 void	sort_enemy_arr(t_data *data)
 {
-	int n;
-	int i;
-	int j;
+	int	n;
+	int	i;
+	int	j;
 
 	n = 0;
 	i = -1;

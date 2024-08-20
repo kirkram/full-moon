@@ -10,9 +10,9 @@ LIBS = $(LIBMLX42) -lm -lglfw -L /Users/$(USER)/.brew/opt/glfw -L/Users/$(USER)/
 SRC_DIR = 	./srcs
 SRCS = main.c helper.c \
 drawing.c drawing_distance.c drawing_helper.c drawing_hor_rays.c drawing_minimap.c drawing_textures.c drawing_vert_rays.c \
-init.c init2.c pathfinding.c \
+init.c init2.c \
 keyhook.c keyhook_movement.c keyhook_movement_2.c\
-minimap.c maploader.c maploader2.c	\
+minimap.c maploader.c maploader2.c maploader3.c	\
 mapvalidator.c maptools.c map_params.c exitfree.c \
 enemy.c enemy_sort.c enemy_rays.c astar.c astar_pq_queue.c \
 astar_pq_tools.c astar_utils.c astar_path.c astar_init_clean.c ft_realloc.c
