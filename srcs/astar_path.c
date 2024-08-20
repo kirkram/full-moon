@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 13:36:45 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 18:48:05 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:05:42 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	initialize_closed_set(t_astar *context, t_data *data)
 {
 	int	i;
 
-	// change forbidden functions
 	context->closed_set = (int **)ft_calloc(data->map_height, sizeof(int *));
 	if (!context->closed_set)
 		error_a_star(context, data);

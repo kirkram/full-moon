@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 18:44:39 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 18:47:57 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:06:28 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	cleanup_a_star(t_astar *context, t_data *data)
 
 void	error_a_star(t_astar *context, t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < data->map_height)

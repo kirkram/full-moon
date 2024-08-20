@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 13:24:31 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 13:27:56 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:05:02 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ bool	is_walkable(int x, int y, t_data *data)
 
 void	print_map(t_data *data)
 {
-	int y;
-	int x;
+	int	y;
+	int	x;
 
 	y = -1;
 	while (++y < data->map_height)

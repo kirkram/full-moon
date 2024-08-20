@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:15:56 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 18:45:46 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:06:46 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ t_route	*run_a_star(t_astar *context, t_coord end_pos, t_data *data)
 			return (context->route);
 		}
 	}
-	return (NULL); // No path found
+	return (NULL);
 }
 
 t_route	*a_star(t_coord start_pos, t_coord end_pos, t_data *data)
