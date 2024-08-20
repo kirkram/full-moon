@@ -6,58 +6,34 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:15:56 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 18:06:05 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 18:45:46 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "pathfinding.h"
 
-void	print_directions(int directions[8][2])
+int	check_and_mark_current_node(t_node *current, t_coord end_pos,
+		t_astar *context)
 {
-	const char	*direction_names[8] = {"Up", "Down", "Left", "Right", "Up-Left",
-			"Up-Right", "Down-Left", "Down-Right"};
-
-	for (int i = 0; i < 8; i++)
-	{
-		printf("%s: x = %d, y = %d\n", direction_names[i], directions[i][0],
-			directions[i][1]);
-	}
-}
-
-t_astar	*initialize_a_star(t_coord start_pos, t_data *data)
-{
-	t_astar	*context;
-
-	context = (t_astar *)malloc(sizeof(t_astar));
-	if (!context)
-		free_all_and_quit(data, "error a star", 32);
-	set_directions(context->directions);
-	pq_create(200, context, data);
-	initialize_closed_set(context, data);
-	context->start_node = create_node(start_pos, 0, 0, NULL);
-	if (!context->start_node)
-		error_a_star(context, data);
-	pq_push(context->open_set, context->start_node, context, data);
-	return (context);
-}
-
-int	process_current_node(t_node *current, t_coord end_pos,
-		t_astar *context, t_data *data)
-{
-	int		i;
-	t_coord	new_coord;
-	int		new_g;
-	int		new_h;
-	t_node	*neighbor;
-
 	if (current->x == end_pos.x && current->y == end_pos.y)
 	{
 		context->route = reconstruct_path(current);
 		free(current);
-		return (1); // Found the path
+		return (1);
 	}
 	context->closed_set[current->y][current->x] = 1;
+	return (0);
+}
+
+void	process_neighbors(t_node *current, t_astar *context, t_data *data,
+		t_coord end_pos)
+{
+	int		i;
+	t_coord	new_coord;
+	int		new_g;
+	t_node	*neighbor;
+
 	i = -1;
 	while (++i < 8)
 	{
@@ -71,14 +47,22 @@ int	process_current_node(t_node *current, t_coord end_pos,
 				new_g = current->g + COST_STRAIGHT;
 			else
 				new_g = current->g + COST_DIAGONAL;
-			new_h = heuristic(new_coord.x, new_coord.y, end_pos.x, end_pos.y);
-			neighbor = create_node(new_coord, new_g, new_h, current);
+			neighbor = create_node(new_coord, new_g, heuristic(new_coord.x,
+						new_coord.y, end_pos.x, end_pos.y), current);
 			if (!neighbor)
 				error_a_star(context, data);
 			pq_push(context->open_set, neighbor, context, data);
 		}
 	}
-	return (0); // Continue searching
+}
+
+int	process_current_node(t_node *current, t_coord end_pos, t_astar *context,
+		t_data *data)
+{
+	if (check_and_mark_current_node(current, end_pos, context))
+		return (1);
+	process_neighbors(current, context, data, end_pos);
+	return (0);
 }
 
 t_route	*run_a_star(t_astar *context, t_coord end_pos, t_data *data)
@@ -88,7 +72,7 @@ t_route	*run_a_star(t_astar *context, t_coord end_pos, t_data *data)
 	current = NULL;
 	while (context->open_set->size > 0)
 	{
-		current = pq_pop(context->open_set);
+		current = pq_pop(context->open_set, context, data);
 		printf("Checking x %d y %d\n", current->x, current->y);
 		if (process_current_node(current, end_pos, context, data))
 		{
@@ -98,26 +82,10 @@ t_route	*run_a_star(t_astar *context, t_coord end_pos, t_data *data)
 	return (NULL); // No path found
 }
 
-void	cleanup_a_star(t_astar *context, t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->map_height)
-	{
-		free(context->closed_set[i]);
-		i++;
-	}
-	free(context->closed_set);
-	free(context->open_set->nodes);
-	free(context->open_set);
-	free(context);
-}
-
 t_route	*a_star(t_coord start_pos, t_coord end_pos, t_data *data)
 {
 	t_astar	*context;
-	t_route			*route;
+	t_route	*route;
 
 	context = initialize_a_star(start_pos, data);
 	route = run_a_star(context, end_pos, data);

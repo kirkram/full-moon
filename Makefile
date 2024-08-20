@@ -15,7 +15,7 @@ keyhook.c keyhook_movement.c keyhook_movement_2.c\
 minimap.c maploader.c maploader2.c	\
 mapvalidator.c maptools.c map_params.c exitfree.c \
 enemy.c enemy_sort.c enemy_rays.c astar.c astar_pq_queue.c \
-astar_pq_tools.c astar_utils.c astar_path.c ft_realloc.c
+astar_pq_tools.c astar_utils.c astar_path.c astar_init_clean.c ft_realloc.c
 INC_DIRS = ./include $(LIBMLX_PATH)/include/ $(LIBFT_PATH)/libft $(LIBFT_PATH)/ft_printf/incs /usr/local/Cellar/glfw/include
 INCS = $(foreach dir, $(INC_DIRS), -I $(dir))
 OBJ_DIR = ./objs

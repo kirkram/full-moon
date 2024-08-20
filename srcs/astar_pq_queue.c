@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 12:48:56 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 18:11:42 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 18:21:32 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,16 @@ static void	heapify_down(t_priorityqueue *pq, int i)
 	}
 }
 
-void	pq_push(t_priorityqueue *pq, t_node *node, t_astar *context, t_data *data)
+void	pq_push(t_priorityqueue *pq, t_node *node, t_astar *context,
+		t_data *data)
 {
 	if (context->open_set->size >= pq->capacity)
 	{
-		pq->nodes = (t_node *)ft_realloc(pq->nodes, pq->capacity * sizeof(t_node), 
-			pq->capacity * 2 * sizeof(t_node));
+		pq->capacity *= 2;
+		pq->nodes = (t_node *)ft_realloc(pq->nodes, pq->capacity
+				* sizeof(t_node));
 		if (!pq->nodes)
 			error_a_star(context, data);
-		pq->capacity *= 2;
 	}
 	pq->nodes[pq->size++] = *node;
 	heapify_up(pq, pq->size - 1);

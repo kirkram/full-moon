@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 17:15:50 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 18:08:53 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 18:47:27 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_astar
 } t_astar;
 
 // pathfinding internal functions
+t_astar			*initialize_a_star(t_coord start_pos, t_data *data);
 void			initialize_closed_set(t_astar *context, t_data *data);
 void			pq_create(int capacity, t_astar *context, t_data *data);
 t_node			*create_node(t_coord new, int g, int h, t_node *parent);
@@ -59,6 +60,7 @@ int				heuristic(int x1, int y1, int x2, int y2);
 bool			is_in_bounds(int x, int y, t_data *data);
 bool			is_walkable(int x, int y, t_data *data);
 t_route			*reconstruct_path(t_node *end_node);
+void			cleanup_a_star(t_astar *context, t_data *data);
 
 // error
 void			error_a_star(t_astar *context, t_data *data);

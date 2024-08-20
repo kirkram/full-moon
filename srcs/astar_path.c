@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 13:36:45 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 18:05:03 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 18:48:05 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,26 +85,4 @@ void	set_directions(int directions[8][2])
 	directions[6][1] = -1;
 	directions[7][0] = -1;
 	directions[7][1] = 1;
-}
-
-void	error_a_star(t_astar *context, t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->map_height)
-	{
-		if (context->closed_set[i])
-			free(context->closed_set[i]);
-		i++;
-	}
-	if (context->closed_set)
-		free(context->closed_set);
-	if (context->open_set->nodes) 
-		free(context->open_set->nodes);
-	if (context->open_set)
-		free(context->open_set);
-	if (context)
-		free(context);
-	free_all_and_quit(data, "a star error", 32);
 }

@@ -6,17 +6,16 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 16:22:16 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 16:37:04 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 18:22:26 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 #include <stdlib.h>
 
-void *ft_realloc(void *ptr, size_t old_size, size_t new_size) 
+void *ft_realloc(void *ptr, size_t new_size) 
 {
     void	*new_ptr;
-	size_t	copy_size;
 
     if (new_size == 0) 
 	{
@@ -28,11 +27,7 @@ void *ft_realloc(void *ptr, size_t old_size, size_t new_size)
         return NULL;
     if (ptr) 
 	{
-		if (old_size < new_size)
-        	copy_size = old_size;
-		else
-			copy_size = new_size;
-        ft_memcpy(new_ptr, ptr, copy_size);
+        ft_memcpy(new_ptr, ptr, new_size);
         free(ptr);
     }
     return (new_ptr);
