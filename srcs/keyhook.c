@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/17 15:26:13 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 14:26:37 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,12 @@ void	hit_enemy_if_in_range(t_data *data)
 
 void	hook_player_animation(t_data *data)
 {
-	static double	last_update = 0;
+	static double	last_update = -1;
 	static int		frame = 0;
 	double			current_time;
 
+	if (last_update < 0)
+    	last_update = mlx_get_time();
 	current_time = mlx_get_time();
 	if ((current_time - last_update >= ATTACK_SPEED / 4) && (current_time
 			- data->last_attack >= ATTACK_SPEED))
@@ -162,7 +164,7 @@ void	ft_hook_hub(void *param)
 	t_data	*data;
 
 	data = param;
-	printf("fps: %.0f\n", 1 / data->mlx->delta_time);
+	// printf("fps: %.0f\n", 1 / data->mlx->delta_time);
 	ft_hook_keys(data);
 	color_whole_image(data->screen, FULL_TRANSPARENT, data->width,
 		data->height);

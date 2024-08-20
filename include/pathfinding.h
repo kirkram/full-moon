@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 17:15:50 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 13:41:53 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 14:46:04 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,34 @@
 
 typedef struct s_node 
 {
-    int x; // square x coord
-	int y;  // square y coord
-	int g; // cost to move here
-	int h; // heuristic: estimated cost to move to target
-	int f; // g + h : total cost
-    struct s_node* parent; // fom here we got to this square
+    int				x;
+	int				y;
+	int 			g;
+	int 			h;
+	int 			f;
+    struct s_node*	parent;
 } t_node;
 
 typedef struct s_priorityqueue
 {
-    t_node* nodes;
-    int size;
-	int capacity;
+    t_node* 		nodes;
+    int 			size;
+	int 			capacity;
 } t_priorityqueue;
+
+typedef struct s_astar_context 
+{
+    t_priorityqueue	*open_set;
+    int				**closed_set;
+	int 			directions[8][2];
+    t_node			*start_node;
+    t_route			*route;
+} t_astar_context;
 
 // pathfinding internal functions
 int				**initialize_closed_set(t_data *data);
 t_priorityqueue	*pq_create(int capacity);
-t_node			*create_node(int x, int y, int g, int h, t_node *parent);
+t_node			*create_node(t_coord new, int g, int h, t_node *parent);
 void			set_directions(int directions[8][2]);
 void			pq_push(t_priorityqueue *pq, t_node *node);
 t_node*			pq_pop(t_priorityqueue *pq);

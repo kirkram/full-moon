@@ -6,14 +6,121 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:15:56 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 14:05:16 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 16:12:56 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "pathfinding.h"
 
-t_route	*a_star(int start_x, int start_y, int end_x, int end_y, t_data *data)
+void print_directions(int directions[8][2]) 
+{
+    const char *direction_names[8] = {
+        "Up", "Down", "Left", "Right", 
+        "Up-Left", "Up-Right", "Down-Left", "Down-Right"
+    };
+    
+    for (int i = 0; i < 8; i++) {
+        printf("%s: x = %d, y = %d\n", direction_names[i], directions[i][0], directions[i][1]);
+    }
+}
+
+t_astar_context *initialize_a_star(t_coord start_pos, t_data *data) 
+{
+    t_astar_context	*context;
+    
+	context = (t_astar_context *)malloc(sizeof(t_astar_context));
+    set_directions(context->directions);
+	print_directions(context->directions);
+    context->open_set = pq_create(200);
+    context->closed_set = initialize_closed_set(data);
+    context->start_node = create_node(start_pos, 0, 0, NULL);
+    pq_push(context->open_set, context->start_node);
+    return (context);
+}
+
+
+int	process_current_node(t_node *current, t_coord end_pos, t_astar_context *context, t_data *data) 
+{
+	int		i;
+	t_coord	new_coord;
+	int		new_g;
+	int		new_h;
+    t_node	*neighbor;
+
+    if (current->x == end_pos.x && current->y == end_pos.y) 
+	{
+        context->route = reconstruct_path(current);
+        free(current);
+        return (1); // Found the path
+    }
+    context->closed_set[current->y][current->x] = 1;
+	i = -1;
+    while (++i < 8) 
+	{
+        new_coord.x = current->x + context->directions[i][0];
+        new_coord.y = current->y + context->directions[i][1];
+        if (is_in_bounds(new_coord.x, new_coord.y, data) && !context->closed_set[new_coord.y][new_coord.x]
+            && is_walkable(new_coord.x, new_coord.y, data)) 
+		{
+            if (i < 4)
+				new_g = current->g + COST_STRAIGHT;
+			else
+				new_g = current->g + COST_DIAGONAL;
+            new_h = heuristic(new_coord.x, new_coord.y, end_pos.x, end_pos.y);
+            neighbor = create_node(new_coord, new_g, new_h, current);
+            pq_push(context->open_set, neighbor);
+        }
+    }
+    return (0); // Continue searching
+}
+
+t_route	*run_a_star(t_astar_context *context, t_coord end_pos, t_data *data) 
+{
+    t_node *current;
+    
+	current = NULL;
+    while (context->open_set->size > 0) 
+	{
+        current = pq_pop(context->open_set);
+		printf ("Checking x %d y %d\n", current->x, current->y);
+        if (process_current_node(current, end_pos, context, data)) {
+            return context->route;
+        }
+        //free(current);
+    }
+    return NULL; // No path found
+}
+
+void cleanup_a_star(t_astar_context *context, t_data *data) 
+{
+	int	i;
+
+	i = 0;
+    while (i < data->map_height) 
+	{
+        free(context->closed_set[i]);
+		i++;
+    }
+    free(context->closed_set);
+    free(context->open_set->nodes);
+    free(context->open_set);
+    free(context);
+}
+
+t_route *a_star(t_coord start_pos, t_coord end_pos, t_data *data) 
+{
+    t_astar_context	*context;
+    t_route			*route;
+    
+	context = initialize_a_star(start_pos, data);
+	route = run_a_star(context, end_pos, data);
+    cleanup_a_star(context, data);
+    return (route);
+}
+
+/*
+t_route	*a_star(t_coord start_pos, t_coord end_pos, t_data *data)
 {
 	t_priorityqueue	*open_set;
 	int				**closed_set;
@@ -31,12 +138,12 @@ t_route	*a_star(int start_x, int start_y, int end_x, int end_y, t_data *data)
 	set_directions(directions);
 	open_set = pq_create(200);
 	closed_set = initialize_closed_set(data);
-	start_node = create_node(start_x, start_y, 0, 0, NULL);
+	start_node = create_node(start_pos.x, start_pos.y, 0, 0, NULL);
 	pq_push(open_set, start_node);
 	while (open_set->size > 0)
 	{
 		current = pq_pop(open_set);
-		if (current->x == end_x && current->y == end_y)
+		if (current->x == end_pos.x && current->y == end_pos.y)
 		{
 			route = reconstruct_path(current);
 			free(current);
@@ -55,7 +162,7 @@ t_route	*a_star(int start_x, int start_y, int end_x, int end_y, t_data *data)
 					new_g = current->g + COST_STRAIGHT;
 				else
 					new_g = current->g + COST_DIAGONAL;
-				new_h = heuristic(new_x, new_y, end_x, end_y);
+				new_h = heuristic(new_x, new_y, end_pos.x, end_pos.y);
 				neighbor = create_node(new_x, new_y, new_g, new_h, current);
 				pq_push(open_set, neighbor);
 			}
@@ -70,7 +177,7 @@ t_route	*a_star(int start_x, int start_y, int end_x, int end_y, t_data *data)
 	return (route);
 }
 
-/* extra stuff:
+extra stuff:
 void	invert_2d_array(int **array, int rows, int cols) {
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < cols; j++) {

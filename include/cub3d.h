@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/17 14:24:14 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 14:15:15 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,6 +324,6 @@ int					free_2d_int(int **int_arr, int rows);
 void				print_2d_int(int **int_arr, int rows, int cols);
 
 // pathfinding
-t_route				*a_star(int start_x, int start_y, int end_x, int end_y, t_data *data);
+t_route				*a_star(t_coord start_pos, t_coord end_pos, t_data *data);
 
 #endif

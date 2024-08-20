@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 13:18:07 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 13:23:20 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 14:40:39 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ t_priorityqueue	*pq_create(int capacity)
 	return (pq);
 }
 
-t_node	*create_node(int x, int y, int g, int h, t_node *parent)
+t_node	*create_node(t_coord new, int g, int h, t_node *parent)
 {
 	t_node *node;
 
 	node = (t_node *)malloc(sizeof(t_node));
-	node->x = x;
-	node->y = y;
+	node->x = new.x;
+	node->y = new.y;
 	node->g = g;
 	node->h = h;
 	node->f = g + h;

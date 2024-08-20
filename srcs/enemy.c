@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/17 15:14:59 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 14:21:11 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static void move_enemy(t_data *data, t_enemy *enemy)
     direction_x = enemy->x_target - enemy->x_pos;
     direction_y = enemy->y_target - enemy->y_pos;
     distance = sqrtf(direction_x * direction_x + direction_y * direction_y);
-    printf("distance: %f\n", distance);
+    // printf("distance: %f\n", distance);
 	if (distance > 0) 
 	{
         direction_x /= distance;
@@ -118,7 +118,7 @@ static void move_enemy(t_data *data, t_enemy *enemy)
             move_x = enemy->x_target;
         if ((direction_y > 0 && move_y > enemy->y_target) || (direction_y < 0 && move_y < enemy->y_target))
             move_y = enemy->y_target;
-		printf("Moving from x %f y %f to x %f y %f\n", enemy->x_pos, enemy->y_pos, move_x, move_y);
+		// printf("Moving from x %f y %f to x %f y %f\n", enemy->x_pos, enemy->y_pos, move_x, move_y);
         if (move_x >= 0 && move_x < data->map_width 
 			&& move_y >= 0 && move_y < data->map_height) 
 		{
@@ -230,15 +230,21 @@ static void calculate_enemy_angle(t_enemy *enemy)
 
 void	update_enemy(t_enemy *enemy, t_data *data)
 {
-	int	i;
+	int		i;
+	t_coord	player_pos;
+	t_coord	enemy_pos;
 
 	if (enemy->attack && enemy_is_alive(enemy))
 	{
+		player_pos.x = data->player->x_pos;
+		player_pos.y = data->player->y_pos;
+		enemy_pos.x = enemy->x_pos;
+		enemy_pos.y = enemy->y_pos;
 		if (enemy->route == NULL)
 		{
 			printf("I saw the player!\n");
 			enemy->state = WALKING;
-			enemy->route = a_star(enemy->x_pos, enemy->y_pos, data->player->x_pos, data->player->y_pos, data);
+			enemy->route = a_star(enemy_pos, player_pos, data);
 			i = 0;
 			while (enemy->route->coords[i].x != -1)
 			{
@@ -257,7 +263,7 @@ void	update_enemy(t_enemy *enemy, t_data *data)
 				free(enemy->route);
 				enemy->route = NULL;
 				if (enemy->distance > 1.0)
-					enemy->route = a_star(enemy->x_pos, enemy->y_pos, data->player->x_pos, data->player->y_pos, data);
+					enemy->route = a_star(enemy_pos, player_pos, data);
 				return ;
 			}
 			else
@@ -276,7 +282,7 @@ void	update_enemy(t_enemy *enemy, t_data *data)
 				step_route(enemy);
 			}
 		}
-		printf("Moving enemy.\n");
+		// printf("Moving enemy.\n");
 		move_enemy(data, enemy);
 	}
 }
