@@ -6,26 +6,29 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 13:36:45 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 15:58:00 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 18:05:03 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "pathfinding.h"
 
-int	**initialize_closed_set(t_data *data)
+void	initialize_closed_set(t_astar *context, t_data *data)
 {
 	int	i;
-	int	**closed_set;
 
 	// change forbidden functions
-	closed_set = (int **)calloc(data->map_height, sizeof(int *));
-	// malloc protect
+	context->closed_set = (int **)ft_calloc(data->map_height, sizeof(int *));
+	if (!context->closed_set)
+		error_a_star(context, data);
 	i = -1;
 	while (++i < data->map_height)
-		closed_set[i] = (int *)calloc(data->map_width, sizeof(int));
-	// malloc protect
-	return (closed_set);
+	{
+		context->closed_set[i] = (int *)ft_calloc(data->map_width, sizeof(int));
+		if (!context->closed_set[i])
+			error_a_star(context, data);
+	}
+	return ;
 }
 
 static void	retrace(int count, t_node *current, t_route *route)
@@ -82,4 +85,26 @@ void	set_directions(int directions[8][2])
 	directions[6][1] = -1;
 	directions[7][0] = -1;
 	directions[7][1] = 1;
+}
+
+void	error_a_star(t_astar *context, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->map_height)
+	{
+		if (context->closed_set[i])
+			free(context->closed_set[i]);
+		i++;
+	}
+	if (context->closed_set)
+		free(context->closed_set);
+	if (context->open_set->nodes) 
+		free(context->open_set->nodes);
+	if (context->open_set)
+		free(context->open_set);
+	if (context)
+		free(context);
+	free_all_and_quit(data, "a star error", 32);
 }

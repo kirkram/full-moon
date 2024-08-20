@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/20 14:15:15 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 16:35:44 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,6 +316,7 @@ void				free_enemies(t_data *data);
 int					is_valid_hex(const char *hex_str);
 char				*get_next_line(int fd);
 void				angle_outofbounds_check(t_ray *ray);
+void				*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 
 // maptools
 int					**alloc_2d_int(int rows, int cols);

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 13:18:07 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 14:40:39 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 18:05:03 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,17 @@ t_node	*peek(t_priorityqueue *pq)
 	return (&pq->nodes[0]);
 }
 
-t_priorityqueue	*pq_create(int capacity)
+void	pq_create(int capacity, t_astar *context, t_data *data)
 {
-	t_priorityqueue	*pq;
-
-	pq = (t_priorityqueue *)malloc(sizeof(t_priorityqueue));
-	/*
-	if (!pq)
-		free_all_and_quit(data);
-	*/
-	pq->nodes = (t_node *)malloc(capacity * sizeof(t_node));
-	pq->size = 0;
-	pq->capacity = capacity;
-	return (pq);
+	context->open_set = (t_priorityqueue *)malloc(sizeof(t_priorityqueue));
+	if (!context->open_set)
+		error_a_star(context, data);
+	context->open_set->nodes = (t_node *)malloc(capacity * sizeof(t_node));
+	if (!context->open_set->nodes)
+		error_a_star(context, data);
+	context->open_set->size = 0;
+	context->open_set->capacity = capacity;
+	return ;
 }
 
 t_node	*create_node(t_coord new, int g, int h, t_node *parent)
@@ -63,6 +61,8 @@ t_node	*create_node(t_coord new, int g, int h, t_node *parent)
 	t_node *node;
 
 	node = (t_node *)malloc(sizeof(t_node));
+	if (!node)
+		return (NULL);
 	node->x = new.x;
 	node->y = new.y;
 	node->g = g;

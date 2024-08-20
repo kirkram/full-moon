@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 17:15:50 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 14:46:04 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 18:08:53 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,28 +37,32 @@ typedef struct s_priorityqueue
 	int 			capacity;
 } t_priorityqueue;
 
-typedef struct s_astar_context 
+typedef struct s_astar
 {
     t_priorityqueue	*open_set;
     int				**closed_set;
 	int 			directions[8][2];
     t_node			*start_node;
     t_route			*route;
-} t_astar_context;
+} t_astar;
 
 // pathfinding internal functions
-int				**initialize_closed_set(t_data *data);
-t_priorityqueue	*pq_create(int capacity);
+void			initialize_closed_set(t_astar *context, t_data *data);
+void			pq_create(int capacity, t_astar *context, t_data *data);
 t_node			*create_node(t_coord new, int g, int h, t_node *parent);
 void			set_directions(int directions[8][2]);
-void			pq_push(t_priorityqueue *pq, t_node *node);
-t_node*			pq_pop(t_priorityqueue *pq);
+void			pq_push(t_priorityqueue *pq, t_node *node, t_astar *context, t_data *data);
+t_node*			pq_pop(t_priorityqueue *pq, t_astar *context, t_data *data);
 t_node			*peek(t_priorityqueue *pq);
 int				min(int a, int b);
 int				heuristic(int x1, int y1, int x2, int y2);
 bool			is_in_bounds(int x, int y, t_data *data);
 bool			is_walkable(int x, int y, t_data *data);
 t_route			*reconstruct_path(t_node *end_node);
+
+// error
+void			error_a_star(t_astar *context, t_data *data);
+void 			error_init_closed_set(t_astar *context, t_data *data, int **closed_set);
 
 // pathfinding (debug) tools
 void			print_map(t_data *data);

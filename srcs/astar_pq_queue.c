@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 12:48:56 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 13:28:28 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 18:11:42 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,21 +51,23 @@ static void	heapify_down(t_priorityqueue *pq, int i)
 	}
 }
 
-void	pq_push(t_priorityqueue *pq, t_node *node)
+void	pq_push(t_priorityqueue *pq, t_node *node, t_astar *context, t_data *data)
 {
-	if (pq->size >= pq->capacity)
+	if (context->open_set->size >= pq->capacity)
 	{
-		// forbidden function!
+		pq->nodes = (t_node *)ft_realloc(pq->nodes, pq->capacity * sizeof(t_node), 
+			pq->capacity * 2 * sizeof(t_node));
+		if (!pq->nodes)
+			error_a_star(context, data);
 		pq->capacity *= 2;
-		pq->nodes = (t_node *)realloc(pq->nodes, pq->capacity * sizeof(t_node));
 	}
 	pq->nodes[pq->size++] = *node;
 	heapify_up(pq, pq->size - 1);
 }
 
-t_node	*pq_pop(t_priorityqueue *pq)
+t_node	*pq_pop(t_priorityqueue *pq, t_astar *context, t_data *data)
 {
-	t_node *result;
+	t_node	*result;
 
 	if (!pq->size)
 	{
@@ -73,6 +75,8 @@ t_node	*pq_pop(t_priorityqueue *pq)
 		return (NULL);
 	}
 	result = (t_node *)malloc(sizeof(t_node));
+	if (!result)
+		error_a_star(context, data);
 	*result = pq->nodes[0];
 	pq->nodes[0] = pq->nodes[--pq->size];
 	heapify_down(pq, 0);

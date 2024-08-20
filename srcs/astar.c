@@ -6,117 +6,123 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:15:56 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 16:12:56 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 18:06:05 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "pathfinding.h"
 
-void print_directions(int directions[8][2]) 
+void	print_directions(int directions[8][2])
 {
-    const char *direction_names[8] = {
-        "Up", "Down", "Left", "Right", 
-        "Up-Left", "Up-Right", "Down-Left", "Down-Right"
-    };
-    
-    for (int i = 0; i < 8; i++) {
-        printf("%s: x = %d, y = %d\n", direction_names[i], directions[i][0], directions[i][1]);
-    }
+	const char	*direction_names[8] = {"Up", "Down", "Left", "Right", "Up-Left",
+			"Up-Right", "Down-Left", "Down-Right"};
+
+	for (int i = 0; i < 8; i++)
+	{
+		printf("%s: x = %d, y = %d\n", direction_names[i], directions[i][0],
+			directions[i][1]);
+	}
 }
 
-t_astar_context *initialize_a_star(t_coord start_pos, t_data *data) 
+t_astar	*initialize_a_star(t_coord start_pos, t_data *data)
 {
-    t_astar_context	*context;
-    
-	context = (t_astar_context *)malloc(sizeof(t_astar_context));
-    set_directions(context->directions);
-	print_directions(context->directions);
-    context->open_set = pq_create(200);
-    context->closed_set = initialize_closed_set(data);
-    context->start_node = create_node(start_pos, 0, 0, NULL);
-    pq_push(context->open_set, context->start_node);
-    return (context);
+	t_astar	*context;
+
+	context = (t_astar *)malloc(sizeof(t_astar));
+	if (!context)
+		free_all_and_quit(data, "error a star", 32);
+	set_directions(context->directions);
+	pq_create(200, context, data);
+	initialize_closed_set(context, data);
+	context->start_node = create_node(start_pos, 0, 0, NULL);
+	if (!context->start_node)
+		error_a_star(context, data);
+	pq_push(context->open_set, context->start_node, context, data);
+	return (context);
 }
 
-
-int	process_current_node(t_node *current, t_coord end_pos, t_astar_context *context, t_data *data) 
+int	process_current_node(t_node *current, t_coord end_pos,
+		t_astar *context, t_data *data)
 {
 	int		i;
 	t_coord	new_coord;
 	int		new_g;
 	int		new_h;
-    t_node	*neighbor;
+	t_node	*neighbor;
 
-    if (current->x == end_pos.x && current->y == end_pos.y) 
+	if (current->x == end_pos.x && current->y == end_pos.y)
 	{
-        context->route = reconstruct_path(current);
-        free(current);
-        return (1); // Found the path
-    }
-    context->closed_set[current->y][current->x] = 1;
+		context->route = reconstruct_path(current);
+		free(current);
+		return (1); // Found the path
+	}
+	context->closed_set[current->y][current->x] = 1;
 	i = -1;
-    while (++i < 8) 
+	while (++i < 8)
 	{
-        new_coord.x = current->x + context->directions[i][0];
-        new_coord.y = current->y + context->directions[i][1];
-        if (is_in_bounds(new_coord.x, new_coord.y, data) && !context->closed_set[new_coord.y][new_coord.x]
-            && is_walkable(new_coord.x, new_coord.y, data)) 
+		new_coord.x = current->x + context->directions[i][0];
+		new_coord.y = current->y + context->directions[i][1];
+		if (is_in_bounds(new_coord.x, new_coord.y, data)
+			&& !context->closed_set[new_coord.y][new_coord.x]
+			&& is_walkable(new_coord.x, new_coord.y, data))
 		{
-            if (i < 4)
+			if (i < 4)
 				new_g = current->g + COST_STRAIGHT;
 			else
 				new_g = current->g + COST_DIAGONAL;
-            new_h = heuristic(new_coord.x, new_coord.y, end_pos.x, end_pos.y);
-            neighbor = create_node(new_coord, new_g, new_h, current);
-            pq_push(context->open_set, neighbor);
-        }
-    }
-    return (0); // Continue searching
+			new_h = heuristic(new_coord.x, new_coord.y, end_pos.x, end_pos.y);
+			neighbor = create_node(new_coord, new_g, new_h, current);
+			if (!neighbor)
+				error_a_star(context, data);
+			pq_push(context->open_set, neighbor, context, data);
+		}
+	}
+	return (0); // Continue searching
 }
 
-t_route	*run_a_star(t_astar_context *context, t_coord end_pos, t_data *data) 
+t_route	*run_a_star(t_astar *context, t_coord end_pos, t_data *data)
 {
-    t_node *current;
-    
+	t_node	*current;
+
 	current = NULL;
-    while (context->open_set->size > 0) 
+	while (context->open_set->size > 0)
 	{
-        current = pq_pop(context->open_set);
-		printf ("Checking x %d y %d\n", current->x, current->y);
-        if (process_current_node(current, end_pos, context, data)) {
-            return context->route;
-        }
-        //free(current);
-    }
-    return NULL; // No path found
+		current = pq_pop(context->open_set);
+		printf("Checking x %d y %d\n", current->x, current->y);
+		if (process_current_node(current, end_pos, context, data))
+		{
+			return (context->route);
+		}
+	}
+	return (NULL); // No path found
 }
 
-void cleanup_a_star(t_astar_context *context, t_data *data) 
+void	cleanup_a_star(t_astar *context, t_data *data)
 {
 	int	i;
 
 	i = 0;
-    while (i < data->map_height) 
+	while (i < data->map_height)
 	{
-        free(context->closed_set[i]);
+		free(context->closed_set[i]);
 		i++;
-    }
-    free(context->closed_set);
-    free(context->open_set->nodes);
-    free(context->open_set);
-    free(context);
+	}
+	free(context->closed_set);
+	free(context->open_set->nodes);
+	free(context->open_set);
+	free(context);
 }
 
-t_route *a_star(t_coord start_pos, t_coord end_pos, t_data *data) 
+t_route	*a_star(t_coord start_pos, t_coord end_pos, t_data *data)
 {
-    t_astar_context	*context;
-    t_route			*route;
-    
+	t_astar	*context;
+	t_route			*route;
+
 	context = initialize_a_star(start_pos, data);
 	route = run_a_star(context, end_pos, data);
-    cleanup_a_star(context, data);
-    return (route);
+	cleanup_a_star(context, data);
+	return (route);
 }
 
 /*
