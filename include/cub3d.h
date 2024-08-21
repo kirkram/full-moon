@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/21 15:26:46 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/21 19:14:28 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ unsigned long		current_time(void);
 # define MAX_MAPHEIGHT 256
 # define SCREENWIDTH 1280
 # define SCREENHEIGHT 860
-# define MINIZOOM 10
+# define MINIZOOM 5
 # define PLAYERSIZE 4
 # define RESOLUTION 3
 # define ATTACK_SPEED 1.2
@@ -45,10 +45,11 @@ unsigned long		current_time(void);
 
 # define DOOR_PATH "./textures/door.png"
 # define FLOOR_PATH "./textures/floor.png"
-# define TEXTURES_AMOUNT 6
-
+# define SKY_PATH "./textures/sky.png"
 # define MAPBACKG_PATH "./textures/mapbackg.png"
-# define DRAWMINIRAYS 1
+# define TEXTURES_AMOUNT 7
+
+# define DRAWMINIRAYS 0
 
 // sprites
 # define PL_FRAMECOUNT 11
@@ -179,6 +180,29 @@ typedef struct s_enemy
 	t_route			*route; // a star route
 }					t_enemy;
 
+typedef struct s_point
+{
+	int32_t			x;
+	int32_t			y;
+	uint32_t		color;
+	void			*content;
+}					t_point;
+
+
+typedef struct s_textures
+{
+	uint8_t			red;
+	uint8_t			green;
+	uint8_t			blue;
+	uint8_t			alpha;
+	uint32_t		index;
+	float			y;
+	float			y_step;
+	float			x;
+	float			x_step;
+	mlx_texture_t	*ptr;
+}					t_txt;
+
 typedef struct s_data
 {
 	mlx_t			*mlx;
@@ -195,7 +219,6 @@ typedef struct s_data
 	double			last_update;
 	double			last_attack;
 	mlx_texture_t	**txtrs;
-	mlx_texture_t	*txt_n;
 	t_player		*player;
 	t_ray			*ray;
 	float			raydis[FOV * RESOLUTION];
@@ -217,31 +240,11 @@ typedef struct s_data
 	int				ess_width;
 	int				ess_height;
 	float			line_error;
-	struct timespec last_time;
 	t_map			keyhook_map;
+	t_point			draw_points;
+	t_txt			draw_txt;
 }					t_data;
 
-typedef struct s_point
-{
-	int32_t			x;
-	int32_t			y;
-	uint32_t		color;
-	void			*content;
-}					t_point;
-
-typedef struct s_textures
-{
-	uint8_t			red;
-	uint8_t			green;
-	uint8_t			blue;
-	uint8_t			alpha;
-	uint32_t		index;
-	float			y;
-	float			y_step;
-	float			x;
-	float			x_step;
-	mlx_texture_t	*ptr;
-}					t_txt;
 
 // init
 void				init_map_data(t_data *data);
@@ -275,13 +278,13 @@ void				put_pixel(t_data *data, t_point *point, mlx_image_t *img);
 uint32_t			get_a(uint32_t rgba);
 uint32_t			get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
 int					draw_player_minimap(t_data *data);
-void				update_enemies(t_data *data);
-void				assign_texture_to_ray(t_data *data, t_ray *ray, t_txt *txt);
+void				assign_texture_to_walls(t_data *data, t_ray *ray, t_txt *txt);
 void				draw_rays(t_data *data);
 void				drw_line(t_point point, t_point dest, t_data *data,
 						mlx_image_t *img);
 uint32_t			index_color(t_txt *txt, t_ray *ray, bool is_wall);
 uint32_t			index_color_floor(t_txt *txt, t_ray *ray, float dist_from_middle, t_data *data);
+uint32_t			index_color_ceiling(t_txt *txt, t_ray *ray, float dist_from_middle, t_data *data);
 void				horizontal_rays(t_data *data, t_ray *ray);
 void				vertical_rays(t_data *data, t_ray *ray);
 void				calc_distance(t_data *data, t_ray *ray);
@@ -305,6 +308,9 @@ void				hook_enemies(t_data *data);
 void				sort_enemy_arr(t_data *data);
 void				find_enemy_rays(t_data *data, t_enemy *enemy);
 bool				enemy_is_alive(t_enemy *enemy);
+void				draw_minirays_enemy(t_data *data, t_ray *ray, t_enemy *enemy);
+int					check_player(t_data *data, t_ray *ray, t_map *map, t_enemy *enemy);
+void				calc_distance_enemy(t_ray *ray, t_enemy *enemy);
 void				get_rel_angle_and_pos(t_enemy *enemy, t_data *data);
 void				calculate_enemy_angle(t_enemy *enemy);
 void				update_enemy_frame(t_enemy *enemy, t_data *data);
