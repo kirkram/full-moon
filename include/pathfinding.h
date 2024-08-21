@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 17:15:50 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 18:47:27 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/21 11:33:21 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void			set_directions(int directions[8][2]);
 void			pq_push(t_priorityqueue *pq, t_node *node, t_astar *context, t_data *data);
 t_node*			pq_pop(t_priorityqueue *pq, t_astar *context, t_data *data);
 t_node			*peek(t_priorityqueue *pq);
-int				min(int a, int b);
 int				heuristic(int x1, int y1, int x2, int y2);
 bool			is_in_bounds(int x, int y, t_data *data);
 bool			is_walkable(int x, int y, t_data *data);
