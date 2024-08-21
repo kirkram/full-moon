@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/21 09:14:43 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/21 16:29:00 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ unsigned long		current_time(void);
 # define MAX_MAPHEIGHT 256
 # define SCREENWIDTH 1280
 # define SCREENHEIGHT 860
-# define MINIZOOM 10
+# define MINIZOOM 5
 # define PLAYERSIZE 4
 # define RESOLUTION 3
 # define ATTACK_SPEED 1.2
@@ -48,7 +48,7 @@ unsigned long		current_time(void);
 # define TEXTURES_AMOUNT 6
 
 # define MAPBACKG_PATH "./textures/mapbackg.png"
-# define DRAWMINIRAYS 1
+# define DRAWMINIRAYS 0
 
 // sprites
 # define PL_FRAMECOUNT 11
@@ -269,7 +269,7 @@ void				put_pixel(t_data *data, t_point *point, mlx_image_t *img);
 uint32_t			get_a(uint32_t rgba);
 uint32_t			get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
 int					draw_player_minimap(t_data *data);
-void				update_enemies(t_data *data);
+// void				update_enemies(t_data *data);
 void				assign_texture_to_ray(t_data *data, t_ray *ray, t_txt *txt);
 void				draw_rays(t_data *data);
 void				drw_line(t_point point, t_point dest, t_data *data,
@@ -299,9 +299,12 @@ void				hook_enemies(t_data *data);
 void				sort_enemy_arr(t_data *data);
 void				find_enemy_rays(t_data *data, t_enemy *enemy);
 bool				enemy_is_alive(t_enemy *enemy);
+void				draw_minirays_enemy(t_data *data, t_ray *ray, t_enemy *enemy);
+int					check_player(t_data *data, t_ray *ray, t_map *map, t_enemy *enemy);
+void				calc_distance_enemy(t_ray *ray, t_enemy *enemy);
 
 // animation
-void				attack_animation(t_data *data);
+// void				attack_animation(t_data *data);
 
 // helper
 int					ft_error(char *msg, int error_code);

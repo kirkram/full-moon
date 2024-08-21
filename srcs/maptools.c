@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maptools.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 17:21:32 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/05 12:29:06 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/21 16:36:54 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,23 @@ void	print_2d_int(int **int_arr, int rows, int cols)
 	dprintf(2, "\n");
 }
 
-int** alloc_2d_int(int rows, int cols) 
+int	**alloc_2d_int(int rows, int cols)
 {
-    int	**array;
-    int	i;
+	int	**array;
+	int	i;
 
-    array = (int **)ft_calloc(rows, sizeof(int *));
-    if (array == NULL)
+	array = (int **)ft_calloc(rows, sizeof(int *));
+	if (array == NULL)
 		exit(ft_error("Malloc error on int**", 22));
 	i = 0;
 	while (i < rows)
-    {
-        array[i] = (int *)ft_calloc(cols, sizeof(int));
-        if (array[i] == NULL) 
+	{
+		array[i] = (int *)ft_calloc(cols, sizeof(int));
+		if (array[i] == NULL)
 			exit(ft_error("Malloc error on int*", 22));
 		i++;
-    }
-    return array;
+	}
+	return (array);
 }
 
 int	**copy_2d_int(int **int_arr, int rows, int cols)

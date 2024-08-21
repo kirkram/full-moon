@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/12 17:15:12 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/21 14:58:06 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,6 @@ static float	init_column_values(t_data *data, t_ray *ray, t_txt *txt,
 	}
 	return (line_h);
 }
-
-// void draw_floor(t_data *data, t_ray *ray, int i, float line_w)
-// {
-	
-// }
 
 void	draw_column(t_data *data, t_ray *ray, int i, float line_w)
 {

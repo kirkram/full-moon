@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/20 19:29:20 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/21 16:31:25 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	load_valid_map(t_data *data, int ac, char **av)
 	if (validate_map(data->world_map, data))
 		free_all_and_quit(data, "Map validation error.\n", 32);
 	nines_to_ones(data);
-	//print_2d_int(data->world_map, data->map_height, data->map_width);
 	return (0);
 }
 
@@ -51,8 +50,6 @@ int	main(int ac, char **av)
 	t_player	player;
 	t_ray		ray;
 
-	//(void)ac;
-	//(void)av;
 	if (FOV <= 0 || RESOLUTION <= 0)
 		return (ft_error("FOV / RESOLUTION can't be 0 or negative", 44));
 	data.player = &player;
