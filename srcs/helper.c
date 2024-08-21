@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 14:39:44 by klukiano          #+#    #+#             */
-/*   Updated: 2024/07/18 14:17:39 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/21 09:15:11 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,32 +27,12 @@ int	ft_abs(int result)
 	return (result);
 }
 
-float	rad(float angle)
+int	min(int a, int b)
 {
-	return (angle * PI / 180);
-}
-
-float	degr(float angle)
-{
-	return (angle / PI * 180);
-}
-
-float normalize_rad(float angle) 
-{
-    while (angle < 0)
-        angle += 2 * PI;
-    while (angle >= 2 * PI)
-        angle -= 2 * PI;
-    return angle;
-}
-
-float normalize_degr(float angle) 
-{
-    while (angle < 0)
-        angle += 360;
-    while (angle >= 360)
-        angle -= 360;
-    return angle;
+	if (a < b)
+		return (a);
+	else
+		return (b);
 }
 
 int	is_valid_hex(const char *hex_str)

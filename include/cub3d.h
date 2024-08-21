@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/20 18:21:00 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/21 09:14:43 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,7 +271,6 @@ uint32_t			get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
 int					draw_player_minimap(t_data *data);
 void				update_enemies(t_data *data);
 void				assign_texture_to_ray(t_data *data, t_ray *ray, t_txt *txt);
-float				rad(float angle);
 void				draw_rays(t_data *data);
 void				drw_line(t_point point, t_point dest, t_data *data,
 						mlx_image_t *img);
@@ -309,6 +308,7 @@ int					ft_error(char *msg, int error_code);
 int					ft_abs(int result);
 float				degr(float angle);
 float				rad(float angle);
+int					min(int a, int b);
 float 				normalize_degr(float angle);
 float 				normalize_rad(float angle) ;
 void				free_textures(t_data *data);

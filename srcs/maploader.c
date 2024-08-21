@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/12 11:56:51 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/21 09:03:25 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ static void	read_and_parse_lines(int fd, t_data *data)
 		if (line == NULL)
 			break ;
 		convert_tabs(&line);
-		if (map_start == 0 && (line[0] == 9 || line[0] == 32 || 
-				line[0] == 48 || line[0] == 49))
+		if (map_start == 0 && (line[0] == 9 || line[0] == 32
+				|| line[0] == 48 || line[0] == 49))
 			map_start = 1;
 		if (map_start == 0)
 			read_map_parameter(line, data);

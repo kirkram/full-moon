@@ -6,20 +6,12 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 13:24:31 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 19:05:02 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/21 09:14:57 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "pathfinding.h"
-
-int	min(int a, int b)
-{
-	if (a < b)
-		return (a);
-	else
-		return (b);
-}
 
 int	heuristic(int x1, int y1, int x2, int y2)
 {
