@@ -126,6 +126,12 @@ typedef struct s_coord
     int y;
 } t_coord;
 
+typedef struct s_fcoord
+{
+    float x;
+    float y;
+} t_fcoord;
+
 typedef struct s_route
 {
     t_coord *coords;
@@ -305,9 +311,23 @@ bool				enemy_is_alive(t_enemy *enemy);
 void				draw_minirays_enemy(t_data *data, t_ray *ray, t_enemy *enemy);
 int					check_player(t_data *data, t_ray *ray, t_map *map, t_enemy *enemy);
 void				calc_distance_enemy(t_ray *ray, t_enemy *enemy);
-
-// animation
-// void				attack_animation(t_data *data);
+void				get_rel_angle_and_pos(t_enemy *enemy, t_data *data);
+void				calculate_enemy_angle(t_enemy *enemy);
+void				update_enemy_frame(t_enemy *enemy, t_data *data);
+void				update_idle_frame(t_enemy *enemy, int index, double now, double prev);
+void				update_walking_frame(t_enemy *enemy, int index, double now, double prev);
+void				update_dying_frame(t_enemy *enemy, double now, double prev);
+void 				update_enemy(t_enemy *enemy, t_data *data);
+void				update_enemy_target(t_enemy *enemy, t_coord player_pos,
+						t_coord enemy_pos, t_data *data);
+int					has_reached_target(t_enemy *enemy);
+void				initialize_enemy_route(t_enemy *enemy, t_coord player_pos,
+						t_coord enemy_pos, t_data *data);
+void				step_route(t_enemy *enemy);
+void				log_route_points(t_enemy *enemy);		
+void				draw_enemy_onto_canvas(t_enemy *enemy, int dest_x, int dest_y, t_data *data);
+void 				move_enemy(t_data *data, t_enemy *enemy);
+void				move_enemy_position(t_data *data, t_enemy *enemy, t_fcoord direction, float delta_time);
 
 // helper
 int					ft_error(char *msg, int error_code);
