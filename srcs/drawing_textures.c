@@ -6,11 +6,32 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 14:17:29 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/21 16:37:24 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/21 19:14:52 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+uint32_t	index_color_ceiling(t_txt *txt, t_ray *ray, float dist_from_middle,
+		t_data *data)
+{
+	// float	darken_factor;
+
+	(void)ray;
+	(void)data;
+	(void)dist_from_middle;
+	txt->red = txt->ptr->pixels[txt->index];
+	txt->green = txt->ptr->pixels[txt->index + 1];
+	txt->blue = txt->ptr->pixels[txt->index + 2];
+	txt->alpha = 0x000000FF;
+	// darken_factor = 1.0f / (dist_from_middle * 1.9f);
+	// if (darken_factor > 0.6f)
+	// 	darken_factor = 0.6f;
+	// txt->red *= darken_factor;
+	// txt->green *= darken_factor;
+	// txt->blue *= darken_factor;
+	return (txt->red << 24 | txt->green << 16 | txt->blue << 8 | txt->alpha);
+}
 
 uint32_t	index_color_floor(t_txt *txt, t_ray *ray, float dist_from_middle,
 		t_data *data)
@@ -95,7 +116,7 @@ static void	assign_texture_to_ray_vert(t_data *data, t_ray *ray, t_txt *txt)
 	}
 }
 
-void	assign_texture_to_ray(t_data *data, t_ray *ray, t_txt *txt)
+void	assign_texture_to_walls(t_data *data, t_ray *ray, t_txt *txt)
 {
 	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist
 			&& ray->vert_dist != 0))
