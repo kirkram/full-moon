@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 11:34:30 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/21 11:44:33 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/21 14:31:06 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ uint32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y)
 	uint32_t	blue;
 	uint32_t	alpha;
 	int			pixel_index;
-	float		darken;
 
 	if (x >= img->width || y >= img->height)
 		return (0);
@@ -28,18 +27,15 @@ uint32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y)
 	green = img->pixels[pixel_index + 1];
 	blue = img->pixels[pixel_index + 2];
 	alpha = img->pixels[pixel_index + 3];
-	// temporarily darken them with a static variable;
-	darken = 0.6;
-	red *= darken;
-	green *= darken;
-	blue *= darken;
+	red *= 0.6;
+	green *= 0.6;
+	blue *= 0.6;
 	return (red << 24 | green << 16 | blue << 8 | alpha);
 }
 
 // Get the alpha channel.
 uint32_t	get_a(uint32_t rgba)
 {
-	// Move 0 bytes to the right and mask out the first byte.
 	return (rgba & 0xFF);
 }
 
