@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/21 09:14:43 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/21 11:45:24 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,9 +299,9 @@ void				hook_enemies(t_data *data);
 void				sort_enemy_arr(t_data *data);
 void				find_enemy_rays(t_data *data, t_enemy *enemy);
 bool				enemy_is_alive(t_enemy *enemy);
-
-// animation
-void				attack_animation(t_data *data);
+void				get_rel_angle_and_pos(t_enemy *enemy, t_data *data);
+void				calculate_enemy_angle(t_enemy *enemy);
+void				draw_enemy_onto_canvas(t_enemy *enemy, int dest_x, int dest_y, t_data *data);
 
 // helper
 int					ft_error(char *msg, int error_code);
