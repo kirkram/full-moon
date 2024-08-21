@@ -3,58 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_rays.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 19:21:15 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/17 15:58:29 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/21 16:30:32 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	draw_minirays_enemy(t_data *data, t_ray *ray, t_enemy *enemy)
-{
-	t_point		point;
-	t_point		dest;
-	
-	// point.y = enemy->y_pos_mini;
-	// point.x = enemy->x_pos_mini;
-	point.y = enemy->y_pos * data->zoom;
-	point.x = enemy->x_pos * data->zoom;
-	if (ray->hor_dist < ray->vert_dist && ray->hor_dist != 0)
-	{
-		dest.x = ray->x * data->zoom;
-		dest.y = ray->y * data->zoom;
-		point.color = RED;
-	}
-	else
-	{
-		dest.x = ray->x_v * data->zoom;
-		dest.y = ray->y_v * data->zoom;
-		point.color = GREEN;
-	}
-	//Should it be on antoher image? (third argument)
-	drw_line(point, dest, data, data->player->img);
-}
-
-int	check_player(t_data *data, t_ray *ray, t_map *map, t_enemy *enemy)
-{
-	// if (data->world_map[map->y][map->x] == 1)
-	// 	return (1);
-	// if (data->world_map[map->y][map->x] == 4)
-	// {
-	// 	return (1);
-	// }
-
-	(void)ray;
-	(void)enemy;
-	map->x = (int)ray->x;
-	map->y = (int)ray->y;
-
-	if (map->x == (int)data->player->x_pos && map->y == (int)data->player->y_pos)
-		return (1);
-	return (0);
-}
 
 static void	vertical_rays_offset_enemy(t_ray *ray, int range, t_enemy *enemy)
 {
@@ -103,11 +59,7 @@ void	vertical_rays_enemy(t_data *data, t_ray *ray, t_enemy *enemy)
 			if (check_walls(data, ray, &map, true))
 				return ;
 			if (check_player(data, ray, &map, enemy))
-			{
-				enemy->attack = true;
-				// printf("I see the player\n");
 				break ;
-			}
 		}
 		increment_offset(data, ray, true);
 	}
@@ -138,7 +90,7 @@ static void	horizontal_rays_offset_enemy(t_ray *ray, int range, t_enemy *enemy)
 	}
 }
 
-void	horizontal_rays_enemy(t_data *data, t_ray *ray, t_enemy* enemy)
+void	horizontal_rays_enemy(t_data *data, t_ray *ray, t_enemy *enemy)
 {
 	t_map		map;
 	int			range;
@@ -160,64 +112,29 @@ void	horizontal_rays_enemy(t_data *data, t_ray *ray, t_enemy* enemy)
 			if (check_walls(data, ray, &map, false))
 				return ;
 			if (check_player(data, ray, &map, enemy))
-			{
-				enemy->attack = true;
-				// printf("I see the player\n");
-				break ;
-			}
+				return ;
 		}
 		increment_offset(data, ray, false);
 	}
-}
-
-void	calc_distance_enemy(t_ray *ray, t_enemy *enemy)
-{
-	ray->hor_dist = sqrtf((ray->x - enemy->x_pos) * (ray->x - enemy->x_pos)
-			+ (ray->y - enemy->y_pos) * (ray->y - enemy->y_pos));
-	ray->vert_dist = sqrtf((ray->x_v - enemy->x_pos) * (ray->x_v
-				- enemy->x_pos) + (ray->y_v - enemy->y_pos) * (ray->y_v
-				- enemy->y_pos));
-	if (ray->hor_dist == 0 || (ray->hor_dist > ray->vert_dist
-			&& ray->vert_dist != 0))
-	{
-		ray->dist = ray->vert_dist;
-		ray->x = ray->x_v;
-		ray->y = ray->y_v;
-	}
-	else
-		ray->dist = ray->hor_dist;
 }
 
 void	find_enemy_rays(t_data *data, t_enemy *enemy)
 {
 	t_ray		*enemy_ray;
 	int			i;
-	// t_map		map;
 
 	enemy_ray = &enemy->ray;
 	enemy_ray->ang = enemy->angle - rad(FOV / 2 / 2);
 	enemy_ray->ang -= PI;
 	enemy->dof = 5;
-	//enemy->attack = true //should be in the attack state  for some time or until death
 	angle_outofbounds_check(enemy_ray);
 	i = -1;
-	//while (++i < FOV * RESOLUTION)
 	while (++i < FOV / 2)
 	{
 		horizontal_rays_enemy(data, enemy_ray, enemy);
 		vertical_rays_enemy(data, enemy_ray, enemy);
 		calc_distance_enemy(enemy_ray, enemy);
-		// fix_fisheye(data, enemy_ray);
-		//if (DRAWMINIRAYS == 1)
-		// if (check_player(data, enemy_ray, &map, enemy))
-		// {
-		// 	enemy->attack = true;
-		// 	printf("I see the player\n");
-		// 	break ;
-		// }
 		draw_minirays_enemy(data, enemy_ray, enemy);
-		//data->raydis[i] = enemy_ray->dist;
-		//enemy_ray->ang += DEGR / RESOLUTION;
 		enemy_ray->ang += DEGR * 2;
 		angle_outofbounds_check(enemy_ray);
 	}
