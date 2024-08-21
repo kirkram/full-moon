@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/13 16:45:01 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:16:40 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,46 +24,7 @@ void	ft_hook_keys(t_data *data)
 	{
 		current_time = mlx_get_time();
 		if (current_time - data->last_attack >= ATTACK_SPEED)
-			attack_animation(data);
-	}
-}
-
-void	attack_animation(t_data *data)
-{
-	data->last_attack = mlx_get_time();
-}
-
-void	draw_player_onto_canvas(t_data *data, mlx_image_t *frame, int dest_x,
-		int dest_y)
-{
-	t_point		pt;
-	mlx_image_t	*dest;
-	mlx_image_t	*src;
-
-	color_whole_image(data->player->img, FULL_TRANSPARENT,
-		data->player->imgwidth, data->player->imgheight);
-	dest = data->player->img;
-	src = frame;
-	pt.y = -1;
-	pt.x = -1;
-	pt.color = 0;
-	while (++(pt.x) < (int32_t)src->width)
-	{
-		while (++(pt.y) < (int32_t)src->height)
-		{
-			pt.color = get_pixel_color(src, (uint32_t)pt.x, (uint32_t)pt.y);
-			if (get_a(pt.color) > 0)
-			{
-				if ((dest_x + pt.x) >= 0 && (uint32_t)(dest_x
-						+ pt.x) < dest->width && (dest_y + pt.y) >= 0
-					&& (uint32_t)(dest_y + pt.y) < dest->height)
-				{
-					mlx_put_pixel(dest, dest_x + pt.x, dest_y + pt.y,
-						pt.color);
-				}
-			}
-		}
-		pt.y = -1;
+			data->last_attack = current_time;
 	}
 }
 
@@ -99,8 +60,9 @@ void	hit_enemy_if_in_range(t_data *data)
 				angle_to_enemy = normalize_rad(atan2(dy, dx));
 				angle_diff = angle_difference_rad(angle_to_enemy, normalize_rad(data->player->angle));
 				printf("Angle %.10f Distance %.10f\n", angle_diff, data->enemies[i]->distance);
-				if (angle_diff < 0.6) {
-					printf("Hit scored!\n");
+				if (angle_diff < 0.6) 
+				{
+					//printf("Hit scored!\n");
 					data->enemies[i]->state = DYING;
 				}
 			}
@@ -110,11 +72,13 @@ void	hit_enemy_if_in_range(t_data *data)
 
 void	hook_player_animation(t_data *data)
 {
-	static double	last_update = 0;
+	static double	last_update = -1;
 	static int		frame = 0;
 	double			current_time;
 
 	current_time = mlx_get_time();
+	if (last_update < 0)
+    	last_update = current_time;
 	if ((current_time - last_update >= ATTACK_SPEED / 4) && (current_time
 			- data->last_attack >= ATTACK_SPEED))
 	{
@@ -125,7 +89,7 @@ void	hook_player_animation(t_data *data)
 		if (frame > 3)
 			frame = 0;
 		mlx_image_to_window(data->mlx, data->swordarm, data->width * 0.45, 1);
-		last_update = mlx_get_time();
+		last_update = current_time;
 	}
 	else if (current_time - data->last_attack < ATTACK_SPEED)
 	{
@@ -150,11 +114,81 @@ void	hook_player_animation(t_data *data)
 	if (mlx_is_mouse_down(data->mlx, MLX_MOUSE_BUTTON_LEFT))
 	{
 		if (current_time - data->last_attack >= ATTACK_SPEED)
-			attack_animation(data);
+			data->last_attack = current_time;
 	}
 }
 
+void	ft_hook_hub(void *param)
+{
+	t_data	*data;
+
+	data = param;
+	// printf("fps: %.0f\n", 1 / data->mlx->delta_time);
+	ft_hook_keys(data);
+	color_whole_image(data->screen, FULL_TRANSPARENT, data->width,
+		data->height);
+	color_whole_image(data->player->img, FULL_TRANSPARENT,
+		data->player->imgwidth, data->player->imgheight);
+	draw_player_minimap(data);
+	draw_rays(data);
+	if (data->enemies)
+		hook_enemies(data);
+	hook_player_animation(data);
+}
+
+void	hook_mouse_move(double x, double y, void *param)
+{
+	t_data		*data;
+	t_player	*player;
+	double		dx;
+
+	(void)y;
+	data = param;
+	player = data->player;
+	dx = x - data->width / 2;
+	player->angle += dx * DEGR * 1.5 * data->speed * MOUSESPEED;
+	if (player->angle < 0)
+		player->angle += PI2;
+	if (player->angle >= PI2)
+		player->angle -= PI2;
+	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
+}
+
 /*
+void	draw_player_onto_canvas(t_data *data, mlx_image_t *frame, int dest_x,
+		int dest_y)
+{
+	t_point		pt;
+	mlx_image_t	*dest;
+	mlx_image_t	*src;
+
+	color_whole_image(data->player->img, FULL_TRANSPARENT,
+		data->player->imgwidth, data->player->imgheight);
+	dest = data->player->img;
+	src = frame;
+	pt.y = -1;
+	pt.x = -1;
+	pt.color = 0;
+	while (++(pt.x) < (int32_t)src->width)
+	{
+		while (++(pt.y) < (int32_t)src->height)
+		{
+			pt.color = get_pixel_color(src, (uint32_t)pt.x, (uint32_t)pt.y);
+			if (get_a(pt.color) > 0)
+			{
+				if ((dest_x + pt.x) >= 0 && (uint32_t)(dest_x
+						+ pt.x) < dest->width && (dest_y + pt.y) >= 0
+					&& (uint32_t)(dest_y + pt.y) < dest->height)
+				{
+					mlx_put_pixel(dest, dest_x + pt.x, dest_y + pt.y,
+						pt.color);
+				}
+			}
+		}
+		pt.y = -1;
+	}
+}
+
 void	hook_animation(t_data *data)
 {
 	static double	last_update = 0;
@@ -233,39 +267,3 @@ void	hook_animation(t_data *data)
 	mlx_image_to_window(data->mlx, data->player->img, 1, 1);
 }
 */
-
-void	ft_hook_hub(void *param)
-{
-	t_data	*data;
-
-	data = param;
-	//printf("fps: %.0f\n", 1 / data->mlx->delta_time);
-	ft_hook_keys(data);
-	color_whole_image(data->screen, FULL_TRANSPARENT, data->width,
-		data->height);
-	color_whole_image(data->player->img, FULL_TRANSPARENT,
-		data->player->imgwidth, data->player->imgheight);
-	draw_player_minimap(data);
-	draw_rays(data);
-	if (data->enemies)
-		hook_enemies(data);
-	hook_player_animation(data);
-}
-
-void	hook_mouse_move(double x, double y, void *param)
-{
-	t_data		*data;
-	t_player	*player;
-	double		dx;
-
-	(void)y;
-	data = param;
-	player = data->player;
-	dx = x - data->width / 2;
-	player->angle += dx * DEGR * 1.5 * data->speed * MOUSESPEED;
-	if (player->angle < 0)
-		player->angle += PI2;
-	if (player->angle >= PI2)
-		player->angle -= PI2;
-	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
-}

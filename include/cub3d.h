@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/13 16:45:21 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/21 09:14:43 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ unsigned long		current_time(void);
 # define ATTACK_SPEED 1.2
 # define LINESCALE 1.7
 # define MOUSESPEED 0.8
+# define ENEMYSPEED 1.0
+# define MAX_DELTA 0.05
 
 # define FOV 60
 # define COLL 0.3
@@ -123,6 +125,12 @@ typedef struct s_coord
     int y;
 } t_coord;
 
+typedef struct s_route
+{
+    t_coord *coords;
+	int		size;
+} t_route;
+
 typedef enum s_enemystate
 {
 	IDLE,
@@ -148,6 +156,8 @@ typedef struct s_enemy
 {
 	float			x_pos;
 	float			y_pos;
+	float			x_target; // current moving target x
+	float			y_target; // current moving target y
 	float			distance; // distance to the player
 	float			angle; // the direction enemy is facing
 	float			rel_angle; // angle relative to the player
@@ -155,12 +165,12 @@ typedef struct s_enemy
 	int				visible; // in player FOV or not
 	t_enemystate	state;
 	double			last_frame;
-	//float			last_rel_angle; // rel angle at time of last frmae update
 	float			scale; // dependent on distance
 	t_ray			ray;
 	int				dof; //how many squares will check 
 	bool			attack; //if sees player
-	t_coord			*route;
+	float			speed; // speed of movement
+	t_route			*route; // a star route
 }					t_enemy;
 
 typedef struct s_data
@@ -261,7 +271,6 @@ uint32_t			get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
 int					draw_player_minimap(t_data *data);
 void				update_enemies(t_data *data);
 void				assign_texture_to_ray(t_data *data, t_ray *ray, t_txt *txt);
-float				rad(float angle);
 void				draw_rays(t_data *data);
 void				drw_line(t_point point, t_point dest, t_data *data,
 						mlx_image_t *img);
@@ -299,6 +308,7 @@ int					ft_error(char *msg, int error_code);
 int					ft_abs(int result);
 float				degr(float angle);
 float				rad(float angle);
+int					min(int a, int b);
 float 				normalize_degr(float angle);
 float 				normalize_rad(float angle) ;
 void				free_textures(t_data *data);
@@ -306,6 +316,7 @@ void				free_enemies(t_data *data);
 int					is_valid_hex(const char *hex_str);
 char				*get_next_line(int fd);
 void				angle_outofbounds_check(t_ray *ray);
+void				*ft_realloc(void *ptr, size_t new_size);
 
 // maptools
 int					**alloc_2d_int(int rows, int cols);
@@ -314,6 +325,6 @@ int					free_2d_int(int **int_arr, int rows);
 void				print_2d_int(int **int_arr, int rows, int cols);
 
 // pathfinding
-t_coord				*a_star(int start_x, int start_y, int end_x, int end_y, t_data *data);
+t_route				*a_star(t_coord start_pos, t_coord end_pos, t_data *data);
 
 #endif

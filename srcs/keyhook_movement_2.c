@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook_movement_2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:50:04 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/07 18:41:52 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:20:35 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	open_door(t_data *data)
 	float	x_off;
 	float	y_off;
 
-
 	y_off = COLL * 4;
 	x_off = COLL * 4;
 	if (data->player->angle > PI_S && data->player->angle < PI_N)
@@ -27,11 +26,12 @@ void	open_door(t_data *data)
 	data->keyhook_map.y = floorf(data->player->y_pos + y_off);
 	data->keyhook_map.x = floorf(data->player->x_pos + x_off);
 	if ((data->keyhook_map.y >= 0 && data->keyhook_map.y < data->map_height && \
-	 data->keyhook_map.x >= 0 && data->keyhook_map.x < data->map_width))
+		data->keyhook_map.x >= 0 && data->keyhook_map.x < data->map_width))
 	{
 		if (data->world_map[(int)data->player->y_pos][data->keyhook_map.x] == 4)
 			data->world_map[(int)data->player->y_pos][data->keyhook_map.x] = 6;
-		else if (data->world_map[(int)data->player->y_pos][data->keyhook_map.x] == 6)
+		else if (data->world_map[(int)data->player->y_pos][data->keyhook_map.x]
+				== 6)
 			data->world_map[(int)data->player->y_pos][data->keyhook_map.x] = 4;
 		if (data->world_map[data->keyhook_map.y][(int)data->player->x_pos] == 4)
 			data->world_map[data->keyhook_map.y][(int)data->player->x_pos] = 6;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/12 12:12:48 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:29:20 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ int	main(int ac, char **av)
 	t_player	player;
 	t_ray		ray;
 
-	(void)ac;
-	(void)av;
+	//(void)ac;
+	//(void)av;
 	if (FOV <= 0 || RESOLUTION <= 0)
 		return (ft_error("FOV / RESOLUTION can't be 0 or negative", 44));
 	data.player = &player;

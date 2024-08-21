@@ -1,4 +1,5 @@
 .vscode/
+docs/
 lib/MLX42/
 *.o
 .libmlx42

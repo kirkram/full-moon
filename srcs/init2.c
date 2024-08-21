@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/12 11:35:03 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/21 10:17:19 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	init_map_data(t_data *data)
 	data->txtrs = NULL;
 	data->swordarm_tx = NULL;
 	data->swordarm = NULL;
+	data->last_attack = 0.0;
 	data->enemy_ssheet = NULL;
 	data->startpos_x = 0;
 	data->startpos_y = 0;
@@ -66,8 +67,8 @@ int	create_fname(char *fname, int i)
 
 int	init_player_sprites(t_data *data) // free these
 {
-	int i;
-	char fname[1024];
+	int		i;
+	char	fname[1024];
 
 	data->swordarm_tx = (mlx_texture_t **)ft_calloc(PL_FRAMECOUNT + 1,
 			sizeof(mlx_texture_t *));
@@ -104,75 +105,5 @@ int	init_player(t_data *data)
 		return (ft_error("Error on mlx_image_to_window\n", 11));
 	data->player->y_pos_mini = data->player->y_pos * data->zoom;
 	data->player->x_pos_mini = data->player->x_pos * data->zoom;
-	return (0);
-}
-
-mlx_image_t	*create_enemy_sprite(t_data *data, int sx, int sy)
-{
-	mlx_image_t	*sprite;
-	int			cx;
-	int			cy;
-	int			sheet_index;
-	int			sprite_index;
-
-	sprite = mlx_new_image(data->mlx, ESW, ESH);
-	//printf("creating enemy sprite y:%d x:%d\n", sy, sx);
-	cy = -1;
-	while (++cy < ESH)
-	{
-		cx = -1;
-		while (++cx < ESW)
-		{
-			sheet_index = ((sy * ESW + cy) * ESSW + (sx * ESW + cx)) * 4;
-			sprite_index = (cy * ESW + cx) * 4;
-			sprite->pixels[sprite_index
-				+ 0] = data->enemy_ssheet->pixels[sheet_index + 0];
-			sprite->pixels[sprite_index
-				+ 1] = data->enemy_ssheet->pixels[sheet_index + 1];
-			sprite->pixels[sprite_index
-				+ 2] = data->enemy_ssheet->pixels[sheet_index + 2];
-			sprite->pixels[sprite_index
-				+ 3] = data->enemy_ssheet->pixels[sheet_index + 3];
-		}
-	}
-	return (sprite);
-}
-
-int	init_enemy_frames(t_data *data)
-{
-	int	i;
-
-	data->enemy_ssheet = mlx_load_png("./sprites/ratman_paletted_b.png");
-	if (data->enemy_ssheet == NULL)
-		free_all_and_quit(data, "enemy texture loading", 11);
-	data->enemy_frame = (mlx_image_t **)ft_calloc(EN_FRAMECOUNT + 1,
-			sizeof(mlx_image_t *));
-	i = -1;
-	while (++i < 64)
-	{
-		data->enemy_frame[i] = create_enemy_sprite(data, (i % 8), (i / 8));
-		if (data->enemy_frame[i] == NULL)
-			free_all_and_quit(data, "enemy texture loading", 11);
-	}
-	data->enemy_frame[EN_FRAMECOUNT] = NULL;
-	return (0);
-}
-
-int	put_background(t_data *data)
-{
-	data->floor = mlx_new_image(data->mlx, data->width, data->height);
-	if (!data->floor)
-		ft_error("Error on mlx_new_image\n", 11);
-	if (mlx_image_to_window(data->mlx, data->floor, 0, 0) < 0)
-		ft_error("Error on mlx_image_to_window\n", 11);
-	color_whole_image(data->floor, data->floorcolor, data->width, data->height);
-	data->ceiling = mlx_new_image(data->mlx, data->width, data->height);
-	if (!data->ceiling)
-		ft_error("Error on mlx_new_image\n", 11);
-	if (mlx_image_to_window(data->mlx, data->ceiling, 0, 0) < 0)
-		ft_error("Error on mlx_image_to_window\n", 11);
-	color_whole_image(data->ceiling, data->ceilingcolor, data->width,
-		data->height / 2);
-	mlx_put_string(data->mlx, "CUB3D_0.9", data->width - 100, 1);
 	return (0);
 }
