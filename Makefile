@@ -10,9 +10,9 @@ DEBUGFLAGS = -g -fsanitize=address,undefined
 LIBS = $(LIBMLX42) -lm -lglfw -L /Users/$(USER)/.brew/opt/glfw -L/Users/$(USER)/.brew/lib -L/opt/homebrew/lib #-framework Cocoa -framework OpenGL -framework IOKit
 SRC_DIR = 	./srcs
 SRCS = main.c helper.c helper_angle.c \
-drawing.c drawing_distance.c drawing_helper.c drawing_hor_rays.c drawing_minimap.c drawing_textures.c drawing_vert_rays.c \
-init.c init2.c init3.c init_loadtex.c \
-keyhook.c keyhook_movement.c keyhook_movement_2.c keyhook_anim.c \
+drawing.c drawing_2.c drawing_distance.c drawing_helper.c drawing_hor_rays.c drawing_minimap.c drawing_textures.c drawing_vert_rays.c \
+init.c init2.c init3.c init_loadtex.c\
+keyhook.c keyhook_movement.c keyhook_movement_2.c\
 minimap.c maploader.c maploader2.c maploader3.c	\
 mapvalidator.c mapvalidator_floodfill.c maptools.c map_params.c exitfree.c \
 enemy.c enemy_helper.c enemy_draw.c enemy_sort.c enemy_rays.c enemy_rays_2.c enemy_move.c enemy_move2.c \

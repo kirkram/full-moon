@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   init_loadtex.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 10:08:29 by mburakow          #+#    #+#             */
 /*   Updated: 2024/08/22 19:02:33 by mburakow         ###   ########.fr       */
