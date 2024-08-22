@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/22 10:12:44 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/22 15:07:10 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,9 @@ void	keyhook_loop(mlx_key_data_t keydata, void *param)
 
 int	init_and_draw(t_data *data)
 {
+	int32_t	mon_width;
+	int32_t	mon_height;
+  
 	if (init_canvases(data))
 		free_all_and_quit(data, "image initialization", 11);
 	data->txtrs = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *)
@@ -82,11 +85,15 @@ int	init_and_draw(t_data *data)
 	if (!data->txtrs)
 		free_all_and_quit(data, "texture loading malloc", 11);
 	load_textures(data);
+	mlx_get_monitor_size(0, &mon_width, &mon_height);
+	mlx_set_window_pos(data->mlx, mon_width / 2.5 - (data->width / 2),
+		mon_height / 2.5 - (data->height / 2));
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
-	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
+	mlx_set_mouse_pos(data->mlx, mon_width / 2.5 - (data->width / 2), mon_height
+		/ 2.5 - (data->height / 2));
 	draw_minimap(data);
 	draw_player_minimap(data);
-	draw_rays(data);
+	draw_world(data);
 	mlx_cursor_hook(data->mlx, &hook_mouse_move, data);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	mlx_key_hook(data->mlx, &keyhook_loop, data);
@@ -94,38 +101,3 @@ int	init_and_draw(t_data *data)
 	return (0);
 }
 
-/*
-void	load_textures(t_data *data)
-{
-	int	i;
-
-	i = -1;
-	while (++i < 4)
-	{
-		if (!data->nsew_path[i] || access(data->nsew_path[i], F_OK))
-			free_all_and_quit(data, "can't find texture file", 76);
-		data->txtrs[i] = mlx_load_png(data->nsew_path[i]);
-		if (!data->txtrs[i])
-			free_all_and_quit(data, "error on mlx_load_png", 77);
-		if (data->txtrs[i]->width > 4096 || data->txtrs[i]->height > 4096)
-			free_all_and_quit(data,
-				"image dimensions should be less than 4096 pixels", 78);
-	}
-	data->txtrs[4] = mlx_load_png(DOOR_PATH);
-	if (!data->txtrs[4])
-		free_all_and_quit(data, "can't open door file", 75);
-	if (data->txtrs[4]->height > 4096 || data->txtrs[4]->width > 4096)
-		free_all_and_quit(data,
-			"door dimensions should be less than 4096 pixels", 78);
-	data->txtrs[5] = mlx_load_png(FLOOR_PATH);
-	if (!data->txtrs[5])
-		free_all_and_quit(data, "can't open floor file", 75);
-	if (data->txtrs[5]->height > 4096 || data->txtrs[4]->width > 4096)
-		free_all_and_quit(data, "fl dimensions must be <  4096 pixels", 78);
-	data->txtrs[6] = mlx_load_png(SKY_PATH);
-	if (!data->txtrs[6])
-		free_all_and_quit(data, "can't open sky file", 75);
-	if (data->txtrs[6]->height > 4096 || data->txtrs[4]->width > 4096)
-		free_all_and_quit(data, "sky dimensions must be <  4096 pixels", 78);
-}
-*/
