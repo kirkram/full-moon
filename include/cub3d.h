@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/21 19:14:28 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/22 10:15:21 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,6 +248,7 @@ typedef struct s_data
 
 // init
 void				init_map_data(t_data *data);
+void				load_textures(t_data *data);
 void				init_player_data(t_player *player);
 int					create_fname(char *fname, int i);
 int					load_valid_map(t_data *data, int ac, char **av);

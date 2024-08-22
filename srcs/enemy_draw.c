@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 11:42:11 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/21 12:41:51 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/22 12:01:52 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,6 @@ static void	initialize_draw_data(t_ed *d, t_enemy *enemy, t_coord dst,
 	d->sc.y = -1;
 	d->dst.x = dst.x;
 	d->dst.y = dst.y;
-}
-
-static int	calculate_ray_index(int dest_x, int sc_x, int scale, t_data *data)
-{
-	int	ray_index;
-
-	ray_index = (dest_x + sc_x * scale) * (FOV * RESOLUTION) / data->width;
-	if (ray_index >= 180)
-		ray_index = 179;
-	return (ray_index);
 }
 
 static void	draw_scaled_pixel_block(t_ed *d, t_enemy *enemy)
@@ -76,7 +66,10 @@ void	draw_enemy_onto_canvas(t_enemy *enemy, int dest_x, int dest_y,
 	initialize_draw_data(&d, enemy, dst, data);
 	while (++(d.sc.x) < (int32_t)d.src->width)
 	{
-		d.ray_index = calculate_ray_index(d.dst.x, d.sc.x, enemy->scale, data);
+		d.ray_index = (d.dst.x + d.sc.x * enemy->scale) * (FOV * RESOLUTION)
+			/ data->width;
+		if (d.ray_index >= 180)
+			d.ray_index = 179;
 		if (data->raydis[d.ray_index] > enemy->distance)
 		{
 			draw_sprite_column(&d, enemy);
