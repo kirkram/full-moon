@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/22 18:13:07 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:59:25 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,6 +303,8 @@ void				ft_hook_hub(void *param);
 void				hook_mouse_move(double x, double y, void *param);
 void				movement_loop(t_data *data);
 void				open_door(t_data *data);
+void				hook_player_animation(t_data *data);
+void				hit_enemy_if_in_range(t_data *data);
 void				calc_collision_ad(t_data *data, t_map *map, bool left);
 void				calc_collision_ws(t_data *data, t_map *map, bool forward);
 

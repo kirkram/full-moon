@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/22 18:14:43 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:55:49 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ float	angle_difference_rad(float angle1, float angle2)
 	return (diff);
 }
 
+
+// printf("Angle %.10f Distance %.10f\n", angle_diff,
+//					data->enemies[i]->distance);
 void	hit_enemy_if_in_range(t_data *data)
 {
 	int		i;
@@ -61,63 +64,10 @@ void	hit_enemy_if_in_range(t_data *data)
 				angle_to_enemy = normalize_rad(atan2(dy, dx));
 				angle_diff = angle_difference_rad(angle_to_enemy,
 						normalize_rad(data->player->angle));
-				printf("Angle %.10f Distance %.10f\n", angle_diff,
-					data->enemies[i]->distance);
 				if (angle_diff < 0.6)
-				{
-					// printf("Hit scored!\n");
 					data->enemies[i]->state = DYING;
-				}
 			}
 		}
-	}
-}
-
-void	hook_player_animation(t_data *data)
-{
-	static double	last_update = -1;
-	static int		frame = 0;
-	double			current_time;
-
-	current_time = mlx_get_time();
-	if (last_update < 0)
-		last_update = current_time;
-	if ((current_time - last_update >= ATTACK_SPEED / 4) && (current_time
-			- data->last_attack >= ATTACK_SPEED))
-	{
-		mlx_delete_image(data->mlx, data->swordarm);
-		data->swordarm = mlx_texture_to_image(data->mlx,
-				data->swordarm_tx[frame]);
-		frame++;
-		if (frame > 3)
-			frame = 0;
-		mlx_image_to_window(data->mlx, data->swordarm, data->width * 0.45, 1);
-		last_update = current_time;
-	}
-	else if (current_time - data->last_attack < ATTACK_SPEED)
-	{
-		mlx_delete_image(data->mlx, data->swordarm);
-		if (current_time - data->last_attack < (ATTACK_SPEED) / 10)
-			data->swordarm = mlx_texture_to_image(data->mlx,
-					data->swordarm_tx[7]);
-		else if (current_time - data->last_attack < (ATTACK_SPEED / 8))
-			data->swordarm = mlx_texture_to_image(data->mlx,
-					data->swordarm_tx[8]);
-		else if (current_time - data->last_attack < (ATTACK_SPEED / 6))
-		{
-			data->swordarm = mlx_texture_to_image(data->mlx,
-					data->swordarm_tx[9]);
-			hit_enemy_if_in_range(data);
-		}
-		else
-			data->swordarm = mlx_texture_to_image(data->mlx,
-					data->swordarm_tx[10]);
-		mlx_image_to_window(data->mlx, data->swordarm, 240, 1);
-	}
-	if (mlx_is_mouse_down(data->mlx, MLX_MOUSE_BUTTON_LEFT))
-	{
-		if (current_time - data->last_attack >= ATTACK_SPEED)
-			data->last_attack = current_time;
 	}
 }
 
