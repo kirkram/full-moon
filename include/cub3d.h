@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/22 15:06:20 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:13:07 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,7 +254,6 @@ void				init_player_data(t_player *player);
 int					create_fname(char *fname, int i);
 int					load_valid_map(t_data *data, int ac, char **av);
 void				load_map(t_data *data);
-void				load_textures(t_data *data);
 int					validate_map(int **world_map, t_data *data);
 int					validate_mapsquare(int value);
 void				convert_tabs(char **line);

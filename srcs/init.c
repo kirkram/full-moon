@@ -77,7 +77,7 @@ int	init_and_draw(t_data *data)
 {
 	int32_t	mon_width;
 	int32_t	mon_height;
-  
+
 	if (init_canvases(data))
 		free_all_and_quit(data, "image initialization", 11);
 	data->txtrs = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *)
@@ -100,4 +100,3 @@ int	init_and_draw(t_data *data)
 	mlx_loop(data->mlx);
 	return (0);
 }
-
