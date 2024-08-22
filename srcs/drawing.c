@@ -45,9 +45,11 @@ void	draw_ceiling(t_data *data, t_ray *ray, int i, float line_w)
 		dfm = data->height / (data->height - 2.0 * line->y);
 		weight = dfm / ray->dist * 1.7;
 		txt->x = ((int)((weight * ray->x + (1.0f - weight)
-			* data->player->x_pos) * txt->ptr->width) % txt->ptr->width);
+						* data->player->x_pos) * txt->ptr->width)
+				% txt->ptr->width);
 		txt->y = ((int)((weight * ray->y + (1.0f - weight)
-			* data->player->y_pos) * txt->ptr->height) % txt->ptr->height);
+						* data->player->y_pos) * txt->ptr->height)
+				% txt->ptr->height);
 		txt->index = ((uint32_t)txt->y * txt->ptr->width + (uint32_t)txt->x)
 			* txt->ptr->bytes_per_pixel;
 		if (txt->index + 2 < txt->ptr->width * txt->ptr->height
@@ -60,7 +62,7 @@ void	draw_ceiling(t_data *data, t_ray *ray, int i, float line_w)
 	}
 }
 
-//dfm = distance from the middle of the screen
+// dfm = distance from the middle of the screen
 void	draw_floor(t_data *data, t_ray *ray, int i, float line_w)
 {
 	float	dfm;
@@ -76,9 +78,11 @@ void	draw_floor(t_data *data, t_ray *ray, int i, float line_w)
 		dfm = data->height / (2.0 * line->y - data->height);
 		weight = dfm / ray->dist * 1.7;
 		txt->x = ((int)((weight * ray->x + (1.0f - weight)
-			* data->player->x_pos) * txt->ptr->width) % txt->ptr->width);
+						* data->player->x_pos) * txt->ptr->width)
+				% txt->ptr->width);
 		txt->y = ((int)((weight * ray->y + (1.0f - weight)
-			* data->player->y_pos) * txt->ptr->height) % txt->ptr->height);
+						* data->player->y_pos) * txt->ptr->height)
+				% txt->ptr->height);
 		txt->index = ((uint32_t)txt->y * txt->ptr->width + (uint32_t)txt->x)
 			* txt->ptr->bytes_per_pixel;
 		if (txt->index + 2 < txt->ptr->width * txt->ptr->height

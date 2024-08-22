@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/21 18:52:17 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/22 10:12:44 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,37 @@ int	init_canvases(t_data *data)
 	return (0);
 }
 
+void	keyhook_loop(mlx_key_data_t keydata, void *param)
+{
+	t_data	*data;
+
+	data = param;
+	if (mlx_is_key_down(data->mlx, MLX_KEY_E) && keydata.action == MLX_PRESS)
+		open_door(data);
+}
+
+int	init_and_draw(t_data *data)
+{
+	if (init_canvases(data))
+		free_all_and_quit(data, "image initialization", 11);
+	data->txtrs = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *)
+			* (TEXTURES_AMOUNT + 1));
+	if (!data->txtrs)
+		free_all_and_quit(data, "texture loading malloc", 11);
+	load_textures(data);
+	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
+	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
+	draw_minimap(data);
+	draw_player_minimap(data);
+	draw_rays(data);
+	mlx_cursor_hook(data->mlx, &hook_mouse_move, data);
+	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
+	mlx_key_hook(data->mlx, &keyhook_loop, data);
+	mlx_loop(data->mlx);
+	return (0);
+}
+
+/*
 void	load_textures(t_data *data)
 {
 	int	i;
@@ -97,33 +128,4 @@ void	load_textures(t_data *data)
 	if (data->txtrs[6]->height > 4096 || data->txtrs[4]->width > 4096)
 		free_all_and_quit(data, "sky dimensions must be <  4096 pixels", 78);
 }
-
-void	keyhook_loop(mlx_key_data_t keydata, void *param)
-{
-	t_data	*data;
-
-	data = param;
-	if (mlx_is_key_down(data->mlx, MLX_KEY_E) && keydata.action == MLX_PRESS)
-		open_door(data);
-}
-
-int	init_and_draw(t_data *data)
-{
-	if (init_canvases(data))
-		free_all_and_quit(data, "image initialization", 11);
-	data->txtrs = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *)
-			* (TEXTURES_AMOUNT + 1));
-	if (!data->txtrs)
-		free_all_and_quit(data, "texture loading malloc", 11);
-	load_textures(data);
-	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
-	mlx_set_mouse_pos(data->mlx, data->width / 2, data->height / 2);
-	draw_minimap(data);
-	draw_player_minimap(data);
-	draw_rays(data);
-	mlx_cursor_hook(data->mlx, &hook_mouse_move, data);
-	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
-	mlx_key_hook(data->mlx, &keyhook_loop, data);
-	mlx_loop(data->mlx);
-	return (0);
-}
+*/
