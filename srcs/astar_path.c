@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 13:36:45 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 19:05:42 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/22 23:02:26 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ static void	retrace(int count, t_node *current, t_route *route)
 		count--;
 		route->coords[count].x = current->x;
 		route->coords[count].y = current->y;
-		printf("C: %d x: %d y: %d\n", count, route->coords[count].x,
-			route->coords[count].y);
+		// printf("C: %d x: %d y: %d\n", count, route->coords[count].x,
+		//	route->coords[count].y);
 		current = current->parent;
 	}
 }
@@ -53,7 +53,7 @@ t_route	*reconstruct_path(t_node *end_node)
 	route->size = 0;
 	while (current->parent)
 	{
-		printf("size: %d x: %d y: %d\n", route->size, current->x, current->y);
+		// printf("size: %d x: %d y: %d\n", route->size, current->x, current->y);
 		route->size++;
 		current = current->parent;
 	}
@@ -62,7 +62,7 @@ t_route	*reconstruct_path(t_node *end_node)
 	route->coords[route->size].y = -1;
 	current = end_node;
 	retrace(route->size, current, route);
-	printf("Route length: %d\n", route->size);
+	// printf("Route length: %d\n", route->size);
 	return (route);
 }
 

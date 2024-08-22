@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:00:06 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/21 15:26:27 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/22 22:46:48 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	step_route(t_enemy *enemy)
 		enemy->route->coords[i].y = enemy->route->coords[i + 1].y;
 		i++;
 	}
+	enemy->route->size -= 1;
 }
 
 static t_coord	get_player_position(t_data *data)
