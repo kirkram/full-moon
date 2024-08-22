@@ -30,40 +30,43 @@ void	ft_hook_keys(t_data *data)
 }
 
 // Calculate the smallest difference between two angles
-float angle_difference_rad(float angle1, float angle2) 
+float	angle_difference_rad(float angle1, float angle2)
 {
-    float diff; 
-	
+	float	diff;
+
 	diff = fabs(angle1 - angle2);
-    if (diff > PI)
-        diff = 2 * PI - diff;
-    return (diff);
+	if (diff > PI)
+		diff = 2 * PI - diff;
+	return (diff);
 }
 
 void	hit_enemy_if_in_range(t_data *data)
 {
-	int	i;
-	float dx;
-    float dy;
-	float angle_to_enemy;
-    float angle_diff;
+	int		i;
+	float	dx;
+	float	dy;
+	float	angle_to_enemy;
+	float	angle_diff;
 
-    i = -1;
-    printf("Determining hit.\n");
+	i = -1;
+	printf("Determining hit.\n");
 	if (data->enemies)
 	{
-		while (data->enemies[++i] != NULL) 
+		while (data->enemies[++i] != NULL)
 		{
-			if (data->enemies[i]->distance < 2.0 && enemy_is_alive(data->enemies[i])) 
+			if (data->enemies[i]->distance < 2.0
+				&& enemy_is_alive(data->enemies[i]))
 			{
 				dx = data->enemies[i]->x_pos - data->player->x_pos;
 				dy = data->enemies[i]->y_pos - data->player->y_pos;
 				angle_to_enemy = normalize_rad(atan2(dy, dx));
-				angle_diff = angle_difference_rad(angle_to_enemy, normalize_rad(data->player->angle));
-				printf("Angle %.10f Distance %.10f\n", angle_diff, data->enemies[i]->distance);
-				if (angle_diff < 0.6) 
+				angle_diff = angle_difference_rad(angle_to_enemy,
+						normalize_rad(data->player->angle));
+				printf("Angle %.10f Distance %.10f\n", angle_diff,
+					data->enemies[i]->distance);
+				if (angle_diff < 0.6)
 				{
-					//printf("Hit scored!\n");
+					// printf("Hit scored!\n");
 					data->enemies[i]->state = DYING;
 				}
 			}
@@ -79,7 +82,7 @@ void	hook_player_animation(t_data *data)
 
 	current_time = mlx_get_time();
 	if (last_update < 0)
-    	last_update = current_time;
+		last_update = current_time;
 	if ((current_time - last_update >= ATTACK_SPEED / 4) && (current_time
 			- data->last_attack >= ATTACK_SPEED))
 	{
@@ -194,15 +197,14 @@ void	hook_animation(t_data *data)
 {
 	static double	last_update = 0;
 	static int		frame = 0;
-	mlx_img
 	double			current_time;
 
+	mlx_img
 	current_time = mlx_get_time();
 	if ((current_time - last_update >= ANIMATION_SPEED / 4) && (current_time
 			- data->last_attack >= ANIMATION_SPEED))
 	{
 		mlx_delete_image(data->mlx, data->swordarm);
-
 		frame++;
 		if (frame > 3)
 			frame = 0;
@@ -220,7 +222,8 @@ void	hook_animation(t_data *data)
 			frame = 9;
 		else
 			frame = 10;
-		mlx_image_to_window(data->mlx, data->swordarm[frame], data->width * 0.19, 1);
+		mlx_image_to_window(data->mlx, data->swordarm[frame], data->width
+			* 0.19, 1);
 	}
 	if (mlx_is_mouse_down(data->mlx, MLX_MOUSE_BUTTON_LEFT))
 	{
@@ -248,7 +251,8 @@ void	hook_animation(t_data *data)
 			frame = 9;
 		else
 			frame = 10;
-		draw_player_onto_canvas(data, data->swordarm[frame], data->width * 0.19, 1);
+		draw_player_onto_canvas(data, data->swordarm[frame], data->width * 0.19,
+			1);
 	}
 	else if (current_time - last_update >= ANIMATION_SPEED / 4)
 	{
@@ -257,7 +261,8 @@ void	hook_animation(t_data *data)
 		frame++;
 		if (frame > 3)
 			frame = 0;
-		draw_player_onto_canvas(data, data->swordarm[frame], data->width * 0.45, 1);
+		draw_player_onto_canvas(data, data->swordarm[frame], data->width * 0.45,
+			1);
 		last_update = mlx_get_time();
 	}
 	if (mlx_is_mouse_down(data->mlx, MLX_MOUSE_BUTTON_LEFT))

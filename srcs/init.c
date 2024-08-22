@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
 /*   Updated: 2024/08/22 15:07:10 by klukiano         ###   ########.fr       */
@@ -77,7 +77,7 @@ int	init_and_draw(t_data *data)
 {
 	int32_t	mon_width;
 	int32_t	mon_height;
-
+  
 	if (init_canvases(data))
 		free_all_and_quit(data, "image initialization", 11);
 	data->txtrs = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *)
@@ -100,3 +100,4 @@ int	init_and_draw(t_data *data)
 	mlx_loop(data->mlx);
 	return (0);
 }
+

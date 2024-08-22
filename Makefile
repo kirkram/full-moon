@@ -1,6 +1,7 @@
 NAME = cub3D
 LIBFT_PATH = ./lib/libft
 LIBMLX_PATH = ./lib/MLX42
+LIBMLX_REPO = https://github.com/codam-coding-college/MLX42.git
 LIBFT = $(LIBFT_PATH)/libft.a
 LIBMLX42 = $(LIBMLX_PATH)/build/libmlx42.a
 CFLAGS = -Wall -Wextra -Werror -Wunreachable-code 
@@ -10,7 +11,7 @@ LIBS = $(LIBMLX42) -lm -lglfw -L /Users/$(USER)/.brew/opt/glfw -L/Users/$(USER)/
 SRC_DIR = 	./srcs
 SRCS = main.c helper.c helper_angle.c \
 drawing.c drawing_2.c drawing_distance.c drawing_helper.c drawing_hor_rays.c drawing_minimap.c drawing_textures.c drawing_vert_rays.c \
-init.c init2.c init3.c init_textures.c\
+init.c init2.c init3.c init_textures.c init_loadtex.c\
 keyhook.c keyhook_movement.c keyhook_movement_2.c\
 minimap.c maploader.c maploader2.c maploader3.c	\
 mapvalidator.c mapvalidator_floodfill.c maptools.c map_params.c exitfree.c \
@@ -21,9 +22,6 @@ INC_DIRS = ./include $(LIBMLX_PATH)/include/ $(LIBFT_PATH)/libft $(LIBFT_PATH)/f
 INCS = $(foreach dir, $(INC_DIRS), -I $(dir))
 OBJ_DIR = ./objs
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
-#OBJCTS = $(SRCS:.c=.o)
-#BONUS_OBJCTS = $(BONUS_SRCS:.c=.o)
-#GNL_OBJCTS = $(GNL_SRCS:.c=.o)
 RM = rm -f
 
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c
@@ -38,17 +36,20 @@ $(LIBMLX42): .libmlx42
 
 $(LIBMLX42D): .libmlx42d
 
-.libmlx42:
-	@cmake $(LIBMLX_PATH) -B $(LIBMLX_PATH)/build && make -C $(LIBMLX_PATH)/build -j4
+.libmlx42: clone_mlx42
+	cd $(LIBMLX_PATH) && cmake -B build && make -C build -j4
 	touch .libmlx42
 
-.libmlx42d:
-	@cmake $(LIBMLX_PATH) -DDEBUG=1 -B $(LIBMLX_PATH)/build && make -DDEBUG=1 -C $(LIBMLX_PATH)/build -j4
-	touch .libmlx42
+.libmlx42d: clone_mlx42
+	cd $(LIBMLX_PATH) && cmake -DDEBUG=1 -B build && make -DDEBUG=1 -C build -j4
+	touch .libmlx42d
 
 clone_mlx42:
-	if [ ! -d "$(LIBMLX_PATH)" ]; then \
-		git clone https://github.com/codam-coding-college/MLX42.git "$(LIBMLX_PATH)"; \
+	@if [ ! -d "$(LIBMLX_PATH)" ]; then \
+		echo "Cloning MLX42 library..."; \
+		git clone $(LIBMLX_REPO) $(LIBMLX_PATH); \
+	else \
+		echo "MLX42 library already exists."; \
 	fi
 
 $(LIBFT):
@@ -84,4 +85,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus both debug libmlx42
+.PHONY: all clean fclean re bonus both debug libmlx42 clone_mlx42
