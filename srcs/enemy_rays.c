@@ -39,7 +39,7 @@ static void	vertical_rays_offset_enemy(t_ray *ray, int range, t_enemy *enemy)
 }
 
 void	vertical_rays_enemy(t_data *data, t_ray *ray, t_enemy *enemy)
-{	
+{
 	int		range;
 	t_map	map;
 
@@ -92,8 +92,8 @@ static void	horizontal_rays_offset_enemy(t_ray *ray, int range, t_enemy *enemy)
 
 void	horizontal_rays_enemy(t_data *data, t_ray *ray, t_enemy *enemy)
 {
-	t_map		map;
-	int			range;
+	t_map	map;
+	int		range;
 
 	ray->dof = 0;
 	range = enemy->dof;
@@ -120,8 +120,8 @@ void	horizontal_rays_enemy(t_data *data, t_ray *ray, t_enemy *enemy)
 
 void	find_enemy_rays(t_data *data, t_enemy *enemy)
 {
-	t_ray		*enemy_ray;
-	int			i;
+	t_ray	*enemy_ray;
+	int		i;
 
 	enemy_ray = &enemy->ray;
 	enemy_ray->ang = enemy->angle - rad(FOV / 2 / 2);
