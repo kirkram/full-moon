@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:15:56 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 19:06:46 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/22 22:59:25 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_route	*run_a_star(t_astar *context, t_coord end_pos, t_data *data)
 	while (context->open_set->size > 0)
 	{
 		current = pq_pop(context->open_set, context, data);
-		printf("Checking x %d y %d\n", current->x, current->y);
+		// printf("Checking x %d y %d\n", current->x, current->y);
 		if (process_current_node(current, end_pos, context, data))
 		{
 			return (context->route);
