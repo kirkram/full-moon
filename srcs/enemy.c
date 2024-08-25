@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/21 15:14:02 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/26 00:19:02 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	draw_enemy(t_data *data, t_enemy *enemy, uint32_t screen_x)
 
 void	hook_enemies(t_data *data)
 {
-	int i;
-	uint32_t screen_x;
+	int 		i;
+	uint32_t	screen_x;
 
 	i = -1;
 	while (data->enemies[++i] != NULL)

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 12:55:20 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/21 14:29:05 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/26 00:38:07 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static int	is_position_valid(t_data *data, float y, float x)
 		&& data->world_map[(int)y][(int)x] != 4);
 }
 
+// Let's put the check for attack somewhere here
 void	move_enemy_position(t_data *data, t_enemy *enemy, t_fcoord direction,
 		float delta_time)
 {
@@ -37,4 +38,5 @@ void	move_enemy_position(t_data *data, t_enemy *enemy, t_fcoord direction,
 		enemy->x_pos = move_x;
 	if (is_position_valid(data, move_y, enemy->x_pos))
 		enemy->y_pos = move_y;
+	// Here might be the spot :)
 }
