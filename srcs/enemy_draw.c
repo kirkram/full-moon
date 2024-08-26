@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 11:42:11 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/22 12:01:52 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/26 00:38:16 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,52 +76,3 @@ void	draw_enemy_onto_canvas(t_enemy *enemy, int dest_x, int dest_y,
 		}
 	}
 }
-
-/*
-void	draw_enemy_onto_canvas(t_enemy *enemy, int dest_x, int dest_y,
-		t_data *data)
-{
-	t_ed	d;
-
-	d.dest = data->screen;
-	d.src = data->enemy_frame[enemy->current_frame];
-	d.sc.y = -1;
-	d.sc.x = -1;
-	d.dst.x = dest_x;
-	d.dst.y = dest_y;
-	while (++(d.sc.x) < (int32_t)d.src->width)
-	{
-		d.ray_index = (d.dst.x + d.sc.x * enemy->scale) * (FOV * RESOLUTION)
-			/ data->width;
-		if (d.ray_index >= 180)
-			d.ray_index = 179;
-		if (data->raydis[d.ray_index] > enemy->distance)
-		{
-			while (++(d.sc.y) < (int32_t)d.src->height)
-			{
-				d.sc.color = get_pixel_color(d.src, (uint32_t)d.sc.x,
-						(uint32_t)d.sc.y);
-				if (get_a(d.sc.color) > 0)
-				{
-					d.ds.y = -1;
-					while (++d.ds.y < enemy->scale)
-					{
-						d.ds.x = -1;
-						while (++d.ds.x < enemy->scale)
-						{
-							d.f.x = dest_x + d.sc.x * enemy->scale + d.ds.x;
-							d.f.y = dest_y + d.sc.y * enemy->scale + d.ds.y;
-							if ((uint32_t)d.f.x < d.dest->width
-								&& (uint32_t)d.f.y < d.dest->height)
-							{
-								mlx_put_pixel(d.dest, d.f.x, d.f.y, d.sc.color);
-							}
-						}
-					}
-				}
-			}
-		}
-		d.sc.y = -1;
-	}
-}
-*/

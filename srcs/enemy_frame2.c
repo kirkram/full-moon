@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 14:48:45 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/21 14:56:47 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/26 11:37:25 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,23 @@ void	update_walking_frame(t_enemy *enemy, int index, double now, double prev)
 			enemy->current_frame = index + 32;
 		else
 			enemy->current_frame = index;
+		enemy->last_frame = now;
+	}
+}
+
+void	update_attacking_frame(t_enemy *enemy, double now, double prev)
+{
+	if (now - prev > 0.3)
+	{
+		if (enemy->current_frame == 32)
+			enemy->current_frame = 40;
+		else if (enemy->current_frame == 40)
+		{
+			enemy->current_frame = 48;
+			enemy->attacked = false;
+		}
+		else
+			enemy->current_frame = 32;
 		enemy->last_frame = now;
 	}
 }

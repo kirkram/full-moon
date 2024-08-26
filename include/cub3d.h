@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/22 22:57:53 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/26 11:32:26 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ typedef enum s_enemystate
 {
 	IDLE,
 	WALKING,
-	SHOOTING,
+	ATTACKING,
 	DYING,
 	DEAD
 }	t_enemystate;
@@ -158,6 +158,7 @@ typedef struct s_player
 	float			angle;
 	int32_t			imgwidth;
 	int32_t			imgheight;
+	int				hitpoints;
 }					t_player;
 
 typedef struct s_enemy
@@ -176,9 +177,10 @@ typedef struct s_enemy
 	float			scale; // dependent on distance
 	t_ray			ray;
 	int				dof; //how many squares will check 
-	bool			attack; //if sees player
+	bool			seen_player; //if sees player
 	float			speed; // speed of movement
 	t_route			*route; // a star route
+	bool			attacked;
 }					t_enemy;
 
 typedef struct s_point
@@ -321,6 +323,7 @@ void				calculate_enemy_angle(t_enemy *enemy);
 void				update_enemy_frame(t_enemy *enemy, t_data *data);
 void				update_idle_frame(t_enemy *enemy, int index, double now, double prev);
 void				update_walking_frame(t_enemy *enemy, int index, double now, double prev);
+void				update_attacking_frame(t_enemy *enemy, double now, double prev);
 void				update_dying_frame(t_enemy *enemy, double now, double prev);
 void 				update_enemy(t_enemy *enemy, t_data *data);
 void				update_enemy_target(t_enemy *enemy, t_coord player_pos,
