@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:00:06 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/26 11:38:01 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/26 11:54:56 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,10 @@ void	update_enemy(t_enemy *enemy, t_data *data)
 				enemy->attacked = true;
 				if (data->player->hitpoints == 0)
 					printf("GAME OVER MAN!!!\n");
-			}					
+			}
+			else if (enemy->current_frame == 48 
+				&& enemy->distance > 1.6)
+				enemy->state = IDLE;			
 		}
 	}
 }
