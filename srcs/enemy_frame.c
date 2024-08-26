@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 14:35:17 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/26 00:21:39 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/26 11:20:23 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,13 @@ static void	update_frame_based_on_state(t_enemy *enemy, int index, double now)
 
 	prev = enemy->last_frame;
 	if (enemy->state == IDLE)
-	{
 		update_idle_frame(enemy, index, now, prev);
-	}
 	else if (enemy->state == WALKING)
-	{
 		update_walking_frame(enemy, index, now, prev);
-	}
+	else if (enemy->state == ATTACKING)
+		update_attacking_frame(enemy, now, prev);
 	else if (enemy->state == DYING)
-	{
 		update_dying_frame(enemy, now, prev);
-	}
 }
 
 static int	calculate_direction_index(t_enemy *enemy, t_data *data)

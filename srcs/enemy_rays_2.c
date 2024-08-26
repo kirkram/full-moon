@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_rays_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 16:22:10 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/22 15:08:24 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/26 00:53:13 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	check_player(t_data *data, t_ray *ray, t_map *map, t_enemy *enemy)
 	if (map->x == (int)data->player->x_pos
 		&& map->y == (int)data->player->y_pos)
 	{
-		enemy->attack = true;
+		enemy->seen_player = true;
 		return (1);
 	}
 	return (0);

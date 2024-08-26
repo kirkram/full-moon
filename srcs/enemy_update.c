@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:00:06 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/26 00:29:24 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/26 11:38:01 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,33 @@ void	update_enemy(t_enemy *enemy, t_data *data)
 	t_coord	player_pos;
 	t_coord	enemy_pos;
 
-	if (enemy->attack && enemy_is_alive(enemy))
+	if (enemy->seen_player && enemy_is_alive(enemy))
 	{
-		player_pos = get_player_position(data);
-		enemy_pos = get_enemy_position(enemy);
-		if (enemy->route == NULL)
+		if (enemy->state != ATTACKING)
 		{
-			initialize_enemy_route(enemy, player_pos, enemy_pos, data);
+			player_pos = get_player_position(data);
+			enemy_pos = get_enemy_position(enemy);
+			if (enemy->route == NULL)
+			{
+				initialize_enemy_route(enemy, player_pos, enemy_pos, data);
+			}
+			else if (has_reached_target(enemy))
+			{
+				update_enemy_target(enemy, player_pos, enemy_pos, data);
+			}
+			move_enemy(data, enemy);
 		}
-		else if (has_reached_target(enemy))
+ 		else if (enemy->state == ATTACKING)
 		{
-			update_enemy_target(enemy, player_pos, enemy_pos, data);
+			if (enemy->attacked == false && enemy->current_frame == 40 
+				&& enemy->distance <= 1.6)
+			{
+				--data->player->hitpoints;
+				printf("hitpoints: %d\n", data->player->hitpoints);
+				enemy->attacked = true;
+				if (data->player->hitpoints == 0)
+					printf("GAME OVER MAN!!!\n");
+			}					
 		}
-		move_enemy(data, enemy);
 	}
 }

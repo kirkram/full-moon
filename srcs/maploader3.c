@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 19:23:27 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/21 09:04:24 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/26 11:33:17 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,12 @@ static void	init_enemy_state(t_enemy *enemy, t_data *data)
 	enemy->state = IDLE;
 	enemy->visible = 0;
 	enemy->scale = 1.0;
-	enemy->attack = false;
+	enemy->seen_player = false;
 	enemy->route = NULL;
 	enemy->speed = 3.0;
 	enemy->x_target = enemy->x_pos;
 	enemy->y_target = enemy->y_pos;
+	enemy->attacked = false;
 	update_enemy_frame(enemy, data);
 }
 

@@ -6,11 +6,23 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 12:55:20 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/26 00:38:07 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/26 11:24:34 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	check_attack_range(t_data *data, t_enemy *enemy)
+{
+	(void)data;
+	if (enemy->distance < 1.4)
+	{
+		printf("Attacking player!\n");
+		enemy->state = ATTACKING;
+		free (enemy->route);
+		enemy->route = NULL;
+	}
+}
 
 static int	is_position_valid(t_data *data, float y, float x)
 {
@@ -38,5 +50,5 @@ void	move_enemy_position(t_data *data, t_enemy *enemy, t_fcoord direction,
 		enemy->x_pos = move_x;
 	if (is_position_valid(data, move_y, enemy->x_pos))
 		enemy->y_pos = move_y;
-	// Here might be the spot :)
+	check_attack_range(data, enemy);
 }

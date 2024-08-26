@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/21 10:17:19 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/26 11:26:19 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	init_player_data(t_player *player)
 	player->angle = 0;
 	player->imgwidth = 0;
 	player->imgheight = 0;
+	player->hitpoints = 10;
 }
 
 int	create_fname(char *fname, int i)
