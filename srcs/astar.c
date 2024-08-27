@@ -6,20 +6,20 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:15:56 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/27 21:39:41 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/28 01:14:41 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "pathfinding.h"
 
-int	check_and_mark_current_node(t_node *current, t_coord end_pos,
+int	node_is_target(t_node *current, t_coord end_pos,
 		t_astar *context)
 {
 	if (current->x == end_pos.x && current->y == end_pos.y)
 	{
+		printf("Path found! address %p : %p\n", (void *)&current, (void *)current);
 		context->route = reconstruct_path(current);
-		// free(current);
 		return (1);
 	}
 	context->closed_set[current->y][current->x] = 1;
@@ -62,10 +62,9 @@ void	process_neighbors(t_node *current, t_astar *context, t_data *data,
 int	process_current_node(t_node *current, t_coord end_pos, t_astar *context,
 		t_data *data)
 {
-	if (check_and_mark_current_node(current, end_pos, context))
+	if (node_is_target(current, end_pos, context))
 		return (1);
 	process_neighbors(current, context, data, end_pos);
-	// free(current); // new
 	return (0);
 }
 
@@ -76,15 +75,14 @@ t_route	*run_a_star(t_astar *context, t_coord end_pos, t_data *data)
 	current = NULL;
 	while (context->open_set->size > 0)
 	{
-		//if (current != NULL)
-		//	free(current);
 		current = pq_pop(context->open_set, context, data);
-		// printf("Checking x %d y %d\n", current->x, current->y);
+		printf("Checking x %d y %d\n", current->x, current->y);
 		if (process_current_node(current, end_pos, context, data))
 		{
 			return (context->route);
 		}
-		// free (current);
+		// printf("Freeing x %d y %d\n", current->x, current->y);
+		//free(current);
 	}
 	return (NULL);
 }
