@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:16:01 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/27 22:03:01 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/27 22:22:53 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 static int	has_player_moved(t_enemy *enemy, t_coord player_pos)
 {
+	static int i = 0;
+
 	if (enemy->route->coords[enemy->route->size - 1].x != player_pos.x 
 		|| enemy->route->coords[enemy->route->size - 1].y != player_pos.y)
 	{
-		printf ("Player moved! Getting new route.\n");	
+		printf ("Player moved! Getting new route %d.\n", ++i);	
 		return (1);
 	}
 	return (0);
