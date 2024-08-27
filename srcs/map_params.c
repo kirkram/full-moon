@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_params.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:55:23 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/05 13:54:10 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:53:21 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static unsigned int	read_rgb_color_value(char *line, t_data *data)
 	while (value_array[len] != NULL)
 		len++;
 	if (len != 3)
-		map_validation_error("Error: invalid map parameter", 0, line, data);
+		map_validation_error("Error\nInvalid map parameter", 0, line, data);
 	i = -1;
 	while (++i < len)
 		rgb[i] = ft_atoi(value_array[i]);
@@ -33,7 +33,7 @@ static unsigned int	read_rgb_color_value(char *line, t_data *data)
 	while (++i < len)
 	{
 		if (rgb[i] > 255)
-			map_validation_error("Error: invalid map parameter", 0, line, data);
+			map_validation_error("Error\nInvalid map parameter", 0, line, data);
 	}
 	color = (rgb[0] << 24) | (rgb[1] << 16) | (rgb[2] << 8) | 255 ;
 	return (color);
@@ -64,7 +64,7 @@ static void	read_our_parameter_type(char *line, t_data *data)
 				data->floorcolor = ft_atoh(value_start);
 		}
 		else
-			map_validation_error("Error: invalid map parameter", 0, line, data);
+			map_validation_error("Error\nInvalid map parameter", 0, line, data);
 	}
 }
 
@@ -93,7 +93,7 @@ static void	read_subject_parameter_type(char *line, t_data *data)
 			data->floorcolor = read_rgb_color_value(value_start, data);
 	}
 	else
-		map_validation_error("Error: invalid map parameter", 0, line, data);
+		map_validation_error("Error\nInvalid map parameter", 0, line, data);
 }
 
 void	read_map_parameter(char *line, t_data *data)
@@ -110,5 +110,5 @@ void	read_map_parameter(char *line, t_data *data)
 		|| ((line[0] == 'F' || line[0] == 'C') && line[1] == ' '))
 		read_subject_parameter_type(line, data);
 	else
-		map_validation_error("Error: invalid map parameter", 0, line, data);
+		map_validation_error("Error\nInvalid map parameter", 0, line, data);
 }

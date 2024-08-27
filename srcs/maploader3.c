@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 19:23:27 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/26 11:33:17 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:54:33 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	expand_enemies_array(t_enemy ***enemies, int y, char *line,
 	}
 	*enemies = ft_calloc((i + 2), sizeof(t_enemy *));
 	if (!*enemies)
-		map_validation_error("Error: enemies malloc fail.\n", y, line, data);
+		map_validation_error("Error\nEnemies malloc fail.\n", y, line, data);
 	i = 0;
 	if (data->enemies != NULL)
 	{
@@ -73,7 +73,7 @@ void	add_new_enemy(int x, int y, t_data *data, char *line)
 	data->world_map[y][x] = 0;
 	enemy = (t_enemy *)malloc(sizeof(t_enemy));
 	if (!enemy)
-		map_validation_error("Error: enemy malloc fail.\n", y, line, data);
+		map_validation_error("Error\nEnemy malloc fail.\n", y, line, data);
 	enemy->x_pos = (float)x + 0.5;
 	enemy->y_pos = (float)y + 0.5;
 	i = expand_enemies_array(&enemies, y, line, data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:05:11 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 19:24:25 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:54:20 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	count_mapdimensions(t_data *data)
 	map_start = 0;
 	fd = open(data->map_path, O_RDONLY);
 	if (fd == -1)
-		exit(ft_error("Error opening map file for count\n", 22));
+		exit(ft_error("Error\nCant open map file for count\n", 22));
 	while (1)
 	{
 		line = get_next_line(fd);
@@ -56,7 +56,7 @@ int	get_player_startpos(int x, int y, t_data *data, char *line)
 	if (line[x] == 78 || line[x] == 69 || line[x] == 83 || line[x] == 87)
 	{
 		if (data->startpos_x || data->startpos_y)
-			map_validation_error("Error: duplicate starting point", y + 1, line,
+			map_validation_error("Error\nDuplicate starting point", y + 1, line,
 				data);
 		data->startpos_y = y;
 		data->startpos_x = x;
