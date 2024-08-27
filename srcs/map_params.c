@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:55:23 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/27 16:34:58 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/27 18:00:10 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,11 @@ static unsigned int	read_rgb_color_value(char *line, t_data *data)
 		map_validation_error("Error: invalid map parameter", 0, line, data);
 	i = -1;
 	while (++i < len)
+	{
 		rgb[i] = ft_atoi(value_array[i]);
+		free(value_array[i]);
+	}
+	free(value_array);
 	i = -1;
 	while (++i < len)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exitfree.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 17:48:48 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/22 14:59:15 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/27 22:08:49 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,12 @@ void	free_enemies(t_data *data)
 	{
 		while (data->enemies[++i] != NULL)
 		{
+			printf("Freeing enemy %d\n", i);
+			if (data->enemies[i]->route != NULL)
+			{
+				free(data->enemies[i]->route->coords);
+				free(data->enemies[i]->route);
+			}
 			free(data->enemies[i]);
 			data->enemies[i] = NULL;
 		}

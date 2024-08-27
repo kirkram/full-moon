@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:16:01 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/26 00:52:14 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/27 22:03:01 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	update_enemy_target(t_enemy *enemy, t_coord player_pos,
 	if (has_player_moved(enemy, player_pos) || enemy->route->coords[0].x == -1)
 	{
 		// printf("Route finished.\n");
+		free(enemy->route->coords);
 		free(enemy->route);
 		enemy->route = NULL;
 		if (enemy->distance > 1.0)

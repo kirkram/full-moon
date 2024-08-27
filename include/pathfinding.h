@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 17:15:50 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/21 11:33:21 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/27 21:30:22 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_node
 	int 			h;
 	int 			f;
     struct s_node*	parent;
+	uint32_t		id;
 } t_node;
 
 typedef struct s_priorityqueue
@@ -42,7 +43,8 @@ typedef struct s_astar
     t_priorityqueue	*open_set;
     int				**closed_set;
 	int 			directions[8][2];
-    t_node			*start_node;
+    //t_node			*start_node;
+	t_node			*current;
     t_route			*route;
 } t_astar;
 
