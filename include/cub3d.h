@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/26 11:32:26 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:59:35 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ unsigned long		current_time(void);
 # define TEXTURES_AMOUNT 7
 
 # define DRAWMINIRAYS 0
+# define SHOWFPS 0
 
 // sprites
 # define PL_FRAMECOUNT 11

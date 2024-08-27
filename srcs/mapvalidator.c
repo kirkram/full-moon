@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mapvalidator.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 11:02:18 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/21 08:10:09 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:54:46 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	validate_textures(t_data *data)
 		if (i < 4)
 		{
 			if (access(data->nsew_path[i], F_OK))
-				map_validation_error("Error: missing main NSEW texture",
+				map_validation_error("Error\nMissing main NSEW texture",
 					data->map_height, NULL, data);
 		}
 	}
@@ -59,7 +59,7 @@ static int	validate_map_integrity(int **world_map, t_data *data)
 int	validate_map(int **world_map, t_data *data)
 {
 	if (data->startpos_x == 0 || data->startpos_y == 0)
-		map_validation_error("Error: no player starting point",
+		map_validation_error("Error\nNo player starting point",
 			data->map_height, NULL, data);
 	validate_textures(data);
 	return (validate_map_integrity(world_map, data));
