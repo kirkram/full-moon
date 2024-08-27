@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/27 15:59:35 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/27 18:15:53 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ unsigned long		current_time(void);
 
 # define DRAWMINIRAYS 0
 # define SHOWFPS 0
+# define DRAW_FLOOR 0
+# define DRAW_CEILING 0
 
 // sprites
 # define PL_FRAMECOUNT 11
@@ -87,7 +89,6 @@ unsigned long		current_time(void);
 # define GREEN 0x00FF00FF
 # define FULL_TRANSPARENT 0x0000000
 # define CEILING SKYBLUE
-# define DRAW_CEILING 0
 # define FLOOR GRAY
 
 // get next line
