@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:55:23 by mburakow          #+#    #+#             */
-/*   Updated: 2024/07/05 13:54:10 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:34:58 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,13 @@ static void	read_subject_parameter_type(char *line, t_data *data)
 	while (*value_start == ' ')
 		value_start++;
 	if (line[0] == 'N')
-		data->nsew_path[0] = ft_strjoin("./textures/", value_start);
+		data->nsew_path[0] = ft_strdup(value_start);
 	else if (line[0] == 'S')
-		data->nsew_path[1] = ft_strjoin("./textures/", value_start);
+		data->nsew_path[1] = ft_strdup(value_start);
 	else if (line[0] == 'E')
-		data->nsew_path[2] = ft_strjoin("./textures/", value_start);
+		data->nsew_path[2] = ft_strdup(value_start);
 	else if (line[0] == 'W')
-		data->nsew_path[3] = ft_strjoin("./textures/", value_start);
+		data->nsew_path[3] = ft_strdup(value_start);
 	else if (line[0] == 'C' || line[0] == 'F')
 	{
 		if (line[0] == 'C')
