@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:36:38 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/21 16:31:25 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:55:41 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ int	load_valid_map(t_data *data, int ac, char **av)
 	else if (ac == 2)
 		data->map_path = av[1];
 	else
-		exit(ft_error("Wrong argument count.", 25));
+		exit(ft_error("Error\nWrong argument count.", 25));
 	load_map(data);
 	if (validate_map(data->world_map, data))
-		free_all_and_quit(data, "Map validation error.\n", 32);
+		free_all_and_quit(data, "Error\nMap validation error.\n", 32);
 	nines_to_ones(data);
 	return (0);
 }
@@ -51,7 +51,7 @@ int	main(int ac, char **av)
 	t_ray		ray;
 
 	if (FOV <= 0 || RESOLUTION <= 0)
-		return (ft_error("FOV / RESOLUTION can't be 0 or negative", 44));
+		return (ft_error("Error\nFOV / RESOLUTION can't be 0 or negative", 44));
 	data.player = &player;
 	data.ray = &ray;
 	init_map_data(&data);

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/27 20:49:18 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/27 22:13:19 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ void	ft_hook_hub(void *param)
 	t_data	*data;
 
 	data = param;
-	// printf("fps: %.0f\n", 1 / data->mlx->delta_time);
+	if (SHOWFPS)
+		printf("fps: %.0f\n", 1 / data->mlx->delta_time);
 	ft_hook_keys(data);
 	color_whole_image(data->screen, FULL_TRANSPARENT, data->width,
 		data->height);

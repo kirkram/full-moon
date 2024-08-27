@@ -80,6 +80,7 @@ fclean: clean
 	$(RM) .debug
 	$(RM) .bonus
 	$(RM) .libmlx42
+	$(RM) .libmlx42
 	$(RM) -r $(LIBMLX_PATH)/build
 	$(RM) -r $(OBJ_DIR)
 
