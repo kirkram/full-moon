@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:15:56 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/28 13:41:21 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/28 13:48:41 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ t_route	*run_a_star(t_astar *context, t_coord end_pos, t_data *data)
 	{
 		current = pq_pop(context->open_set, context, data);
 		add_node_to_list(context->closed_list, current);
-		printf("checked: %d \t x %d y %d address: %p stored %p\n", current->id, 
-			current->x, current->y, (void *)&current, (void *)current);
 		if (process_current_node(current, end_pos, context, data))
 		{
 			context->route = reconstruct_path(current);
