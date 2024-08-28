@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 18:44:39 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/28 00:42:09 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/28 13:37:08 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ t_astar	*initialize_a_star(t_coord start_pos, t_data *data)
 	set_directions(context->directions);
 	pq_create(200, context, data);
 	initialize_closed_set(context, data);
+	create_node_list(200, context, data);
 	start_node = create_node(start_pos, 0, 0, NULL);
 	if (!start_node)
 		error_a_star(context, data);
 	pq_push(context->open_set, start_node, context, data);
-	printf("Freeing start node: %u\n", start_node->id);
 	free(start_node);
 	return (context);
 }
@@ -44,6 +44,7 @@ void	cleanup_a_star(t_astar *context, t_data *data)
 		i++;
 	}
 	free(context->closed_set);
+	free_node_list(context->closed_list);
 	free(context->open_set->nodes);
 	free(context->open_set);
 	free(context);
@@ -64,6 +65,8 @@ void	error_a_star(t_astar *context, t_data *data)
 		free(context->closed_set);
 	if (context->open_set->nodes)
 		free(context->open_set->nodes);
+	if (context->closed_list)
+		free_node_list(context->closed_list);
 	if (context->open_set)
 		free(context->open_set);
 	if (context)

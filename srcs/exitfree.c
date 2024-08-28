@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 17:48:48 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/27 22:13:07 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/28 12:48:25 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	free_enemies(t_data *data)
 	{
 		while (data->enemies[++i] != NULL)
 		{
-			printf("Freeing enemy %d\n", i);
 			if (data->enemies[i]->route != NULL)
 			{
 				free(data->enemies[i]->route->coords);

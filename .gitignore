@@ -8,3 +8,4 @@ lib/libft/libft.a
 **/.DS_Store
 leakreport.txt
 leakcheck.sh
+*.dSYM

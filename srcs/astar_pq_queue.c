@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 12:48:56 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/28 01:19:06 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/28 13:41:51 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,5 @@ t_node	*pq_pop(t_priorityqueue *pq, t_astar *context, t_data *data)
 	*result = pq->nodes[0];
 	pq->nodes[0] = pq->nodes[--pq->size];
 	heapify_down(pq, 0);
-	printf("Popped node address: %p stored %p\n", (void *)&result, (void *)result);
 	return (result);
 }

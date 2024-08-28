@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 12:55:20 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/27 22:07:45 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/28 13:11:57 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	check_attack_range(t_data *data, t_enemy *enemy)
 	(void)data;
 	if (enemy->distance < 1.4)
 	{
-		printf("Attacking player!\n");
+		// printf("Attacking player!\n");
 		enemy->state = ATTACKING;
 		free(enemy->route->coords);
 		free(enemy->route);

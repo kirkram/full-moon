@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:16:01 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/27 22:22:53 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/28 13:10:36 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	has_reached_target(t_enemy *enemy)
 void	initialize_enemy_route(t_enemy *enemy, t_coord player_pos,
 		t_coord enemy_pos, t_data *data)
 {
-	printf("I saw the player!\n");
+	// printf("I saw the player!\n");
 	enemy->state = WALKING;
 	enemy->route = a_star(enemy_pos, player_pos, data);
 }
