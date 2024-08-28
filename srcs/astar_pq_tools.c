@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 13:18:07 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/20 19:05:22 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/28 13:39:49 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 
 void	print_node(t_node *node)
 {
-	printf("PQ x:%d\ty:%d\tg:%d\th:%d\tf:%d", node->x, node->y, node->g,
-		node->h, node->f);
+	printf("PQ \tx:%d\ty:%d\tg:%d\th:%d\tf:%d\ta:%p\tc:%p", node->x, node->y, node->g,
+		node->h, node->f, (void *)node, (void *)&node);
 	if (node->parent)
 	{
-		printf("\tpx:%d\tpy:%d", node->parent->x, node->parent->y);
+		printf("\tpx:%d\tpy:%d\tpa:%p\tpc:%p", node->parent->x, node->parent->y, (void *)node, (void *)&node);
 	}
 	printf("\n");
 }
@@ -58,7 +58,8 @@ void	pq_create(int capacity, t_astar *context, t_data *data)
 
 t_node	*create_node(t_coord new, int g, int h, t_node *parent)
 {
-	t_node	*node;
+	static uint32_t i = 0;
+	t_node			*node;
 
 	node = (t_node *)malloc(sizeof(t_node));
 	if (!node)
@@ -69,5 +70,7 @@ t_node	*create_node(t_coord new, int g, int h, t_node *parent)
 	node->h = h;
 	node->f = g + h;
 	node->parent = parent;
+	node->id = i;
+	i++;
 	return (node);
 }

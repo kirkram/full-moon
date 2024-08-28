@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 17:48:48 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/27 16:55:23 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/28 15:34:09 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,11 @@ void	free_enemies(t_data *data)
 	{
 		while (data->enemies[++i] != NULL)
 		{
+			if (data->enemies[i]->route != NULL)
+			{
+				free(data->enemies[i]->route->coords);
+				free(data->enemies[i]->route);
+			}
 			free(data->enemies[i]);
 			data->enemies[i] = NULL;
 		}

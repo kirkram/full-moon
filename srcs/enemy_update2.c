@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:16:01 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/26 00:52:14 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/28 13:10:36 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 static int	has_player_moved(t_enemy *enemy, t_coord player_pos)
 {
+	static int i = 0;
+
 	if (enemy->route->coords[enemy->route->size - 1].x != player_pos.x 
 		|| enemy->route->coords[enemy->route->size - 1].y != player_pos.y)
 	{
-		printf ("Player moved! Getting new route.\n");	
+		printf ("Player moved! Getting new route %d.\n", ++i);	
 		return (1);
 	}
 	return (0);
@@ -35,6 +37,7 @@ void	update_enemy_target(t_enemy *enemy, t_coord player_pos,
 	if (has_player_moved(enemy, player_pos) || enemy->route->coords[0].x == -1)
 	{
 		// printf("Route finished.\n");
+		free(enemy->route->coords);
 		free(enemy->route);
 		enemy->route = NULL;
 		if (enemy->distance > 1.0)
@@ -59,7 +62,7 @@ int	has_reached_target(t_enemy *enemy)
 void	initialize_enemy_route(t_enemy *enemy, t_coord player_pos,
 		t_coord enemy_pos, t_data *data)
 {
-	printf("I saw the player!\n");
+	// printf("I saw the player!\n");
 	enemy->state = WALKING;
 	enemy->route = a_star(enemy_pos, player_pos, data);
 }

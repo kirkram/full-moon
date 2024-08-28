@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/27 15:59:50 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/28 15:34:20 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ float	angle_difference_rad(float angle1, float angle2)
 		diff = 2 * PI - diff;
 	return (diff);
 }
-
 
 // printf("Angle %.10f Distance %.10f\n", angle_diff,
 //					data->enemies[i]->distance);
