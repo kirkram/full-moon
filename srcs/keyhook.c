@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/28 15:34:20 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/28 17:07:20 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	ft_hook_hub(void *param)
 	if (data->enemies)
 		hook_enemies(data);
 	hook_player_animation(data);
+	
 }
 
 void	hook_mouse_move(double x, double y, void *param)
@@ -100,6 +101,7 @@ void	hook_mouse_move(double x, double y, void *param)
 	player = data->player;
 	dx = x - data->width / 2;
 	player->angle += dx * DEGR * 1.5 * data->speed * MOUSESPEED;
+	
 	if (player->angle < 0)
 		player->angle += PI2;
 	if (player->angle >= PI2)

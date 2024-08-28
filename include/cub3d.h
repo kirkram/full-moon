@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/28 15:34:39 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/28 15:39:31 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ unsigned long		current_time(void);
 # define RESOLUTION 3
 # define ATTACK_SPEED 1.2
 # define LINESCALE 1.7
-# define MOUSESPEED 1.5
+# define MOUSESPEED 0.18
 # define ENEMYSPEED 1.0
 # define MAX_DELTA 0.05
 

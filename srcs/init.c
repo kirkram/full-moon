@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/22 15:07:10 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/28 17:07:32 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,6 @@ void	keyhook_loop(mlx_key_data_t keydata, void *param)
 
 int	init_and_draw(t_data *data)
 {
-	int32_t	mon_width;
-	int32_t	mon_height;
-
 	if (init_canvases(data))
 		free_all_and_quit(data, "image initialization", 11);
 	data->txtrs = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *)
@@ -85,18 +82,16 @@ int	init_and_draw(t_data *data)
 	if (!data->txtrs)
 		free_all_and_quit(data, "texture loading malloc", 11);
 	load_textures(data);
-	mlx_get_monitor_size(0, &mon_width, &mon_height);
-	mlx_set_window_pos(data->mlx, mon_width / 2.5 - (data->width / 2),
-		mon_height / 2.5 - (data->height / 2));
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
-	mlx_set_mouse_pos(data->mlx, mon_width / 2.5 - (data->width / 2), mon_height
-		/ 2.5 - (data->height / 2));
 	draw_minimap(data);
 	draw_player_minimap(data);
 	draw_world(data);
 	mlx_cursor_hook(data->mlx, &hook_mouse_move, data);
+
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	mlx_key_hook(data->mlx, &keyhook_loop, data);
+	
 	mlx_loop(data->mlx);
+	
 	return (0);
 }

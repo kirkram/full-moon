@@ -3,7 +3,7 @@ SO ./textures/wall2.png
 WE ./textures/wall3.png
 EA ./textures/wall4.png
 
-F	___ff33255,155,0
+F	___ffafafaaf33255,155,0
 C 225,30,0
 
 1111111
