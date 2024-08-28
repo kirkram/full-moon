@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_rays.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 19:21:15 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/22 17:23:37 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:00:20 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,8 @@ void	find_enemy_rays(t_data *data, t_enemy *enemy)
 		horizontal_rays_enemy(data, enemy_ray, enemy);
 		vertical_rays_enemy(data, enemy_ray, enemy);
 		calc_distance_enemy(enemy_ray, enemy);
-		draw_minirays_enemy(data, enemy_ray, enemy);
+		if (DRAWMINIRAYS)
+			draw_minirays_enemy(data, enemy_ray, enemy);
 		enemy_ray->ang += DEGR * 2;
 		angle_outofbounds_check(enemy_ray);
 	}

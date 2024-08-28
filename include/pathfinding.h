@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 17:15:50 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/21 11:33:21 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/28 13:30:09 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_node
 	int 			h;
 	int 			f;
     struct s_node*	parent;
+	uint32_t		id;
 } t_node;
 
 typedef struct s_priorityqueue
@@ -37,12 +38,20 @@ typedef struct s_priorityqueue
 	int 			capacity;
 } t_priorityqueue;
 
+typedef struct s_nodelist 
+{
+    t_node **nodes;
+    int size;
+    int capacity;
+} t_nodelist;
+
 typedef struct s_astar
 {
     t_priorityqueue	*open_set;
     int				**closed_set;
+	t_nodelist		*closed_list; // store pointers for freeing only
 	int 			directions[8][2];
-    t_node			*start_node;
+	t_node			*current;
     t_route			*route;
 } t_astar;
 
@@ -51,6 +60,9 @@ t_astar			*initialize_a_star(t_coord start_pos, t_data *data);
 void			initialize_closed_set(t_astar *context, t_data *data);
 void			pq_create(int capacity, t_astar *context, t_data *data);
 t_node			*create_node(t_coord new, int g, int h, t_node *parent);
+void 			create_node_list(int capacity, t_astar *context, t_data *data);
+void			add_node_to_list(t_nodelist *list, t_node *node);
+void			free_node_list(t_nodelist *list);
 void			set_directions(int directions[8][2]);
 void			pq_push(t_priorityqueue *pq, t_node *node, t_astar *context, t_data *data);
 t_node*			pq_pop(t_priorityqueue *pq, t_astar *context, t_data *data);

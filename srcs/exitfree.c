@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exitfree.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 17:48:48 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/22 14:59:15 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/28 12:48:25 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	ft_error(char *msg, int error_code)
 {
-	// printf("%s\n", msg);
 	ft_putstr_fd(msg, STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
 	return (error_code);
@@ -71,6 +70,11 @@ void	free_enemies(t_data *data)
 	{
 		while (data->enemies[++i] != NULL)
 		{
+			if (data->enemies[i]->route != NULL)
+			{
+				free(data->enemies[i]->route->coords);
+				free(data->enemies[i]->route);
+			}
 			free(data->enemies[i]);
 			data->enemies[i] = NULL;
 		}

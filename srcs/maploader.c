@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/21 09:03:25 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:54:00 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	allocate_mapline(char *line, int y, t_data *data)
 {
 	data->world_map[y] = (int *)malloc(data->map_width * sizeof(int));
 	if (data->world_map[y] == NULL)
-		map_validation_error("Error: map line malloc fail.\n", y, line, data);
+		map_validation_error("Error\nMap line malloc fail.\n", y, line, data);
 }
 
 static void	write_mapline(char *line, int y, int x, t_data *data)
@@ -27,7 +27,7 @@ static void	write_mapline(char *line, int y, int x, t_data *data)
 		if (line[x] != '\0' && line[x] != '\n')
 		{
 			if (validate_mapsquare(line[x]))
-				map_validation_error("Error: Map not valid.\n", y + 1, line,
+				map_validation_error("Error\nMap not valid.\n", y + 1, line,
 					data);
 			if (!get_player_startpos(x, y, data, line))
 			{
@@ -97,16 +97,16 @@ void	load_map(t_data *data)
 	count_mapdimensions(data);
 	if (data->map_height <= 0 || data->map_height > MAX_MAPHEIGHT
 		|| data->map_width <= 0 || data->map_width > MAX_MAPWIDTH)
-		map_validation_error("Error: invalid map dimensions", data->map_height,
+		map_validation_error("Error\nInvalid map dimensions", data->map_height,
 			NULL, data);
 	data->world_map = (int **)malloc((data->map_height + 1) * sizeof(int *));
 	if (!data->world_map)
-		map_validation_error("Error: world map allocation", data->map_height,
+		map_validation_error("Error\nWorld map allocation", data->map_height,
 			NULL, data);
 	data->world_map[data->map_height] = NULL;
 	fd = open(data->map_path, O_RDONLY);
 	if (fd == -1)
-		exit(ft_error("Error opening map file", 12));
+		exit(ft_error("Error\nCan't open map file", 12));
 	read_and_parse_lines(fd, data);
 	close(fd);
 	get_floor_and_ceiling_colors(data);

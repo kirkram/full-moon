@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:00:06 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/26 11:54:56 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/28 13:12:07 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	update_enemy(t_enemy *enemy, t_data *data)
 				&& enemy->distance <= 1.6)
 			{
 				--data->player->hitpoints;
-				printf("hitpoints: %d\n", data->player->hitpoints);
+				//printf("hitpoints: %d\n", data->player->hitpoints);
 				enemy->attacked = true;
 				if (data->player->hitpoints == 0)
 					printf("GAME OVER MAN!!!\n");

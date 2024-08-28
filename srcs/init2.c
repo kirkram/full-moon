@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/26 11:26:19 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:52:56 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	init_map_data(t_data *data)
 	data->mlx = NULL;
 	data->nsew_path = ft_calloc(TEXTURES_AMOUNT, sizeof(char *));
 	if (!data->nsew_path)
-		map_validation_error("Error: texture path malloc\n", 0, NULL, data);
+		map_validation_error("Error\nTexture path malloc\n", 0, NULL, data);
 	i = -1;
 	while (++i < TEXTURES_AMOUNT)
 		data->nsew_path[i] = NULL;

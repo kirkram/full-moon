@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 13:36:45 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/22 23:02:26 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/28 13:39:12 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,39 +30,35 @@ void	initialize_closed_set(t_astar *context, t_data *data)
 	return ;
 }
 
-static void	retrace(int count, t_node *current, t_route *route)
+static void	retrace(int count, t_node *trace, t_route *route)
 {
-	while (current->parent && count >= 0)
+	while (trace->parent && count >= 0)
 	{
 		count--;
-		route->coords[count].x = current->x;
-		route->coords[count].y = current->y;
-		// printf("C: %d x: %d y: %d\n", count, route->coords[count].x,
-		//	route->coords[count].y);
-		current = current->parent;
+		route->coords[count].x = trace->x;
+		route->coords[count].y = trace->y;
+		trace = trace->parent;
 	}
 }
 
 t_route	*reconstruct_path(t_node *end_node)
 {
-	t_node	*current;
+	t_node	*trace;
 	t_route	*route;
 
-	current = end_node;
+	trace = end_node;
 	route = (t_route *)malloc(sizeof(t_route));
 	route->size = 0;
-	while (current->parent)
+	while (trace->parent)
 	{
-		// printf("size: %d x: %d y: %d\n", route->size, current->x, current->y);
 		route->size++;
-		current = current->parent;
+		trace = trace->parent;
 	}
 	route->coords = (t_coord *)malloc(sizeof(t_coord) * (route->size + 1));
 	route->coords[route->size].x = -1;
 	route->coords[route->size].y = -1;
-	current = end_node;
-	retrace(route->size, current, route);
-	// printf("Route length: %d\n", route->size);
+	trace = end_node;
+	retrace(route->size, trace, route);
 	return (route);
 }
 

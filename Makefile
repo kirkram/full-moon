@@ -16,7 +16,7 @@ keyhook.c keyhook_movement.c keyhook_movement_2.c keyhook_anim.c \
 minimap.c maploader.c maploader2.c maploader3.c	\
 mapvalidator.c mapvalidator_floodfill.c maptools.c map_params.c exitfree.c \
 enemy.c enemy_helper.c enemy_draw.c enemy_sort.c enemy_rays.c enemy_rays_2.c enemy_move.c enemy_move2.c \
-enemy_frame.c enemy_frame2.c enemy_update.c enemy_update2.c astar.c astar_pq_queue.c \
+enemy_frame.c enemy_frame2.c enemy_update.c enemy_update2.c astar.c astar_pq_queue.c astar_checked.c \
 astar_pq_tools.c astar_utils.c astar_path.c astar_init_clean.c ft_realloc.c
 INC_DIRS = ./include $(LIBMLX_PATH)/include/ $(LIBFT_PATH)/libft $(LIBFT_PATH)/ft_printf/incs /usr/local/Cellar/glfw/include
 INCS = $(foreach dir, $(INC_DIRS), -I $(dir))
@@ -79,6 +79,7 @@ fclean: clean
 	$(RM) debug.out
 	$(RM) .debug
 	$(RM) .bonus
+	$(RM) .libmlx42
 	$(RM) .libmlx42
 	$(RM) -r $(LIBMLX_PATH)/build
 	$(RM) -r $(OBJ_DIR)
