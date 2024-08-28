@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/28 15:39:31 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:00:45 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ unsigned long		current_time(void);
 # define FLOOR_PATH "./textures/floor.png"
 # define SKY_PATH "./textures/sky.png"
 # define MAPBACKG_PATH "./textures/mapbackg.png"
+# define DEATHSCREEN_PATH "./textures/you_died.png"
 # define TEXTURES_AMOUNT 7
 
 # define DRAWMINIRAYS 0
@@ -161,6 +162,7 @@ typedef struct s_player
 	int32_t			imgwidth;
 	int32_t			imgheight;
 	int				hitpoints;
+	bool			is_dead;
 }					t_player;
 
 typedef struct s_enemy
@@ -216,6 +218,7 @@ typedef struct s_data
 	mlx_image_t		*minimap_img;
 	mlx_image_t		*ceiling;
 	mlx_image_t		*floor;
+	mlx_image_t		*deathscreen;
 	unsigned int	ceilingcolor;
 	unsigned int	floorcolor;
 	char			**nsew_path;

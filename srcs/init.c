@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/28 17:07:32 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:05:49 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,10 @@ int	init_main_screen(t_data *data)
 		return (ft_error("Error on mlx_new_image", 11));
 	if (mlx_image_to_window(data->mlx, data->screen, 0, 0) < 0)
 		return (ft_error("Error on mlx_image_to_window", 11));
+	// data->deathscreen = mlx_new_image(data->mlx, data->width, data->height);
+	// if (!data->deathscreen)
+	// 	return (ft_error("Error on mlx_new_image", 11));
+	
 	return (0);
 }
 
@@ -55,6 +59,8 @@ int	init_canvases(t_data *data)
 	data->ceiling = NULL;
 	data->minimap = NULL;
 	data->zoom = SCREENWIDTH / 150 + MINIZOOM;
+	if (data->zoom > 7)
+		data->zoom = 7;
 	data->mlx = mlx_init(data->width, data->height, "CUB3D", false);
 	if (!data->mlx)
 		return (ft_error("Error on mlx_init\n", 11));
@@ -69,6 +75,8 @@ void	keyhook_loop(mlx_key_data_t keydata, void *param)
 	t_data	*data;
 
 	data = param;
+	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
+		free_all_and_quit(data, "Bye!", 0);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_E) && keydata.action == MLX_PRESS)
 		open_door(data);
 }
@@ -87,11 +95,8 @@ int	init_and_draw(t_data *data)
 	draw_player_minimap(data);
 	draw_world(data);
 	mlx_cursor_hook(data->mlx, &hook_mouse_move, data);
-
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	mlx_key_hook(data->mlx, &keyhook_loop, data);
-	
 	mlx_loop(data->mlx);
-	
 	return (0);
 }

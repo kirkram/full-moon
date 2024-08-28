@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/28 17:07:20 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:13:12 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	ft_hook_keys(t_data *data)
 {
 	double	current_time;
 
+	if (data->player->is_dead)
+		return ;
 	data->speed = 0.003 / (1 / data->mlx->delta_time / 1000);
-	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
-		free_all_and_quit(data, "Bye!", 0);
 	movement_loop(data);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ENTER))
 	{
@@ -72,11 +72,13 @@ void	hit_enemy_if_in_range(t_data *data)
 
 void	ft_hook_hub(void *param)
 {
-	t_data	*data;
+	t_data			*data;
+	mlx_texture_t	*death_txt;
 
 	data = param;
 	if (SHOWFPS)
 		printf("fps: %.0f\n", 1 / data->mlx->delta_time);
+	if (!data->player->is_dead)
 	ft_hook_keys(data);
 	color_whole_image(data->screen, FULL_TRANSPARENT, data->width,
 		data->height);
@@ -87,7 +89,18 @@ void	ft_hook_hub(void *param)
 	if (data->enemies)
 		hook_enemies(data);
 	hook_player_animation(data);
-	
+	if (data->player->hitpoints < 1 && !data->player->is_dead)
+	{
+		death_txt = mlx_load_png(DEATHSCREEN_PATH);
+		if (!death_txt)
+			free_all_and_quit(data, "Error\nDeathscreen couldn't load", 79);
+		data->deathscreen = mlx_texture_to_image(data->mlx, death_txt);
+		if (mlx_image_to_window(data->mlx, data->deathscreen, data->width / 2 - data->deathscreen->width / 2, \
+		data->height / 2 - data->deathscreen->height / 2) < 0)
+			free_all_and_quit(data, "Error on mlx_image_to_window", 11);
+		mlx_delete_texture(death_txt);
+		data->player->is_dead = 1;
+	}
 }
 
 void	hook_mouse_move(double x, double y, void *param)
@@ -99,6 +112,8 @@ void	hook_mouse_move(double x, double y, void *param)
 	(void)y;
 	data = param;
 	player = data->player;
+	if (player->is_dead)
+		return ;
 	dx = x - data->width / 2;
 	player->angle += dx * DEGR * 1.5 * data->speed * MOUSESPEED;
 	
