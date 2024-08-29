@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook_movement.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:46:24 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/07 18:24:34 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/28 15:48:03 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,4 @@ void	movement_loop(t_data *data)
 		movement_a(data, &data->keyhook_map);
 	else if (mlx_is_key_down(data->mlx, MLX_KEY_D))
 		movement_d(data, &data->keyhook_map);
-	// if (mlx_is_key_down(data->mlx, MLX_KEY_E))
-	// 	open_door(data, map);
 }

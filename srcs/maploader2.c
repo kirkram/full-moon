@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:05:11 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/27 16:54:20 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/29 10:50:42 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,13 @@ int	get_player_startpos(int x, int y, t_data *data, char *line)
 		data->startpos_y = y;
 		data->startpos_x = x;
 		if (line[x] == 78)
-			data->player->angle = rad(NORTH); // north
+			data->player->angle = rad(NORTH);
 		if (line[x] == 69)
-			data->player->angle = rad(EAST); // east
+			data->player->angle = rad(EAST);
 		if (line[x] == 83)
-			data->player->angle = rad(SOUTH); // south
+			data->player->angle = rad(SOUTH);
 		if (line[x] == 87)
-			data->player->angle = rad(WEST); // west
+			data->player->angle = rad(WEST);
 		data->world_map[y][x] = 0;
 		return (1);
 	}

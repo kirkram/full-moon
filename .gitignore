@@ -4,6 +4,7 @@ lib/MLX42/
 *.o
 .libmlx42
 cub3d
+cub3D
 lib/libft/libft.a
 **/.DS_Store
 leakreport*

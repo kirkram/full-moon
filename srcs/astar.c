@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:15:56 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 11:40:45 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/29 11:49:34 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,7 @@ void	process_neighbors(t_node *current, t_astar *context, t_data *data,
 			&& !context->closed_set[new_coord.y][new_coord.x]
 			&& is_walkable(new_coord.x, new_coord.y, data))
 		{
-			if (i < 4)
-				new_g = current->g + COST_STRAIGHT;
-			else
-				new_g = current->g + COST_DIAGONAL;
+			new_g = process_neighbors_newg(current, i);
 			neighbor = create_node(new_coord, new_g, heuristic(new_coord.x,
 						new_coord.y, end_pos.x, end_pos.y), current);
 			if (!neighbor)

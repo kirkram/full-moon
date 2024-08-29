@@ -3,22 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_draw.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 12:37:33 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/21 12:37:56 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/29 11:21:27 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#ifndef ENEMY_DRAW_H
+# define ENEMY_DRAW_H
+
+# include "cub3d.h"
 
 typedef struct s_ed
 {
-	t_point sc;        // point from source
-	t_point ds;        // point from destination
-	t_point dst;       // coordinates where to draw
-	t_point f;         // target pixel
-	mlx_image_t *dest; // destination image
-	mlx_image_t *src;  // source image (current sprite)
-	int ray_index;     // index of ray that gets checked for z
-}			t_ed;
+	t_point		sc;
+	t_point		ds;
+	t_point		dst;
+	t_point		f;
+	mlx_image_t	*dest;
+	mlx_image_t	*src;
+	int			ray_index;
+}	t_ed;
+
+#endif

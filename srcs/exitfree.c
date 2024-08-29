@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exitfree.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 17:48:48 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/28 12:48:25 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/29 11:18:46 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-int	ft_error(char *msg, int error_code)
-{
-	ft_putstr_fd(msg, STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-	return (error_code);
-}
 
 void	map_validation_error(char *msg, int rows, char *line, t_data *data)
 {
@@ -31,7 +24,7 @@ void	map_validation_error(char *msg, int rows, char *line, t_data *data)
 	free_all_and_quit(data, msg, 25);
 }
 
-void	free_textures(t_data *data)
+static void	free_textures_sword(t_data *data)
 {
 	int	i;
 
@@ -46,6 +39,13 @@ void	free_textures(t_data *data)
 		if (data->swordarm_tx)
 			free(data->swordarm_tx);
 	}
+}
+
+void	free_textures(t_data *data)
+{
+	int	i;
+
+	free_textures_sword(data);
 	if (data->txtrs != NULL)
 	{
 		i = TEXTURES_AMOUNT;

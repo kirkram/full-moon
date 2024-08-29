@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   astar_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 13:24:31 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/21 09:14:57 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/29 11:07:34 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	heuristic(int x1, int y1, int x2, int y2)
 
 	dx = abs(x1 - x2);
 	dy = abs(y1 - y2);
-	return (COST_STRAIGHT * (dx + dy) + (COST_DIAGONAL - 2 * COST_STRAIGHT)
-		* min(dx, dy));
+	return (COST_STRAIGHT * (dx + dy) + \
+		(COST_DIAGONAL - 2 * COST_STRAIGHT) * min(dx, dy));
 }
 
 bool	is_in_bounds(int x, int y, t_data *data)
@@ -47,4 +47,12 @@ void	print_map(t_data *data)
 			printf("%d ", data->world_map[y][x]);
 		printf("\n");
 	}
+}
+
+int	process_neighbors_newg(t_node *current, int i)
+{
+	if (i < 4)
+		return (current->g + COST_STRAIGHT);
+	else
+		return (current->g + COST_DIAGONAL);
 }

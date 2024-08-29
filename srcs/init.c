@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/22 15:07:10 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/29 10:45:17 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ int	init_canvases(t_data *data)
 	data->ceiling = NULL;
 	data->minimap = NULL;
 	data->zoom = SCREENWIDTH / 150 + MINIZOOM;
+	if (data->zoom > 7)
+		data->zoom = 7;
 	data->mlx = mlx_init(data->width, data->height, "CUB3D", false);
 	if (!data->mlx)
 		return (ft_error("Error on mlx_init\n", 11));
@@ -69,15 +71,14 @@ void	keyhook_loop(mlx_key_data_t keydata, void *param)
 	t_data	*data;
 
 	data = param;
+	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
+		free_all_and_quit(data, "Bye!", 0);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_E) && keydata.action == MLX_PRESS)
 		open_door(data);
 }
 
 int	init_and_draw(t_data *data)
 {
-	int32_t	mon_width;
-	int32_t	mon_height;
-
 	if (init_canvases(data))
 		free_all_and_quit(data, "image initialization", 11);
 	data->txtrs = (mlx_texture_t **)malloc(sizeof(mlx_texture_t *)
@@ -85,12 +86,7 @@ int	init_and_draw(t_data *data)
 	if (!data->txtrs)
 		free_all_and_quit(data, "texture loading malloc", 11);
 	load_textures(data);
-	mlx_get_monitor_size(0, &mon_width, &mon_height);
-	mlx_set_window_pos(data->mlx, mon_width / 2.5 - (data->width / 2),
-		mon_height / 2.5 - (data->height / 2));
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
-	mlx_set_mouse_pos(data->mlx, mon_width / 2.5 - (data->width / 2), mon_height
-		/ 2.5 - (data->height / 2));
 	draw_minimap(data);
 	draw_player_minimap(data);
 	draw_world(data);

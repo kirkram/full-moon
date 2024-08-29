@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/27 16:52:56 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/29 11:16:19 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ void	init_player_data(t_player *player)
 	player->angle = 0;
 	player->imgwidth = 0;
 	player->imgheight = 0;
-	player->hitpoints = 10;
+	player->hitpoints = 4;
+	player->is_dead = 0;
 }
 
 int	create_fname(char *fname, int i)
@@ -66,7 +67,7 @@ int	create_fname(char *fname, int i)
 	return (0);
 }
 
-int	init_player_sprites(t_data *data) // free these
+int	init_player_sprites(t_data *data)
 {
 	int		i;
 	char	fname[1024];

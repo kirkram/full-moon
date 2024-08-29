@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing_minimap.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 14:19:26 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/28 13:41:01 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/28 17:24:29 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	draw_player_minimap(t_data *data)
 				+ point.x < player->imgwidth && player->y_pos_mini
 				+ point.y < player->imgheight)
 				mlx_put_pixel(player->img, player->x_pos_mini + point.x,
-					player->y_pos_mini + point.y, YELLOW);
+					player->y_pos_mini + point.y, RED);
 		}
 	}
 	return (0);

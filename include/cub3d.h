@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/27 15:59:35 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/29 11:26:38 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ unsigned long		current_time(void);
 # define RESOLUTION 3
 # define ATTACK_SPEED 1.2
 # define LINESCALE 1.7
-# define MOUSESPEED 1.5
+# define MOUSESPEED 0.18
 # define ENEMYSPEED 1.0
 # define MAX_DELTA 0.05
 
@@ -47,10 +47,13 @@ unsigned long		current_time(void);
 # define FLOOR_PATH "./textures/floor.png"
 # define SKY_PATH "./textures/sky.png"
 # define MAPBACKG_PATH "./textures/mapbackg.png"
+# define DEATHSCREEN_PATH "./textures/you_died.png"
 # define TEXTURES_AMOUNT 7
 
 # define DRAWMINIRAYS 0
 # define SHOWFPS 0
+# define DRAW_FLOOR 0
+# define DRAW_CEILING 0
 
 // sprites
 # define PL_FRAMECOUNT 11
@@ -87,7 +90,6 @@ unsigned long		current_time(void);
 # define GREEN 0x00FF00FF
 # define FULL_TRANSPARENT 0x0000000
 # define CEILING SKYBLUE
-# define DRAW_CEILING 0
 # define FLOOR GRAY
 
 // get next line
@@ -124,21 +126,21 @@ typedef struct s_ray
 
 typedef struct s_coord
 {
-    int x;
-    int y;
-} t_coord;
+	int				x;
+	int				y;
+}					t_coord;
 
 typedef struct s_fcoord
 {
-    float x;
-    float y;
-} t_fcoord;
+	float			x;
+	float			y;
+}					t_fcoord;
 
 typedef struct s_route
 {
-    t_coord *coords;
-	int		size;
-} t_route;
+	t_coord			*coords;
+	int				size;
+}					t_route;
 
 typedef enum s_enemystate
 {
@@ -147,7 +149,7 @@ typedef enum s_enemystate
 	ATTACKING,
 	DYING,
 	DEAD
-}	t_enemystate;
+}					t_enemystate;
 
 typedef struct s_player
 {
@@ -160,27 +162,28 @@ typedef struct s_player
 	int32_t			imgwidth;
 	int32_t			imgheight;
 	int				hitpoints;
+	bool			is_dead;
 }					t_player;
 
 typedef struct s_enemy
 {
 	float			x_pos;
 	float			y_pos;
-	float			x_target; // current moving target x
-	float			y_target; // current moving target y
-	float			distance; // distance to the player
-	float			angle; // the direction enemy is facing
-	float			rel_angle; // angle relative to the player
-	int				current_frame; // current animation frame
-	int				visible; // in player FOV or not
+	float			x_target;
+	float			y_target;
+	float			distance;
+	float			angle;
+	float			rel_angle;
+	int				current_frame;
+	int				visible;
 	t_enemystate	state;
 	double			last_frame;
-	float			scale; // dependent on distance
+	float			scale;
 	t_ray			ray;
-	int				dof; //how many squares will check 
-	bool			seen_player; //if sees player
-	float			speed; // speed of movement
-	t_route			*route; // a star route
+	int				dof;
+	bool			seen_player;
+	float			speed;
+	t_route			*route;
 	bool			attacked;
 }					t_enemy;
 
@@ -191,7 +194,6 @@ typedef struct s_point
 	uint32_t		color;
 	void			*content;
 }					t_point;
-
 
 typedef struct s_textures
 {
@@ -215,6 +217,7 @@ typedef struct s_data
 	mlx_image_t		*minimap_img;
 	mlx_image_t		*ceiling;
 	mlx_image_t		*floor;
+	mlx_image_t		*deathscreen;
 	unsigned int	ceilingcolor;
 	unsigned int	floorcolor;
 	char			**nsew_path;
@@ -249,7 +252,6 @@ typedef struct s_data
 	t_txt			draw_txt;
 }					t_data;
 
-
 // init
 void				init_map_data(t_data *data);
 void				load_textures(t_data *data);
@@ -283,14 +285,18 @@ void				put_pixel(t_data *data, t_point *point, mlx_image_t *img);
 uint32_t			get_a(uint32_t rgba);
 uint32_t			get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
 int					draw_player_minimap(t_data *data);
-float				init_walls_values(t_data *data, t_ray *ray, t_txt *txt, t_point *line);
-void				find_txt_for_floors_ceiling(t_data *data, t_txt *txt, t_ray *ray, float dfm);
-void				assign_texture_to_walls(t_data *data, t_ray *ray, t_txt *txt);
+float				init_walls_values(t_data *data, t_ray *ray, t_txt *txt,
+						t_point *line);
+void				find_txt_for_floors_ceiling(t_data *data, t_txt *txt,
+						t_ray *ray, float dfm);
+void				assign_texture_to_walls(t_data *data, t_ray *ray,
+						t_txt *txt);
 void				draw_world(t_data *data);
 void				drw_line(t_point point, t_point dest, t_data *data,
 						mlx_image_t *img);
 uint32_t			index_color(t_txt *txt, t_ray *ray, bool is_wall);
-uint32_t			index_color_floor(t_txt *txt, t_ray *ray, float dist_from_middle, t_data *data);
+uint32_t			index_color_floor(t_txt *txt, t_ray *ray,
+						float dist_from_middle, t_data *data);
 void				horizontal_rays(t_data *data, t_ray *ray);
 void				vertical_rays(t_data *data, t_ray *ray);
 void				calc_distance(t_data *data, t_ray *ray);
@@ -316,27 +322,33 @@ void				hook_enemies(t_data *data);
 void				sort_enemy_arr(t_data *data);
 void				find_enemy_rays(t_data *data, t_enemy *enemy);
 bool				enemy_is_alive(t_enemy *enemy);
-void				draw_minirays_enemy(t_data *data, t_ray *ray, t_enemy *enemy);
-int					check_player(t_data *data, t_ray *ray, t_map *map, t_enemy *enemy);
+void				draw_minirays_enemy(t_data *data, t_ray *ray,
+						t_enemy *enemy);
+int					check_player(t_data *data, t_ray *ray, t_map *map,
+						t_enemy *enemy);
 void				calc_distance_enemy(t_ray *ray, t_enemy *enemy);
 void				get_rel_angle_and_pos(t_enemy *enemy, t_data *data);
 void				calculate_enemy_angle(t_enemy *enemy);
 void				update_enemy_frame(t_enemy *enemy, t_data *data);
-void				update_idle_frame(t_enemy *enemy, int index, double now, double prev);
-void				update_walking_frame(t_enemy *enemy, int index, double now, double prev);
-void				update_attacking_frame(t_enemy *enemy, double now, double prev);
+void				update_idle_frame(t_enemy *enemy, int index, double now,
+						double prev);
+void				update_walking_frame(t_enemy *enemy, int index, double now,
+						double prev);
+void				update_attacking_frame(t_enemy *enemy, double now,
+						double prev);
 void				update_dying_frame(t_enemy *enemy, double now, double prev);
-void 				update_enemy(t_enemy *enemy, t_data *data);
+void				update_enemy(t_enemy *enemy, t_data *data);
 void				update_enemy_target(t_enemy *enemy, t_coord player_pos,
 						t_coord enemy_pos, t_data *data);
 int					has_reached_target(t_enemy *enemy);
 void				initialize_enemy_route(t_enemy *enemy, t_coord player_pos,
 						t_coord enemy_pos, t_data *data);
 void				step_route(t_enemy *enemy);
-void				log_route_points(t_enemy *enemy);		
-void				draw_enemy_onto_canvas(t_enemy *enemy, int dest_x, int dest_y, t_data *data);
-void 				move_enemy(t_data *data, t_enemy *enemy);
-void				move_enemy_position(t_data *data, t_enemy *enemy, t_fcoord direction, float delta_time);
+void				draw_enemy_onto_canvas(t_enemy *enemy, int dest_x,
+						int dest_y, t_data *data);
+void				move_enemy(t_data *data, t_enemy *enemy);
+void				move_enemy_position(t_data *data, t_enemy *enemy,
+						t_fcoord direction, float delta_time);
 
 // helper
 int					ft_error(char *msg, int error_code);
@@ -344,14 +356,15 @@ int					ft_abs(int result);
 float				degr(float angle);
 float				rad(float angle);
 int					min(int a, int b);
-float 				normalize_degr(float angle);
-float 				normalize_rad(float angle) ;
+float				normalize_degr(float angle);
+float				normalize_rad(float angle);
 void				free_textures(t_data *data);
 void				free_enemies(t_data *data);
 int					is_valid_hex(const char *hex_str);
 char				*get_next_line(int fd);
 void				angle_outofbounds_check(t_ray *ray);
 void				*ft_realloc(void *ptr, size_t new_size);
+float				angle_difference_rad(float angle1, float angle2);
 
 // maptools
 int					**alloc_2d_int(int rows, int cols);

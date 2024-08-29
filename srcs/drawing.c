@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/22 14:13:20 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/28 17:02:49 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ static void	draw_ceiling_walls_floor(t_data *data, t_ray *ray, int i,
 		draw_ceiling(data, ray, i, line_w);
 	assign_texture_to_walls(data, ray, &data->draw_txt);
 	draw_walls(data, ray, i, line_w);
-	draw_floor(data, ray, i, line_w);
+	if (DRAW_FLOOR)
+		draw_floor(data, ray, i, line_w);
 }
 
 void	draw_world(t_data *data)

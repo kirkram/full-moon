@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   drawing_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 13:39:14 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/22 13:39:20 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/29 10:50:24 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-float	init_walls_values(t_data *data, t_ray *ray, t_txt *txt,
-		t_point *line)
+float	init_walls_values(t_data *data, t_ray *ray, t_txt *txt, t_point *line)
 {
 	float	line_h;
 
