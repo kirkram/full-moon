@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/28 18:13:38 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/29 11:16:19 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	create_fname(char *fname, int i)
 	return (0);
 }
 
-int	init_player_sprites(t_data *data) // free these
+int	init_player_sprites(t_data *data)
 {
 	int		i;
 	char	fname[1024];

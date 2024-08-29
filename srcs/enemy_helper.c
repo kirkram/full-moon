@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 11:34:30 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/28 16:41:37 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/29 11:25:06 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void	get_rel_angle_and_pos(t_enemy *enemy, t_data *data)
 	enemy->distance = sqrtf(dx * dx + dy * dy);
 	rel_ang = atan2(dy, dx) - data->player->angle;
 	enemy->rel_angle = atan2f(sinf(rel_ang), cosf(rel_ang));
-	if (enemy->rel_angle >= -rad(FOV / 1.3) && enemy->rel_angle <= rad(FOV / 1.3))
+	if (enemy->rel_angle >= -rad(FOV / 2) && \
+		enemy->rel_angle <= rad(FOV / 2))
 		enemy->visible = 1;
 	else
 		enemy->visible = 0;

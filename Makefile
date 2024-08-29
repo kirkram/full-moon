@@ -9,7 +9,7 @@ HEADERS = -O2 -I ./include -I $(LIBMLX_PATH)/include/ -I /usr/local/Cellar/glfw/
 DEBUGFLAGS = -g -fsanitize=address,undefined 
 LIBS = $(LIBMLX42) -lm -lglfw -L /Users/$(USER)/.brew/opt/glfw -L/Users/$(USER)/.brew/lib -L/opt/homebrew/lib #-framework Cocoa -framework OpenGL -framework IOKit
 SRC_DIR = 	./srcs
-SRCS = main.c helper.c helper_angle.c \
+SRCS = main.c helper.c helper2.c helper_angle.c \
 drawing.c drawing_2.c drawing_distance.c drawing_helper.c drawing_hor_rays.c drawing_minimap.c drawing_textures.c drawing_vert_rays.c \
 init.c init2.c init3.c init_loadtex.c\
 keyhook.c keyhook_movement.c keyhook_movement_2.c keyhook_anim.c \

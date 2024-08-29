@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 18:52:40 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/28 18:08:50 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/29 11:16:30 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	hook_player_animation(t_data *data)
 	double			current_time;
 
 	if (data->player->is_dead)
-		return;
+		return ;
 	current_time = mlx_get_time();
 	if (last_update < 0)
 		last_update = current_time;

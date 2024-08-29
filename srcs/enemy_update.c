@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_update.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:00:06 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/28 13:12:07 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/29 10:57:44 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,18 @@ static t_coord	get_enemy_position(t_enemy *enemy)
 	return (enemy_pos);
 }
 
+static void	attack_state(t_enemy *enemy, t_data *data)
+{
+	if (enemy->attacked == false && enemy->current_frame == 40
+		&& enemy->distance <= 1.6)
+	{
+		--data->player->hitpoints;
+		enemy->attacked = true;
+	}
+	else if (enemy->current_frame == 48 && enemy->distance > 1.6)
+		enemy->state = IDLE;
+}
+
 void	update_enemy(t_enemy *enemy, t_data *data)
 {
 	t_coord	player_pos;
@@ -56,29 +68,14 @@ void	update_enemy(t_enemy *enemy, t_data *data)
 			player_pos = get_player_position(data);
 			enemy_pos = get_enemy_position(enemy);
 			if (enemy->route == NULL)
-			{
 				initialize_enemy_route(enemy, player_pos, enemy_pos, data);
-			}
 			else if (has_reached_target(enemy))
-			{
 				update_enemy_target(enemy, player_pos, enemy_pos, data);
-			}
 			move_enemy(data, enemy);
 		}
- 		else if (enemy->state == ATTACKING)
+		else if (enemy->state == ATTACKING)
 		{
-			if (enemy->attacked == false && enemy->current_frame == 40 
-				&& enemy->distance <= 1.6)
-			{
-				--data->player->hitpoints;
-				//printf("hitpoints: %d\n", data->player->hitpoints);
-				enemy->attacked = true;
-				if (data->player->hitpoints == 0)
-					printf("GAME OVER MAN!!!\n");
-			}
-			else if (enemy->current_frame == 48 
-				&& enemy->distance > 1.6)
-				enemy->state = IDLE;			
+			attack_state(enemy, data);
 		}
 	}
 }

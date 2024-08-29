@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/28 18:05:49 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/29 10:45:17 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,6 @@ int	init_main_screen(t_data *data)
 		return (ft_error("Error on mlx_new_image", 11));
 	if (mlx_image_to_window(data->mlx, data->screen, 0, 0) < 0)
 		return (ft_error("Error on mlx_image_to_window", 11));
-	// data->deathscreen = mlx_new_image(data->mlx, data->width, data->height);
-	// if (!data->deathscreen)
-	// 	return (ft_error("Error on mlx_new_image", 11));
-	
 	return (0);
 }
 

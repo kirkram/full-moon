@@ -6,7 +6,7 @@
 /*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:55:23 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/27 18:00:10 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/29 10:49:41 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static unsigned int	read_rgb_color_value(char *line, t_data *data)
 	char			**value_array;
 	int				len;
 	unsigned int	rgb[3];
-	unsigned int	color;
 	int				i;
 
 	value_array = ft_split(line, ',');
@@ -39,8 +38,7 @@ static unsigned int	read_rgb_color_value(char *line, t_data *data)
 		if (rgb[i] > 255)
 			map_validation_error("Error\nInvalid map parameter", 0, line, data);
 	}
-	color = (rgb[0] << 24) | (rgb[1] << 16) | (rgb[2] << 8) | 255 ;
-	return (color);
+	return ((rgb[0] << 24) | (rgb[1] << 16) | (rgb[2] << 8) | 255);
 }
 
 static void	read_our_parameter_type(char *line, t_data *data)
