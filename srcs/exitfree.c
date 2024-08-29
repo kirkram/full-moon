@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exitfree.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 17:48:48 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 11:18:46 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/29 18:02:46 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,19 @@
 
 void	map_validation_error(char *msg, int rows, char *line, t_data *data)
 {
+	printf("0\n");
+	printf("line is %s\n", line);
 	if (line != NULL)
 		free(line);
+	printf("1\n");
 	if (data->world_map)
 	{
+		printf("2\n");
 		free_2d_int(data->world_map, rows);
+		printf("3\n");
 		data->world_map = NULL;
 	}
+	printf("4\n");
 	free_all_and_quit(data, msg, 25);
 }
 
