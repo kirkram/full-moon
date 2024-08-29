@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/27 22:13:19 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/29 11:42:19 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ float	angle_difference_rad(float angle1, float angle2)
 	return (diff);
 }
 
-// printf("Angle %.10f Distance %.10f\n", angle_diff,
-//					data->enemies[i]->distance);
 void	hit_enemy_if_in_range(t_data *data)
 {
 	int		i;
@@ -50,7 +48,6 @@ void	hit_enemy_if_in_range(t_data *data)
 	float	angle_diff;
 
 	i = -1;
-	printf("Determining hit.\n");
 	if (data->enemies)
 	{
 		while (data->enemies[++i] != NULL)
