@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:05:11 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 10:50:42 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/29 14:36:59 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,29 @@ void	fill_with_nines(t_data *data, int y, int x)
 	}
 }
 
+int		check_map_end(char *line, int fd)
+{
+	if (line[0] == '\n')
+	{
+		if (ft_strlen(line) > 1)
+		{
+			close(fd);
+			free(line);
+			exit(ft_error("Error\nInvalid map data (end)\n", 24));
+		}
+		return (2);
+	}
+	return(1);
+}
+
 // Rows that contain data such as texture names cannot start with space, 0 or 1
 void	count_mapdimensions(t_data *data)
 {
 	int		fd;
 	char	*line;
-	int		map_start;
+	int		map_start_end;
 
-	map_start = 0;
+	map_start_end = 0;
 	fd = open(data->map_path, O_RDONLY);
 	if (fd == -1)
 		exit(ft_error("Error\nCant open map file for count\n", 22));
@@ -38,13 +53,20 @@ void	count_mapdimensions(t_data *data)
 		if (!line)
 			break ;
 		convert_tabs(&line);
-		if (!map_start && (line[0] == 32 || line[0] == 48 || line[0] == 49))
-			map_start = 1;
-		if (map_start)
+		if (!map_start_end && (line[0] == 32 || line[0] == 48 || line[0] == 49))
+			map_start_end = 1;
+		if (map_start_end == 1)
 		{
+			map_start_end = check_map_end(line, fd);
 			if (data->map_width < (int)(ft_strlen(line) - 1))
 				data->map_width = (int)(ft_strlen(line) - 1);
 			data->map_height++;
+		}
+		if (map_start_end == 2)
+		{
+			close(fd);
+			free(line);
+			exit(ft_error("Error\nInvalid map data (lines)\n", 24));
 		}
 		free(line);
 	}

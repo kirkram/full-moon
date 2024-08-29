@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_params.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:55:23 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 10:49:41 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/29 14:30:31 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static unsigned int	read_rgb_color_value(char *line, t_data *data)
 	unsigned int	rgb[3];
 	int				i;
 
+	printf("color line: %s", line);
 	value_array = ft_split(line, ',');
 	len = 0;
 	while (value_array[len] != NULL)
@@ -35,7 +36,7 @@ static unsigned int	read_rgb_color_value(char *line, t_data *data)
 	i = -1;
 	while (++i < len)
 	{
-		if (rgb[i] > 255)
+		if (rgb[i] < 0 || rgb[i] > 255)
 			map_validation_error("Error\nInvalid map parameter", 0, line, data);
 	}
 	return ((rgb[0] << 24) | (rgb[1] << 16) | (rgb[2] << 8) | 255);
