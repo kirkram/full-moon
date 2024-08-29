@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/29 17:38:38 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/29 19:47:01 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ unsigned long		current_time(void);
 # define TEXTURES_AMOUNT 7
 
 # define DRAWMINIRAYS 0
-# define SHOWFPS 0
+# define SHOWFPS 1
 # define DRAW_FLOOR 0
 # define DRAW_CEILING 0
 
@@ -89,8 +89,6 @@ unsigned long		current_time(void);
 # define SKYBLUE 0x87CEFAEE
 # define GREEN 0x00FF00FF
 # define FULL_TRANSPARENT 0x0000000
-# define CEILING SKYBLUE
-# define FLOOR GRAY
 
 // get next line
 # define BUFFER_SIZE 10

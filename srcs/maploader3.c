@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 19:23:27 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 11:00:26 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/29 19:51:09 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 // by order of appearance
 static void	init_enemy_state(t_enemy *enemy, t_data *data)
 {
-	static int	facing = -1;
+	static int		facing = -1;
 
 	facing++;
 	if (facing > 7)
@@ -56,7 +56,7 @@ static int	expand_enemies_array(t_enemy ***enemies, int y, char *line,
 	{
 		while (data->enemies[i])
 		{
-			*enemies[i] = data->enemies[i];
+			(*enemies)[i] = data->enemies[i];
 			i++;
 		}
 	}
