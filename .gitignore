@@ -10,3 +10,4 @@ leakreport*
 leaksreport*
 leakcheck*
 *.dSYM
+*.dSYM/
