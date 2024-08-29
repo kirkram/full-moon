@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:55:23 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 15:28:14 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:31:36 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,10 @@ static unsigned int	read_rgb_color_value(char *line, t_data *data)
 	unsigned int	rgb[3];
 	int				i;
 
-	printf("color line: %s\n", line);
 	value_array = ft_split(line, ',');
 	len = 0;
 	while (value_array[len] != NULL)
 		len++;
-	printf("len: %d\n", len);
 	if (len != 3)
 		map_validation_error("Error\nInvalid map parameter", 0, line, data);
 	i = -1;
@@ -47,15 +45,12 @@ static unsigned int	read_rgb_color_value(char *line, t_data *data)
 	{
 		if (!is_all_numeric(value_array[i]))
 		{
-			printf("Got some error.\n");
 			free_2d_char(value_array, len);
 			map_validation_error("Error\nInvalid map parameter", 0, line, data);
 		}
 		rgb[i] = ft_atoi(value_array[i]);
 	}
-	printf("Got here.\n");
 	free_2d_char(value_array, len);
-	//free(value_array);
 	i = -1;
 	while (++i < len)
 	{
