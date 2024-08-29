@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/29 11:26:38 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/29 14:49:04 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -371,6 +371,7 @@ int					**alloc_2d_int(int rows, int cols);
 int					**copy_2d_int(int **int_arr, int rows, int cols);
 int					free_2d_int(int **int_arr, int rows);
 void				print_2d_int(int **int_arr, int rows, int cols);
+int					free_2d_char(char **str_arr, int rows);
 
 // pathfinding
 t_route				*a_star(t_coord start_pos, t_coord end_pos, t_data *data);
