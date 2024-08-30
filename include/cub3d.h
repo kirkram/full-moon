@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/30 16:42:53 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:57:46 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ unsigned long		current_time(void);
 # define FLOOR_PATH "./textures/floor.png"
 # define SKY_PATH "./textures/sky.png"
 # define MAPBACKG_PATH "./textures/mapbackg.png"
-# define DEATHSCREEN_PATH "./textures/you_died.png"
+# define DEATHSCREEN_PATH "./textures/you_died_px.png"
 # define TEXTURES_AMOUNT 7
 
 # define DRAWMINIRAYS 0
