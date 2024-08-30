@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:16:01 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 11:50:41 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/30 09:56:46 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,15 @@ int	has_reached_target(t_enemy *enemy)
 void	initialize_enemy_route(t_enemy *enemy, t_coord player_pos,
 		t_coord enemy_pos, t_data *data)
 {
-	enemy->state = WALKING;
-	enemy->route = a_star(enemy_pos, player_pos, data);
+	double	now;
+
+	now = mlx_get_time();
+	//printf("ier now: %f\n", now);
+	//printf("ier lr : %f\n", enemy->last_route); 
+	if (now - enemy->last_route > 0.5 || is_equal(enemy->last_route, 0.0))
+	{
+		enemy->state = WALKING;
+		enemy->last_route = now;
+		enemy->route = a_star(enemy_pos, player_pos, data);
+	}
 }

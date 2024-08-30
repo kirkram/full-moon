@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 17:21:32 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 15:28:44 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/29 18:22:17 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,21 +87,16 @@ int	free_2d_int(int **int_arr, int rows)
 	return (0);
 }
 
-int	free_2d_char(char **str_arr, int rows)
+int	free_2d_char(char **str_arr)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	if (str_arr)
 	{
-		while (i < rows)
-		{
-			if (str_arr[i])
-				free(str_arr[i]);
-			i++;
-		}
-		if (str_arr)
-			free(str_arr);
+		while (str_arr[++i])
+			free(str_arr[i]);
+		free(str_arr);
 	}
 	return (0);
 }

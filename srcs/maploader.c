@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 14:28:23 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/29 18:32:44 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ static void	get_floor_and_ceiling_colors(t_data *data)
 {
 	if (data->ceilingcolor == 0x0)
 	{
-		printf("No ceiling color found, default SKYBLUE\n");
-		data->ceilingcolor = CEILING;
+		map_validation_error("Error\nMissing color value", data->map_height,
+			NULL, data);
 	}
 	if (data->floorcolor == 0x0)
 	{
-		printf("No floor color found, default GRAY\n");
-		data->floorcolor = FLOOR;
+		map_validation_error("Error\nMissing color value", data->map_height,
+			NULL, data);
 	}
 }
 

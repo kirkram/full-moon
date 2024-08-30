@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 19:55:23 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 15:28:14 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/29 18:21:17 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,33 +34,28 @@ static unsigned int	read_rgb_color_value(char *line, t_data *data)
 	unsigned int	rgb[3];
 	int				i;
 
-	printf("color line: %s\n", line);
-	value_array = ft_split(line, ',');
+	value_array = ft_split((line + 2), ',');
 	len = 0;
 	while (value_array[len] != NULL)
 		len++;
-	printf("len: %d\n", len);
 	if (len != 3)
-		map_validation_error("Error\nInvalid map parameter", 0, line, data);
+		map_validation_error("Error\nInvalid map parameter 1", 0, line, data);
 	i = -1;
 	while (++i < len)
 	{
 		if (!is_all_numeric(value_array[i]))
 		{
-			printf("Got some error.\n");
-			free_2d_char(value_array, len);
-			map_validation_error("Error\nInvalid map parameter", 0, line, data);
+			free_2d_char(value_array);
+			map_validation_error("Error\nInvalid map parameter 2", 0, line, data);
 		}
 		rgb[i] = ft_atoi(value_array[i]);
 	}
-	printf("Got here.\n");
-	free_2d_char(value_array, len);
-	//free(value_array);
+	free_2d_char(value_array);
 	i = -1;
 	while (++i < len)
 	{
 		if (rgb[i] < 0 || rgb[i] > 255)
-			map_validation_error("Error\nInvalid map parameter", 0, line, data);
+			map_validation_error("Error\nInvalid map parameter 3", 0, line, data);
 	}
 	return ((rgb[0] << 24) | (rgb[1] << 16) | (rgb[2] << 8) | 255);
 }
@@ -114,9 +109,9 @@ static void	read_subject_parameter_type(char *line, t_data *data)
 	else if (line[0] == 'C' || line[0] == 'F')
 	{
 		if (line[0] == 'C')
-			data->ceilingcolor = read_rgb_color_value(value_start, data);
+			data->ceilingcolor = read_rgb_color_value(line, data);
 		else if (line[0] == 'F')
-			data->floorcolor = read_rgb_color_value(value_start, data);
+			data->floorcolor = read_rgb_color_value(line, data);
 	}
 	else
 		map_validation_error("Error\nInvalid map parameter", 0, line, data);

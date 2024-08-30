@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   astar_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 13:24:31 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 11:07:34 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/30 09:06:26 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ bool	is_in_bounds(int x, int y, t_data *data)
 
 bool	is_walkable(int x, int y, t_data *data)
 {
-	return (is_in_bounds(x, y, data) && data->world_map[y][x] == 0);
+	return (is_in_bounds(x, y, data) && (data->world_map[y][x] == 0 || 
+		data->world_map[y][x] == 6));
 }
 
 void	print_map(t_data *data)
