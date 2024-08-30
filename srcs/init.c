@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/30 10:00:48 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/30 10:55:29 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ void	keyhook_loop(mlx_key_data_t keydata, void *param)
 	t_data	*data;
 
 	data = param;
-	//(void)keydata;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		free_all_and_quit(data, "Bye!", 0);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_E) && keydata.action == MLX_PRESS)
