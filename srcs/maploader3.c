@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 19:23:27 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 19:51:09 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/30 09:49:29 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	init_enemy_state(t_enemy *enemy, t_data *data)
 	enemy->angle = rad(facing * 45);
 	enemy->rel_angle = 0.0;
 	enemy->last_frame = 0.0;
+	enemy->last_route = 0.0;
 	enemy->state = IDLE;
 	enemy->visible = 0;
 	enemy->scale = 1.0;
@@ -83,4 +84,5 @@ void	add_new_enemy(int x, int y, t_data *data, char *line)
 		free(data->enemies);
 	data->enemies = enemies;
 	init_enemy_state(data->enemies[i], data);
+	printf("enemy->last_route: %f\n", data->enemies[i]->last_route);
 }

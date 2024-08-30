@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/29 19:47:01 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/30 09:26:43 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ unsigned long		current_time(void);
 # define RESOLUTION 3
 # define ATTACK_SPEED 1.2
 # define LINESCALE 1.7
-# define MOUSESPEED 0.18
+# define MOUSESPEED 1.18
 # define ENEMYSPEED 1.0
 # define MAX_DELTA 0.05
 
@@ -176,6 +176,7 @@ typedef struct s_enemy
 	int				visible;
 	t_enemystate	state;
 	double			last_frame;
+	double			last_route;
 	float			scale;
 	t_ray			ray;
 	int				dof;
