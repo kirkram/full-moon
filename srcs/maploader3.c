@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 19:23:27 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/30 09:49:29 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:50:47 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,4 @@ void	add_new_enemy(int x, int y, t_data *data, char *line)
 		free(data->enemies);
 	data->enemies = enemies;
 	init_enemy_state(data->enemies[i], data);
-	printf("enemy->last_route: %f\n", data->enemies[i]->last_route);
 }

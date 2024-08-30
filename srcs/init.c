@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/30 10:55:29 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:51:12 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,7 @@ void	keyhook_loop(mlx_key_data_t keydata, void *param)
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		free_all_and_quit(data, "Bye!", 0);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_E) && keydata.action == MLX_PRESS)
-	{
-		printf("Opening door.\n");
 		open_door(data);
-	}
 }
 
 int	init_and_draw(t_data *data)

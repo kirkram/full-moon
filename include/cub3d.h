@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/30 11:34:57 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:42:53 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ unsigned long		current_time(void);
 # define RESOLUTION 3
 # define ATTACK_SPEED 1.2
 # define LINESCALE 1.7
-# define MOUSESPEED 1.18
+# define MOUSESPEED 0.18
 # define ENEMYSPEED 1.0
 # define MAX_DELTA 0.05
 
@@ -51,7 +51,7 @@ unsigned long		current_time(void);
 # define TEXTURES_AMOUNT 7
 
 # define DRAWMINIRAYS 0
-# define SHOWFPS 1
+# define SHOWFPS 0
 # define DRAW_FLOOR 0
 # define DRAW_CEILING 0
 
