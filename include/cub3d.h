@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/30 09:26:43 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/30 11:34:57 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ unsigned long		current_time(void);
 # define FOV 60
 # define COLL 0.3
 
-# define DOOR_PATH "./textures/door.png"
+# define DOOR_PATH "./textures/door3.png"
 # define FLOOR_PATH "./textures/floor.png"
 # define SKY_PATH "./textures/sky.png"
 # define MAPBACKG_PATH "./textures/mapbackg.png"

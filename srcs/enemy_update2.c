@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:16:01 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/30 09:56:46 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/30 11:17:10 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ void	initialize_enemy_route(t_enemy *enemy, t_coord player_pos,
 	double	now;
 
 	now = mlx_get_time();
-	//printf("ier now: %f\n", now);
-	//printf("ier lr : %f\n", enemy->last_route); 
 	if (now - enemy->last_route > 0.5 || is_equal(enemy->last_route, 0.0))
 	{
 		enemy->state = WALKING;
