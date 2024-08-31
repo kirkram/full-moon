@@ -42,6 +42,7 @@ all: $(NAME)
 
 $(NAME): $(LIBFT) $(LIBMLX42) $(OBJ_DIR) $(OBJS) 
 	cc $(CFLAGS) $(HEADERS) $(OBJS) $(LIBFT) $(LIBS) -o $(NAME)
+	$(RM) $(BONUS_NAME)
 
 $(LIBMLX42): .libmlx42
 
@@ -80,6 +81,7 @@ bonus: .bonus
 .bonus: $(LIBFT) $(LIBMLX42) $(OBJ_DIR) $(BONUS_OBJS)
 	cc $(CFLAGS) $(HEADERS) $(BONUS_OBJS) $(LIBFT) $(LIBS) -o $(BONUS_NAME)
 	touch .bonus
+	$(RM) $(NAME)
 
 debug: .debug
 
