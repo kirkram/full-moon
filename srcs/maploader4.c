@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maploader4.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:41:09 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/31 15:46:37 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/31 16:44:10 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	count_mapdimensions_loop(t_data *data, char *line,
 {
 	line = get_next_line(fd);
 	if (!line)
-		return (1);
+		return (-1);
 	convert_tabs(&line);
 	if (!map_start_end && (line[0] == 32 || line[0] == 48 || line[0] == 49))
 		map_start_end = 1;
@@ -50,7 +50,7 @@ static int	count_mapdimensions_loop(t_data *data, char *line,
 		exit(ft_error("Error\nInvalid map data (lines)\n", 24));
 	}
 	free(line);
-	return (0);
+	return (map_start_end);
 }
 
 // Rows that contain data such as texture names cannot start with space, 0 or 1
@@ -60,14 +60,15 @@ void	count_mapdimensions(t_data *data)
 	char	*line;
 	int		map_start_end;
 
-	map_start_end = 0;
 	line = NULL;
+	map_start_end = 0;
 	fd = open(data->map_path, O_RDONLY);
 	if (fd == -1)
 		exit(ft_error("Error\nCant open map file for count\n", 22));
 	while (1)
 	{
-		if (count_mapdimensions_loop(data, line, map_start_end, fd))
+		map_start_end = count_mapdimensions_loop(data, line, map_start_end, fd);
+		if (map_start_end == -1)
 			break ;
 	}
 	close(fd);
