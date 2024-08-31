@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/30 16:57:46 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/31 15:47:40 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,9 +264,11 @@ void				convert_tabs(char **line);
 void				add_new_enemy(int x, int y, t_data *data, char *line);
 void				fill_with_nines(t_data *data, int y, int x);
 void				count_mapdimensions(t_data *data);
+int					check_map_format(t_data *data);
 int					get_player_startpos(int x, int y, t_data *data, char *line);
 int					flood_fill(int pos_y, int pos_x, int **wmap, t_data *data);
 void				read_map_parameter(char *line, t_data *data);
+unsigned int		read_rgb_color_value(char *line, t_data *data);
 void				map_validation_error(char *msg, int rows, char *line,
 						t_data *data);
 int					color_whole_image(mlx_image_t *img, int color, int width,

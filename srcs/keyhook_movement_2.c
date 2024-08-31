@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook_movement_2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:50:04 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/29 18:11:53 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/08/31 15:07:24 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	open_door(t_data *data)
 			data->world_map[(int)data->player->y_pos][data->keyhook_map.x] = 4;
 		if (data->world_map[data->keyhook_map.y][(int)data->player->x_pos] == 4)
 			data->world_map[data->keyhook_map.y][(int)data->player->x_pos] = 6;
-		else if (data->world_map[data->keyhook_map.y][(int)data->player->x_pos] == 6)
+		else if (data->world_map[data->keyhook_map.y][(int)data->player->x_pos]
+		== 6)
 			data->world_map[data->keyhook_map.y][(int)data->player->x_pos] = 4;
 	}
 }

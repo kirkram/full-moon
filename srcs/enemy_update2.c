@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_update2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:16:01 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/30 11:17:10 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/31 15:07:11 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	has_player_moved(t_enemy *enemy, t_coord player_pos)
 {
-	if (enemy->route->coords[enemy->route->size - 1].x != player_pos.x 
+	if (enemy->route->coords[enemy->route->size - 1].x != player_pos.x
 		|| enemy->route->coords[enemy->route->size - 1].y != player_pos.y)
 	{	
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 14:51:52 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 18:32:44 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/08/31 15:45:49 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,18 +88,6 @@ static void	read_and_parse_lines(int fd, t_data *data)
 		}
 		free(line);
 	}
-}
-
-int		check_map_format(t_data *data)
-{
-	int		len;
-
-	len = ft_strlen(data->map_path);
-	if (len < 5)
-		return (0);
-	if (len >= 5 && data->map_path[len - 5] == '/')
-		return (0);
-	return (ft_strncmp(data->map_path + len - 4, ".cub", 4) == 0);	
 }
 
 void	load_map(t_data *data)
