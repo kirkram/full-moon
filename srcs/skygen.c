@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:49:29 by mburakow          #+#    #+#             */
-/*   Updated: 2024/09/14 23:43:39 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/15 02:04:04 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,49 +21,43 @@ void generate_stars(t_data *data)
 	{
         data->stars[i].angle = ((float) rand() / RAND_MAX) * PI2; // Random angle (0 to 2*PI)
         data->stars[i].height = (int)(((float) rand() / RAND_MAX) * SCREENHEIGHT / 2); // Random height (top half of screen)
-        data->stars[i].brightness = ((float) rand() / RAND_MAX); // Random brightness
-		data->stars[i].timer = ((float) rand() / RAND_MAX) + 1; // Random timer
+        data->stars[i].brightness = rand() % 400; // Random brightness
+		data->stars[i].timer = mlx_get_time();
+		data->stars[i].blinkspeed = ((double) rand() / RAND_MAX) + 0.5;
+		data->stars[i].red = (uint8_t)(rand() % 20 + 235);
+		data->stars[i].green = (uint8_t)(rand() % 20 + 235);
+		data->stars[i].blue = (uint8_t)(rand() % 20 + 235);
 		i++;
 	}
 }
 
+/*
 uint32_t get_grayscale_color(float brightness)
 {
     uint8_t grayscale;
 
-    // Clamp brightness to the range [0.0, 1.0] to avoid overflows
     if (brightness < 0.0f) brightness = 0.0f;
     if (brightness > 1.0f) brightness = 1.0f;
-
-    // Scale brightness to the range [0, 255]
     grayscale = (uint8_t)(brightness * 255);
-
-    // Return the grayscale color in the format 0xRRGGBBAA
-    return (grayscale << 24 | grayscale << 16 | grayscale << 8 | 0xFF); // Alpha is set to full opacity (0xFF)
-}
-
-/*
-static void unrender_stars(t_data *data) 
-{
-	int i;
-
-	i = 0;
-	while (i < NUM_STARS) 
-	{
-        // Adjust star's angle based on player's angle
-        float relative_angle = data->stars[i].angle - data->player->prev_angle;
-        if (relative_angle < 0) relative_angle += PI2; // Ensure angle wraps around
-
-        // Convert angle to screen x-coordinate (cylindrical mapping)
-        int x = (relative_angle / PI2) * SCREENWIDTH;
-        int y = (int)data->stars[i].height;
-
-        // Render the star at (x, y) on the screen
-		undraw_star(x, y, data->stars[i].brightness, data); // Replace with your rendering function
-		i++;
-    }
+    return (grayscale << 24 | grayscale << 16 | grayscale << 8 | 0xFF);
 }
 */
+
+uint32_t get_star_color(uint16_t brightness, t_star *star) 
+{
+    uint32_t red;
+	uint32_t green;
+	uint32_t blue;
+
+    if (brightness > 255) brightness = 255;
+	red = brightness * star->red / 255;
+	green = brightness * star->green / 255;
+	blue = brightness * star->blue / 255;
+	if (red > 255) red = 255;
+	if (green > 255) green = 255;
+	if (blue > 255) blue = 255;
+    return (red << 24 | green << 16 | blue << 8 | 0xFF);
+}
 
 static void	color_differing_pixels(mlx_image_t *img, int width, int height, t_data *data)
 {
@@ -92,44 +86,32 @@ void render_stars(t_data *data)
 	int		x;
 	float	factor;
 	double	now;
-	float	random;
+	int16_t	random;
 
 	i = 0;
-	//printf("Rendering stars\n");
-	//color_whole_image(data->ceiling, data->ceilingcolor, data->width,
-	//	data->height / 2);
-	// Clear the screen
 	if (data->player->prev_angle != data->player->angle)
-	{
 		color_differing_pixels(data->ceiling, data->width, data->height / 2, data);
-		//unrender_stars(data);
-		//color_differing_pixels(data->ceiling, data->width, data->height / 2, data);
-	}
-	// Render each star
 	now = mlx_get_time();
-	random = ((float) rand() / RAND_MAX);
+	random = rand() % 255;
+	//printf("random: %d\n", random);
 	factor = SCREENWIDTH / PI2;
 	while (i < NUM_STARS) 
 	{
-		if (now - data->stars[i].timer > (rand() / 10000))
+		if (now - data->stars[i].timer > data->stars[i].blinkspeed)
 		{
-			data->stars[i].brightness += (random - 0.5) / 2;
-			if (data->stars[i].brightness > 1.6)
-				data->stars[i].brightness -= random * 2;
-			else if (data->stars[i].brightness < 0.4)
-				data->stars[i].brightness += random * 2;
-			data->stars[i].timer = now + random;
+			if (data->stars[i].brightness > 192)
+				data->stars[i].brightness -= random / 4;
+			else if (data->stars[i].brightness < 64)
+				data->stars[i].brightness += random / 4;
+			else
+				data->stars[i].brightness += (random - 127) / 4;
+			data->stars[i].timer = now + (random / 100);
 		}
-        // Adjust star's angle based on player's angle
         float relative_angle = data->stars[i].angle - data->player->angle;
         if (relative_angle < 0) 
-			relative_angle += PI2; // Ensure angle wraps around
-
-        // Convert angle to screen x-coordinate (cylindrical mapping)
+			relative_angle += PI2;
         x = (int)(relative_angle * factor);
-
-        // Render the star at (x, y) on the screen
-        draw_star(x, data->stars[i].height, data->stars[i].brightness, data); // Replace with your rendering function
+        draw_star(x, data->stars[i].height, &data->stars[i], data); // Replace with your rendering function
 		i++;
     }
 	data->player->prev_angle = data->player->angle;

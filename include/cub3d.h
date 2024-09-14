@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/09/14 23:56:33 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/15 02:06:18 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,10 +215,14 @@ typedef struct s_textures
 
 typedef struct s_star
 {
-    float			angle;  // Horizontal angle in radians (0 to 2*PI)
-    int				height; // Vertical position on the screen (0 to SCREEN_HEIGHT)
-    float			brightness; // Star brightness
-	double			timer; // sparkle sparkle
+    float			angle;
+    int				height;
+    uint16_t		brightness;
+	double			timer;
+	double			blinkspeed;
+	uint8_t 		red;
+	uint8_t         green;
+	uint8_t         blue;
 } 					t_star;
 
 typedef struct s_data
@@ -321,9 +325,8 @@ int					check_walls(t_data *data, t_ray *ray, t_map *map,
 						bool is_vert);
 void				increment_offset(t_data *data, t_ray *ray, bool is_vert);
 void 				render_stars(t_data *data) ;
-void				draw_star(int x, int y, float brightness, t_data *data);
-void				undraw_star(int x, int y, float brightness, t_data *data);
-void				my_put_pixel(mlx_image_t *image, uint32_t x, uint32_t y, uint32_t color);
+void				draw_star(int x, int y, t_star *star, t_data *data);
+uint32_t 			get_star_color(uint16_t brightness, t_star *star);
 uint32_t			get_grayscale_color(float brightness);
 
 
