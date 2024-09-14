@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/30 16:57:46 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/15 02:06:18 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,10 @@ unsigned long		current_time(void);
 # define TEXTURES_AMOUNT 7
 
 # define DRAWMINIRAYS 0
-# define SHOWFPS 0
-# define DRAW_FLOOR 0
+# define SHOWFPS 1
+# define DRAW_FLOOR 1
 # define DRAW_CEILING 0
+# define DRAW_STARS 1
 
 // sprites
 # define PL_FRAMECOUNT 11
@@ -72,6 +73,9 @@ unsigned long		current_time(void);
 # define EPSILON 1e-6
 # define DEGR 0.0174533
 # define DEG16 22.5
+
+// skygen
+#define NUM_STARS 300
 
 // direction angle
 # define EAST 0
@@ -157,6 +161,7 @@ typedef struct s_player
 	float			x_pos_mini;
 	float			y_pos_mini;
 	float			angle;
+	float			prev_angle; // starry sky render
 	int32_t			imgwidth;
 	int32_t			imgheight;
 	int				hitpoints;
@@ -208,6 +213,18 @@ typedef struct s_textures
 	mlx_texture_t	*ptr;
 }					t_txt;
 
+typedef struct s_star
+{
+    float			angle;
+    int				height;
+    uint16_t		brightness;
+	double			timer;
+	double			blinkspeed;
+	uint8_t 		red;
+	uint8_t         green;
+	uint8_t         blue;
+} 					t_star;
+
 typedef struct s_data
 {
 	mlx_t			*mlx;
@@ -217,6 +234,7 @@ typedef struct s_data
 	mlx_image_t		*ceiling;
 	mlx_image_t		*floor;
 	mlx_image_t		*deathscreen;
+	t_star			stars[NUM_STARS];
 	unsigned int	ceilingcolor;
 	unsigned int	floorcolor;
 	char			**nsew_path;
@@ -271,6 +289,7 @@ void				map_validation_error(char *msg, int rows, char *line,
 						t_data *data);
 int					color_whole_image(mlx_image_t *img, int color, int width,
 						int height);
+void				generate_stars(t_data *data);
 void				free_all_and_quit(t_data *data, char *msg, int exitcode);
 
 // drawing
@@ -305,6 +324,11 @@ int					is_equal(float a, float b);
 int					check_walls(t_data *data, t_ray *ray, t_map *map,
 						bool is_vert);
 void				increment_offset(t_data *data, t_ray *ray, bool is_vert);
+void 				render_stars(t_data *data) ;
+void				draw_star(int x, int y, t_star *star, t_data *data);
+uint32_t 			get_star_color(uint16_t brightness, t_star *star);
+uint32_t			get_grayscale_color(float brightness);
+
 
 // keyhook
 void				ft_hook_hub(void *param);

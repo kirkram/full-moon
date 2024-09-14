@@ -12,9 +12,9 @@ LIBS = $(LIBMLX42) -lm -lglfw -L /Users/$(USER)/.brew/opt/glfw -L/Users/$(USER)/
 SRC_DIR = 	./srcs
 SRCS = main.c helper.c helper2.c helper_angle.c \
 drawing.c drawing_2.c drawing_distance.c drawing_helper.c drawing_hor_rays.c drawing_minimap.c drawing_textures.c drawing_vert_rays.c \
-init.c init2.c init3.c init_loadtex.c\
+init.c init2.c init3.c init_loadtex.c \
 keyhook.c keyhook_movement.c keyhook_movement_2.c keyhook_anim.c \
-minimap.c maploader.c maploader2.c maploader3.c	\
+minimap.c maploader.c maploader2.c maploader3.c	skygen.c skygen_draw.c \
 mapvalidator.c mapvalidator_floodfill.c maptools.c map_params.c exitfree.c \
 enemy.c enemy_helper.c enemy_draw.c enemy_sort.c enemy_rays.c enemy_rays_2.c enemy_move.c enemy_move2.c \
 enemy_frame.c enemy_frame2.c enemy_update.c enemy_update2.c astar.c astar_pq_queue.c astar_checked.c \
@@ -23,7 +23,7 @@ BONUS_SRCS = main.c helper.c helper2.c helper_angle.c \
 drawing_bonus.c drawing_2.c drawing_distance.c drawing_helper.c drawing_hor_rays.c drawing_minimap.c drawing_textures.c drawing_vert_rays.c \
 init.c init2.c init3.c init_loadtex.c\
 keyhook.c keyhook_movement.c keyhook_movement_2.c keyhook_anim.c \
-minimap.c maploader.c maploader2.c maploader3.c	\
+minimap.c maploader.c maploader2.c maploader3.c skygen.c \
 mapvalidator.c mapvalidator_floodfill.c maptools.c map_params.c exitfree.c \
 enemy.c enemy_helper.c enemy_draw.c enemy_sort.c enemy_rays.c enemy_rays_2.c enemy_move.c enemy_move2.c \
 enemy_frame.c enemy_frame2.c enemy_update.c enemy_update2.c astar.c astar_pq_queue.c astar_checked.c \
