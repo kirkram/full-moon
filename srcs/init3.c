@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init3.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:16:03 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/21 10:39:09 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:30:56 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ int	put_background(t_data *data)
 		ft_error("Error on mlx_image_to_window\n", 11);
 	color_whole_image(data->floor, data->floorcolor, data->width, data->height);
 	data->ceiling = mlx_new_image(data->mlx, data->width, data->height);
+	if (DRAW_STARS)
+		generate_stars(data);
 	if (!data->ceiling)
 		ft_error("Error on mlx_new_image\n", 11);
 	if (mlx_image_to_window(data->mlx, data->ceiling, 0, 0) < 0)

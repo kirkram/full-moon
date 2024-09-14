@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 11:16:19 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:53:12 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	init_player_data(t_player *player)
 	player->x_pos_mini = 0;
 	player->y_pos_mini = 0;
 	player->angle = 0;
+	player->prev_angle = 0;
 	player->imgwidth = 0;
 	player->imgheight = 0;
 	player->hitpoints = 4;
