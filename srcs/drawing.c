@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 13:00:06 by klukiano          #+#    #+#             */
-/*   Updated: 2024/09/14 20:36:26 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/15 18:35:31 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,11 @@ static void	draw_ceiling_walls_floor(t_data *data, t_ray *ray, int i,
 	if (DRAW_CEILING)
 		draw_ceiling(data, ray, i, line_w);
 	else if (DRAW_STARS)
+	{
 		render_stars(data);
+		render_moon(data);
+		data->player->prev_angle = data->player->angle;
+	}
 	assign_texture_to_walls(data, ray, &data->draw_txt);
 	draw_walls(data, ray, i, line_w);
 	if (DRAW_FLOOR)

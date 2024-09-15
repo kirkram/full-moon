@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/09/15 02:06:18 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/15 21:05:25 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,34 +36,38 @@ unsigned long		current_time(void);
 # define RESOLUTION 3
 # define ATTACK_SPEED 1.2
 # define LINESCALE 1.7
-# define MOUSESPEED 0.18
-# define ENEMYSPEED 1.0
+# define MOUSESPEED 0.8
+# define ENEMYSPEED 0.7
 # define MAX_DELTA 0.05
 
 # define FOV 60
 # define COLL 0.3
+# define PARALLAX_MULT 3.0
 
 # define DOOR_PATH "./textures/door3.png"
 # define FLOOR_PATH "./textures/floor.png"
 # define SKY_PATH "./textures/sky.png"
+# define MOON_PATH "./textures/moon_xl.png"
 # define MAPBACKG_PATH "./textures/mapbackg.png"
-# define DEATHSCREEN_PATH "./textures/you_died_px.png"
+# define ENEMY1_SHEET_PATH "./sprites/werewolf_n28b.png"
+# define STARTSCREEN_PATH "./textures/fullmoonlogo_px.png"	
+# define DEATHSCREEN_PATH "./textures/youdied_new.png"
 # define TEXTURES_AMOUNT 7
 
 # define DRAWMINIRAYS 0
-# define SHOWFPS 1
+# define SHOWFPS 0
 # define DRAW_FLOOR 1
 # define DRAW_CEILING 0
 # define DRAW_STARS 1
 
 // sprites
 # define PL_FRAMECOUNT 11
-# define EN_FRAMECOUNT 64
-# define ESW 74 // enemy sprite width
-# define ESH 74 // enemy sprite height
-# define ESSW 592 // enemy spritesheet width
-# define ESSH 648 // enemy spritesheet height
-# define ESCALE 20.0 // enemy scale
+# define EN_FRAMECOUNT 120
+# define ESW 96 // enemy sprite width
+# define ESH 96 // enemy sprite height
+# define ESSW 768 // enemy spritesheet width
+# define ESSH 1440 // enemy spritesheet height
+# define ESCALE 14.0 // enemy scale
 
 // maths
 # define PI 3.14159265359
@@ -233,8 +237,15 @@ typedef struct s_data
 	mlx_image_t		*minimap_img;
 	mlx_image_t		*ceiling;
 	mlx_image_t		*floor;
+	mlx_image_t		*startscreen;
+	double 			starttime;
 	mlx_image_t		*deathscreen;
 	t_star			stars[NUM_STARS];
+	mlx_texture_t	*moon_txt;
+	mlx_image_t		*moon;
+	int				moon_yposneg;
+	int				moon_xpos;
+	float			moon_angle;
 	unsigned int	ceilingcolor;
 	unsigned int	floorcolor;
 	char			**nsew_path;
@@ -327,7 +338,8 @@ void				increment_offset(t_data *data, t_ray *ray, bool is_vert);
 void 				render_stars(t_data *data) ;
 void				draw_star(int x, int y, t_star *star, t_data *data);
 uint32_t 			get_star_color(uint16_t brightness, t_star *star);
-uint32_t			get_grayscale_color(float brightness);
+void				render_moon(t_data *data);
+void 				copy_image_to_image(mlx_image_t *dest, mlx_image_t *src, int dx, int dy);
 
 
 // keyhook
@@ -357,7 +369,7 @@ void				update_idle_frame(t_enemy *enemy, int index, double now,
 						double prev);
 void				update_walking_frame(t_enemy *enemy, int index, double now,
 						double prev);
-void				update_attacking_frame(t_enemy *enemy, double now,
+void				update_attacking_frame(t_enemy *enemy, int index, double now,
 						double prev);
 void				update_dying_frame(t_enemy *enemy, double now, double prev);
 void				update_enemy(t_enemy *enemy, t_data *data);

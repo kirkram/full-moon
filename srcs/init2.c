@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/09/14 20:53:12 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/15 21:08:21 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,13 @@ void	init_map_data(t_data *data)
 	data->floorcolor = 0x0;
 	data->ceilingcolor = 0x0;
 	data->enemies = NULL;
+	data->startscreen = NULL;
+	data->starttime = mlx_get_time();
+	data->moon_txt = NULL;
+	data->moon = NULL;
+	data->moon_yposneg = 0;
+	data->moon_xpos = 0;
+	data->moon_angle = 0;
 }
 
 void	init_player_data(t_player *player)

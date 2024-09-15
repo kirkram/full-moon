@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 23:16:13 by mburakow          #+#    #+#             */
-/*   Updated: 2024/09/15 02:05:20 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/15 19:25:12 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ void	draw_star(int x, int y, t_star *star, t_data *data)
 	i = 0;
 	brightness = star->brightness;
 	mlx_put_pixel(data->ceiling, x, y, get_star_color(brightness, star));
+	if (abs(x - data->moon_xpos) < (int)data->moon->width && 
+			abs(y - data->moon_yposneg) < (int)data->moon->height)
+		return ;
 	if (brightness > 150)
 	{
 		while (i < 4 && brightness > 40)

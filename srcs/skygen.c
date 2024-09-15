@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:49:29 by mburakow          #+#    #+#             */
-/*   Updated: 2024/09/15 02:04:04 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/15 20:54:32 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void generate_stars(t_data *data) 
 {
-	int i;
+	int 			i;
 
 	i = 0;
     while (i < NUM_STARS) 
@@ -29,19 +29,16 @@ void generate_stars(t_data *data)
 		data->stars[i].blue = (uint8_t)(rand() % 20 + 235);
 		i++;
 	}
+	data->moon_angle = ((float) rand() / RAND_MAX) * PI2;
+	data->moon_txt = mlx_load_png(MOON_PATH);
+	if (!data->moon_txt)
+		free_all_and_quit(data, "Error\nMoon texture couldn't load", 79);
+	data->moon = mlx_new_image(data->mlx, data->moon_txt->width, data->moon_txt->height);
+	if (!data->moon)
+		free_all_and_quit(data, "Error\nMoon mlx_new_image", 11);
+	data->moon = mlx_texture_to_image(data->mlx, data->moon_txt);
+	data->moon_yposneg = (int)((((float) rand() / RAND_MAX) * SCREENHEIGHT / 4) + data->moon_txt->height / 2);
 }
-
-/*
-uint32_t get_grayscale_color(float brightness)
-{
-    uint8_t grayscale;
-
-    if (brightness < 0.0f) brightness = 0.0f;
-    if (brightness > 1.0f) brightness = 1.0f;
-    grayscale = (uint8_t)(brightness * 255);
-    return (grayscale << 24 | grayscale << 16 | grayscale << 8 | 0xFF);
-}
-*/
 
 uint32_t get_star_color(uint16_t brightness, t_star *star) 
 {
@@ -80,20 +77,58 @@ static void	color_differing_pixels(mlx_image_t *img, int width, int height, t_da
 	}
 }
 
+void copy_image_to_image(mlx_image_t *dest, mlx_image_t *src, int dx, int dy) 
+{
+    int src_width = src->width;
+    int src_height = src->height;
+    int dest_width = dest->width;
+    int dest_height = dest->height;
+
+    for (int y = 0; y < src_height; y++) {
+        for (int x = 0; x < src_width; x++) {
+            int src_index = (y * src_width + x) * 4;
+			if (src->pixels[src_index + 3] == 0) 
+				continue;
+            int dest_index = ((dy + y) * dest_width + (dx + x)) * 4;
+            if (dx + x >= 0 && dx + x < dest_width && dy + y >= 0 && dy + y < dest_height) 
+			{
+                dest->pixels[dest_index + 0] = src->pixels[src_index + 0];
+                dest->pixels[dest_index + 1] = src->pixels[src_index + 1];
+                dest->pixels[dest_index + 2] = src->pixels[src_index + 2];
+                dest->pixels[dest_index + 3] = src->pixels[src_index + 3];
+            }
+        }
+    }
+}
+
+void render_moon(t_data *data)
+{
+	float	relative_angle;
+
+	if (!is_equal(data->player->prev_angle, data->player->angle))
+	{
+		relative_angle = normalize_rad(data->moon_angle - data->player->angle);
+		relative_angle *= PARALLAX_MULT;
+		relative_angle = normalize_rad(relative_angle);
+		data->moon_xpos = (int)(relative_angle * SCREENWIDTH / PI2);
+		if (data->moon_xpos <= SCREENWIDTH - (int)(data->moon->width / 2)  && data->moon_xpos >= (int)data->moon->width / 2)
+		copy_image_to_image(data->ceiling, data->moon, data->moon_xpos, data->moon_yposneg);
+	}
+}
+
 void render_stars(t_data *data) 
 {
 	int 	i;
-	int		x;
 	float	factor;
 	double	now;
 	int16_t	random;
+	float 	relative_angle;
 
 	i = 0;
-	if (data->player->prev_angle != data->player->angle)
+	if (!is_equal(data->player->prev_angle, data->player->angle))
 		color_differing_pixels(data->ceiling, data->width, data->height / 2, data);
 	now = mlx_get_time();
 	random = rand() % 255;
-	//printf("random: %d\n", random);
 	factor = SCREENWIDTH / PI2;
 	while (i < NUM_STARS) 
 	{
@@ -107,12 +142,10 @@ void render_stars(t_data *data)
 				data->stars[i].brightness += (random - 127) / 4;
 			data->stars[i].timer = now + (random / 100);
 		}
-        float relative_angle = data->stars[i].angle - data->player->angle;
-        if (relative_angle < 0) 
-			relative_angle += PI2;
-        x = (int)(relative_angle * factor);
-        draw_star(x, data->stars[i].height, &data->stars[i], data); // Replace with your rendering function
+		relative_angle = normalize_rad(data->stars[i].angle - data->player->angle);
+		relative_angle *= PARALLAX_MULT;
+		relative_angle = normalize_rad(relative_angle);
+        draw_star((int)(relative_angle * factor), data->stars[i].height, &data->stars[i], data);
 		i++;
     }
-	data->player->prev_angle = data->player->angle;
 }

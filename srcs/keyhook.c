@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/29 11:52:49 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/15 21:09:41 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,17 @@ void	check_death(t_data *data)
 	}
 }
 
+void  	check_startscreen(t_data *data)
+{
+	if (data->startscreen == NULL)
+		return ;
+	if (mlx_get_time() - data->starttime > 5)
+	{
+		mlx_delete_image(data->mlx, data->startscreen);
+		data->startscreen = NULL;
+	}
+}
+
 void	ft_hook_hub(void *param)
 {
 	t_data	*data;
@@ -84,6 +95,7 @@ void	ft_hook_hub(void *param)
 		printf("fps: %.0f\n", 1 / data->mlx->delta_time);
 	if (!data->player->is_dead)
 		ft_hook_keys(data);
+	check_startscreen(data);
 	color_whole_image(data->screen, FULL_TRANSPARENT, data->width,
 		data->height);
 	color_whole_image(data->player->img, FULL_TRANSPARENT,

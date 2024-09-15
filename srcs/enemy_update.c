@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_update.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:00:06 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 10:57:44 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/09/15 16:47:48 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,15 @@ static t_coord	get_enemy_position(t_enemy *enemy)
 
 static void	attack_state(t_enemy *enemy, t_data *data)
 {
-	if (enemy->attacked == false && enemy->current_frame == 40
-		&& enemy->distance <= 1.6)
+	if (enemy->attacked == false
+		&& enemy->distance <= 1.6 && enemy->state == ATTACKING
+		&& data->player->hitpoints > 0)
 	{
 		--data->player->hitpoints;
+		printf("Player hitpoints: %d\n", data->player->hitpoints);
 		enemy->attacked = true;
 	}
-	else if (enemy->current_frame == 48 && enemy->distance > 1.6)
+	else if (enemy->distance > 1.6)
 		enemy->state = IDLE;
 }
 
