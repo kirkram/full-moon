@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:49:29 by mburakow          #+#    #+#             */
-/*   Updated: 2024/09/16 08:31:34 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/16 08:50:21 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,19 @@ void generate_stars(t_data *data)
 	i = 0;
     while (i < NUM_STARS) 
 	{
-        data->stars[i].angle = ((float)(rand() / RAND_MAX)) * PI2; // Random angle (0 to 2*PI)
-        data->stars[i].height = (int)(((float)(rand() / RAND_MAX)) * SCREENHEIGHT / 2); // Random height (top half of screen)
+        data->stars[i].angle = (float)rand() / (float)RAND_MAX * PI2; // Random angle (0 to 2*PI)
+        data->stars[i].height = (int)(((float)rand() / (float)RAND_MAX) * SCREENHEIGHT / 2); // Random height (top half of screen)
         data->stars[i].brightness = rand() % 400; // Random brightness
 		data->stars[i].timer = mlx_get_time();
-		data->stars[i].blinkspeed = ((double)(rand() / RAND_MAX)) + 0.5;
+		data->stars[i].blinkspeed = ((double)rand() / (double)RAND_MAX) + 0.5;
 		data->stars[i].red = (uint8_t)(rand() % 20 + 235);
 		data->stars[i].green = (uint8_t)(rand() % 20 + 235);
 		data->stars[i].blue = (uint8_t)(rand() % 20 + 235);
+		printf("Star %d: angle: %f, height: %d, brightness: %d, red: %d, green: %d, blue: %d\n", i, data->stars[i].angle, data->stars[i].height, data->stars[i].brightness, data->stars[i].red, data->stars[i].green, data->stars[i].blue);
 		i++;
 	}
-	data->moon_angle = ((float)(rand() / RAND_MAX)) * PI2;
+	
+	data->moon_angle = ((float)(rand() / (float)RAND_MAX)) * PI2;
 	data->moon_txt = mlx_load_png(MOON_PATH);
 	if (!data->moon_txt)
 		free_all_and_quit(data, "Error\nMoon texture couldn't load", 79);
@@ -37,7 +39,7 @@ void generate_stars(t_data *data)
 	if (!data->moon)
 		free_all_and_quit(data, "Error\nMoon mlx_new_image", 11);
 	data->moon = mlx_texture_to_image(data->mlx, data->moon_txt);
-	data->moon_yposneg = (int)((((float)(rand() / RAND_MAX)) * SCREENHEIGHT / 4) + data->moon_txt->height / 2);
+	data->moon_yposneg = (int)((((float)(rand() / (float)RAND_MAX)) * SCREENHEIGHT / 4) + data->moon_txt->height / 2);
 }
 
 uint32_t get_star_color(uint16_t brightness, t_star *star) 

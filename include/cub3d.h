@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/09/15 21:05:25 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/16 08:34:04 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ unsigned long		current_time(void);
 # define RESOLUTION 3
 # define ATTACK_SPEED 1.2
 # define LINESCALE 1.7
-# define MOUSESPEED 0.8
+# define MOUSESPEED 0.18
 # define ENEMYSPEED 0.7
 # define MAX_DELTA 0.05
 
@@ -67,7 +67,7 @@ unsigned long		current_time(void);
 # define ESH 96 // enemy sprite height
 # define ESSW 768 // enemy spritesheet width
 # define ESSH 1440 // enemy spritesheet height
-# define ESCALE 14.0 // enemy scale
+# define ESCALE 16.0 // enemy scale
 
 // maths
 # define PI 3.14159265359
