@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/09/15 21:08:21 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:11:17 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ void	init_player_data(t_player *player)
 	player->prev_angle = 0;
 	player->imgwidth = 0;
 	player->imgheight = 0;
-	player->hitpoints = 4;
+	player->hitpoints = 10;
+	player->attacked = false;
 	player->is_dead = 0;
 }
 

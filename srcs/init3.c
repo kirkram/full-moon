@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:16:03 by mburakow          #+#    #+#             */
-/*   Updated: 2024/09/15 21:06:13 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:07:08 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ mlx_image_t	*create_enemy_sprite(t_data *data, int sx, int sy)
 				+ 3] = data->enemy_ssheet->pixels[sheet_index + 3];
 		}
 	}
-	printf("sx: %d, sy: %d, sheet_index: %d, sprite_index: %d\n", sx, sy, sheet_index, sprite_index);
+	//printf("sx: %d, sy: %d, sheet_index: %d, sprite_index: %d\n", sx, sy, sheet_index, sprite_index);
 	return (sprite);
 }
 

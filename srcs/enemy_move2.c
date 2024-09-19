@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_move2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 12:55:20 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 11:16:51 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:08:51 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	check_attack_range(t_data *data, t_enemy *enemy)
 	if (enemy->distance < 1.4)
 	{
 		enemy->state = ATTACKING;
+		printf("Enemy state is now ATTACKING\n");
 		free(enemy->route->coords);
 		free(enemy->route);
 		enemy->route = NULL;

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:00:06 by mburakow          #+#    #+#             */
-/*   Updated: 2024/09/15 16:47:48 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:13:49 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,11 @@ static void	attack_state(t_enemy *enemy, t_data *data)
 		printf("Player hitpoints: %d\n", data->player->hitpoints);
 		enemy->attacked = true;
 	}
-	else if (enemy->distance > 1.6)
+	else if (enemy->distance > 1.6 && enemy->state != TAKINGDMG)
+	{
+		printf("Enemy state is now IDLE\n");
 		enemy->state = IDLE;
+	}
 }
 
 void	update_enemy(t_enemy *enemy, t_data *data)
@@ -65,7 +68,7 @@ void	update_enemy(t_enemy *enemy, t_data *data)
 
 	if (enemy->seen_player && enemy_is_alive(enemy))
 	{
-		if (enemy->state != ATTACKING)
+		if (enemy->state != ATTACKING && enemy->state != TAKINGDMG)
 		{
 			player_pos = get_player_position(data);
 			enemy_pos = get_enemy_position(enemy);

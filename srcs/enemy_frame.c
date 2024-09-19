@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 14:35:17 by mburakow          #+#    #+#             */
-/*   Updated: 2024/09/15 16:32:21 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:17:28 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static void	update_frame_based_on_state(t_enemy *enemy, int index, double now)
 		update_walking_frame(enemy, index, now, prev);
 	else if (enemy->state == ATTACKING)
 		update_attacking_frame(enemy, index, now, prev);
+	else if (enemy->state == TAKINGDMG)
+		update_taking_damage_frame(enemy, index, now, prev);
 	else if (enemy->state == DYING)
 		update_dying_frame(enemy, now, prev);
 }

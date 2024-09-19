@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook_anim.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 18:52:40 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 11:16:30 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:55:39 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ static void	handle_attack_animation(t_data *data, double current_time)
 		hit_enemy_if_in_range(data);
 	}
 	else
+	{
+		data->player->attacked = false;
 		data->swordarm = mlx_texture_to_image(data->mlx, data->swordarm_tx[10]);
+	}
 	mlx_image_to_window(data->mlx, data->swordarm, 240, 1);
 }
 
@@ -50,7 +53,10 @@ static void	check_and_handle_attack(t_data *data, double current_time)
 	if (mlx_is_mouse_down(data->mlx, MLX_MOUSE_BUTTON_LEFT))
 	{
 		if (current_time - data->last_attack >= ATTACK_SPEED)
+		{
 			data->last_attack = current_time;
+			data->player->attacked = false;
+		}
 	}
 }
 

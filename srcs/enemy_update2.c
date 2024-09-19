@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_update2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:16:01 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/30 11:17:10 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:08:51 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	initialize_enemy_route(t_enemy *enemy, t_coord player_pos,
 	now = mlx_get_time();
 	if (now - enemy->last_route > 0.5 || is_equal(enemy->last_route, 0.0))
 	{
+		printf("Enemy state is now WALKING\n");
 		enemy->state = WALKING;
 		enemy->last_route = now;
 		enemy->route = a_star(enemy_pos, player_pos, data);

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/09/16 08:34:04 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:41:03 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ typedef enum s_enemystate
 	IDLE,
 	WALKING,
 	ATTACKING,
+	TAKINGDMG,
 	DYING,
 	DEAD
 }					t_enemystate;
@@ -169,6 +170,7 @@ typedef struct s_player
 	int32_t			imgwidth;
 	int32_t			imgheight;
 	int				hitpoints;
+	bool			attacked;
 	bool			is_dead;
 }					t_player;
 
@@ -184,6 +186,7 @@ typedef struct s_enemy
 	int				current_frame;
 	int				visible;
 	t_enemystate	state;
+	int				hitpoints;
 	double			last_frame;
 	double			last_route;
 	float			scale;
@@ -371,6 +374,8 @@ void				update_walking_frame(t_enemy *enemy, int index, double now,
 						double prev);
 void				update_attacking_frame(t_enemy *enemy, int index, double now,
 						double prev);
+void				update_taking_damage_frame(t_enemy *enemy, int index, 
+						double now, double prev);
 void				update_dying_frame(t_enemy *enemy, double now, double prev);
 void				update_enemy(t_enemy *enemy, t_data *data);
 void				update_enemy_target(t_enemy *enemy, t_coord player_pos,

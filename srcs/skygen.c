@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:49:29 by mburakow          #+#    #+#             */
-/*   Updated: 2024/09/16 08:50:21 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:08:36 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void generate_stars(t_data *data)
 		data->stars[i].red = (uint8_t)(rand() % 20 + 235);
 		data->stars[i].green = (uint8_t)(rand() % 20 + 235);
 		data->stars[i].blue = (uint8_t)(rand() % 20 + 235);
-		printf("Star %d: angle: %f, height: %d, brightness: %d, red: %d, green: %d, blue: %d\n", i, data->stars[i].angle, data->stars[i].height, data->stars[i].brightness, data->stars[i].red, data->stars[i].green, data->stars[i].blue);
+		// printf("Star %d: angle: %f, height: %d, brightness: %d, red: %d, green: %d, blue: %d\n", i, data->stars[i].angle, data->stars[i].height, data->stars[i].brightness, data->stars[i].red, data->stars[i].green, data->stars[i].blue);
 		i++;
 	}
 	

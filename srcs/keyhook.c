@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/09/15 21:09:41 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:14:35 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	hit_enemy_if_in_range(t_data *data)
 	float	angle_diff;
 
 	i = -1;
-	if (data->enemies)
+	if (data->enemies && !data->player->attacked)
 	{
 		while (data->enemies[++i] != NULL)
 		{
@@ -50,7 +50,24 @@ void	hit_enemy_if_in_range(t_data *data)
 				angle_diff = angle_difference_rad(angle_to_enemy,
 						normalize_rad(data->player->angle));
 				if (angle_diff < 0.6)
-					data->enemies[i]->state = DYING;
+				{
+					data->enemies[i]->hitpoints -= 1;
+					data->player->attacked = true;
+					printf("Enemy hitpoints: %d\n", data->enemies[i]->hitpoints);
+					if (data->enemies[i]->hitpoints <= 0)
+					{
+						printf("Enemy dies!\n");
+						data->enemies[i]->state = DYING;
+						printf("Enemy state is now DYING\n");
+					}
+					else
+					{
+						printf("Enemy takes damage!\n");
+						data->enemies[i]->state = TAKINGDMG;
+						data->enemies[i]->seen_player = true;
+						printf("Enemy state is now TAKINGDMG\n");
+					}
+				}
 			}
 		}
 	}
