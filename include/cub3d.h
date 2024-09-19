@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:38:30 by klukiano          #+#    #+#             */
-/*   Updated: 2024/09/19 16:41:03 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/19 18:52:11 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,10 @@ unsigned long		current_time(void);
 # define SOUTH 90
 # define WEST 180
 # define NORTH 270
+
+// defaults
+# define ENEMY_HP 3
+# define PLAYER_HP 7
 
 // colors
 # define BLACK 0x000000FF
@@ -184,6 +188,7 @@ typedef struct s_enemy
 	float			angle;
 	float			rel_angle;
 	int				current_frame;
+	int				deathanim;
 	int				visible;
 	t_enemystate	state;
 	int				hitpoints;

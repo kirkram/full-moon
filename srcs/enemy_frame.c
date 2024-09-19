@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 14:35:17 by mburakow          #+#    #+#             */
-/*   Updated: 2024/09/19 16:17:28 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/19 18:59:55 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ void	update_enemy_frame(t_enemy *enemy, t_data *data)
 
 	if (enemy->state == DEAD)
 	{
-		enemy->current_frame = 110;
+		if (enemy->deathanim == 0)
+			enemy->current_frame = 110;
+		else
+			enemy->current_frame = 117;
 		return ;
 	}
 	index = calculate_direction_index(enemy, data);

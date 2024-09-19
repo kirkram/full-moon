@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 19:23:27 by mburakow          #+#    #+#             */
-/*   Updated: 2024/09/19 17:11:12 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/19 18:55:01 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ static void	init_enemy_state(t_enemy *enemy, t_data *data)
 	enemy->last_frame = 0.0;
 	enemy->last_route = 0.0;
 	enemy->state = IDLE;
-	enemy->hitpoints = 6;
+	enemy->deathanim = 0;
+	enemy->hitpoints = ENEMY_HP;
 	enemy->visible = 0;
 	enemy->scale = 1.0;
 	enemy->seen_player = false;

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:11:02 by klukiano          #+#    #+#             */
-/*   Updated: 2024/09/19 17:14:35 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/19 19:03:35 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,10 @@ void	hit_enemy_if_in_range(t_data *data)
 					printf("Enemy hitpoints: %d\n", data->enemies[i]->hitpoints);
 					if (data->enemies[i]->hitpoints <= 0)
 					{
-						printf("Enemy dies!\n");
+						//printf("Enemy dies!\n");
 						data->enemies[i]->state = DYING;
-						printf("Enemy state is now DYING\n");
+						data->enemies[i]->deathanim = rand() % 2;
+						printf("Enemy state is now DYING, deathanim: %d\n", data->enemies[i]->deathanim);
 					}
 					else
 					{
