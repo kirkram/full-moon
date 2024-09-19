@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 14:48:45 by mburakow          #+#    #+#             */
-/*   Updated: 2024/09/19 17:55:01 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/19 18:37:04 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ void	update_idle_frame(t_enemy *enemy, int index, double now, double prev)
 {
 	if (now - prev > 0.7)
 	{
-		if (enemy->current_frame == index)
-			enemy->current_frame = index + 8;
+		if (enemy->current_frame == index + 96)
+			enemy->current_frame = index + 88;
 		else
-			enemy->current_frame = index;
+			enemy->current_frame = index + 96;
 		enemy->last_frame = now;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:00:06 by mburakow          #+#    #+#             */
-/*   Updated: 2024/09/19 17:13:49 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/19 18:39:30 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	update_enemy(t_enemy *enemy, t_data *data)
 	{
 		if (enemy->state != ATTACKING && enemy->state != TAKINGDMG)
 		{
+			enemy->state = WALKING;
 			player_pos = get_player_position(data);
 			enemy_pos = get_enemy_position(enemy);
 			if (enemy->route == NULL)
