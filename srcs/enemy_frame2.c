@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 14:48:45 by mburakow          #+#    #+#             */
-/*   Updated: 2024/09/19 17:27:22 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:55:01 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	update_attacking_frame(t_enemy *enemy, int index, double now, double prev)
 void	update_taking_damage_frame(t_enemy *enemy, int index, double now, double prev)
 {
 	//printf("Updating takedamage frame: %f\n", (now - prev));
+	enemy->current_frame = index + 80;
 	if (now - prev > 0.7)
 	{
 		if (enemy->current_frame == index + 80)
@@ -74,8 +75,6 @@ void	update_taking_damage_frame(t_enemy *enemy, int index, double now, double pr
 			enemy->state = IDLE;
 			printf("Enemy state is now IDLE\n");
 		}
-		else
-			enemy->current_frame = index + 80;
 		enemy->last_frame = now;
 	}
 }
