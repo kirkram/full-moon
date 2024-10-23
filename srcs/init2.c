@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 19:05:53 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 11:16:19 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:11:17 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,13 @@ void	init_map_data(t_data *data)
 	data->floorcolor = 0x0;
 	data->ceilingcolor = 0x0;
 	data->enemies = NULL;
+	data->startscreen = NULL;
+	data->starttime = mlx_get_time();
+	data->moon_txt = NULL;
+	data->moon = NULL;
+	data->moon_yposneg = 0;
+	data->moon_xpos = 0;
+	data->moon_angle = 0;
 }
 
 void	init_player_data(t_player *player)
@@ -47,9 +54,11 @@ void	init_player_data(t_player *player)
 	player->x_pos_mini = 0;
 	player->y_pos_mini = 0;
 	player->angle = 0;
+	player->prev_angle = 0;
 	player->imgwidth = 0;
 	player->imgheight = 0;
-	player->hitpoints = 4;
+	player->hitpoints = 10;
+	player->attacked = false;
 	player->is_dead = 0;
 }
 

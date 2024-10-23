@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 15:04:51 by mburakow          #+#    #+#             */
-/*   Updated: 2024/08/29 10:59:24 by klukiano         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:26:16 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	draw_enemy(t_data *data, t_enemy *enemy, uint32_t screen_x)
 		enemy->distance = 1.0;
 	enemy->scale = ESCALE / enemy->distance;
 	screen_x = screen_x - (ESW * enemy->scale) / 2;
-	screen_y = data->mlx->height / 2 - (ESH * enemy->scale) / 2.6;
+	screen_y = data->mlx->height / 2 - (ESH * enemy->scale) / 3;
 	draw_enemy_onto_canvas(enemy, screen_x, screen_y, data);
 }
 

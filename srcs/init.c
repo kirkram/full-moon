@@ -6,7 +6,7 @@
 /*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:57:28 by klukiano          #+#    #+#             */
-/*   Updated: 2024/08/30 16:51:12 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/09/15 21:11:01 by mburakow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,21 @@ void	keyhook_loop(mlx_key_data_t keydata, void *param)
 		open_door(data);
 }
 
+void	draw_startscreen(t_data *data)
+{
+	mlx_texture_t	*startscreen;
+
+	startscreen = mlx_load_png(STARTSCREEN_PATH);
+	if (!startscreen)
+		free_all_and_quit(data, "Error\nStartscreen couldn't load", 79);
+	data->startscreen = mlx_texture_to_image(data->mlx, startscreen);
+	if (mlx_image_to_window(data->mlx, data->startscreen, data->width / 2
+			- data->startscreen->width / 2, data->height / 3
+			- data->startscreen->height / 2) < 0)
+		free_all_and_quit(data, "Error\nStartscreen mlx_image_to_window", 11);
+	mlx_delete_texture(startscreen);
+}
+
 int	init_and_draw(t_data *data)
 {
 	if (init_canvases(data))
@@ -90,6 +105,7 @@ int	init_and_draw(t_data *data)
 	draw_minimap(data);
 	draw_player_minimap(data);
 	draw_world(data);
+	draw_startscreen(data);
 	mlx_cursor_hook(data->mlx, &hook_mouse_move, data);
 	mlx_loop_hook(data->mlx, &ft_hook_hub, data);
 	mlx_key_hook(data->mlx, &keyhook_loop, data);
