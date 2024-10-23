@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_update.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:00:06 by mburakow          #+#    #+#             */
-/*   Updated: 2024/09/19 18:39:30 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/10/23 11:41:03 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	attack_state(t_enemy *enemy, t_data *data)
 	}
 	else if (enemy->distance > 1.6 && enemy->state != TAKINGDMG)
 	{
-		printf("Enemy state is now IDLE\n");
+		// printf("Enemy state is now IDLE\n");
 		enemy->state = IDLE;
 	}
 }

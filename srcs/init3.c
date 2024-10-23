@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init3.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:16:03 by mburakow          #+#    #+#             */
-/*   Updated: 2024/09/19 17:07:08 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/10/23 11:42:53 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,6 @@ int	put_background(t_data *data)
 		ft_error("Error on mlx_image_to_window\n", 11);
 	color_whole_image(data->ceiling, data->ceilingcolor, data->width,
 		data->height / 2);
-	mlx_put_string(data->mlx, "CUB3D_0.9", data->width - 100, 1);
+	// mlx_put_string(data->mlx, "FULL MOON", data->width - 100, 1);
 	return (0);
 }

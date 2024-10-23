@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_frame2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mburakow <mburakow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: klukiano <klukiano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 14:48:45 by mburakow          #+#    #+#             */
-/*   Updated: 2024/09/19 19:01:31 by mburakow         ###   ########.fr       */
+/*   Updated: 2024/10/23 11:40:58 by klukiano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	update_taking_damage_frame(t_enemy *enemy, int index, double now, double pr
 		{
 			//enemy->current_frame = index + 88;
 			enemy->state = IDLE;
-			printf("Enemy state is now IDLE\n");
+			// printf("Enemy state is now IDLE\n");
 		}
 		enemy->last_frame = now;
 	}
